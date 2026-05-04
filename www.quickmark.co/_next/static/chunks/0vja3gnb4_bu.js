@@ -1,0 +1,4009 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push(["object" == typeof document ? document.currentScript : void 0, 92953, 897427, 308070, 683877, e => {
+                "use strict";
+                let t, r, i;
+                var n, s, a = e.i(247167);
+                let o = function(e) {
+                        let t = [],
+                            r = 0;
+                        for (let i = 0; i < e.length; i++) {
+                            let n = e.charCodeAt(i);
+                            n < 128 ? t[r++] = n : (n < 2048 ? t[r++] = n >> 6 | 192 : ((64512 & n) == 55296 && i + 1 < e.length && (64512 & e.charCodeAt(i + 1)) == 56320 ? (n = 65536 + ((1023 & n) << 10) + (1023 & e.charCodeAt(++i)), t[r++] = n >> 18 | 240, t[r++] = n >> 12 & 63 | 128) : t[r++] = n >> 12 | 224, t[r++] = n >> 6 & 63 | 128), t[r++] = 63 & n | 128)
+                        }
+                        return t
+                    },
+                    c = function(e) {
+                        let t = [],
+                            r = 0,
+                            i = 0;
+                        for (; r < e.length;) {
+                            let n = e[r++];
+                            if (n < 128) t[i++] = String.fromCharCode(n);
+                            else if (n > 191 && n < 224) {
+                                let s = e[r++];
+                                t[i++] = String.fromCharCode((31 & n) << 6 | 63 & s)
+                            } else if (n > 239 && n < 365) {
+                                let s = ((7 & n) << 18 | (63 & e[r++]) << 12 | (63 & e[r++]) << 6 | 63 & e[r++]) - 65536;
+                                t[i++] = String.fromCharCode(55296 + (s >> 10)), t[i++] = String.fromCharCode(56320 + (1023 & s))
+                            } else {
+                                let s = e[r++],
+                                    a = e[r++];
+                                t[i++] = String.fromCharCode((15 & n) << 12 | (63 & s) << 6 | 63 & a)
+                            }
+                        }
+                        return t.join("")
+                    },
+                    l = {
+                        byteToCharMap_: null,
+                        charToByteMap_: null,
+                        byteToCharMapWebSafe_: null,
+                        charToByteMapWebSafe_: null,
+                        ENCODED_VALS_BASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+                        get ENCODED_VALS() {
+                            return this.ENCODED_VALS_BASE + "+/="
+                        },
+                        get ENCODED_VALS_WEBSAFE() {
+                            return this.ENCODED_VALS_BASE + "-_."
+                        },
+                        HAS_NATIVE_SUPPORT: "function" == typeof atob,
+                        encodeByteArray(e, t) {
+                            if (!Array.isArray(e)) throw Error("encodeByteArray takes an array as a parameter");
+                            this.init_();
+                            let r = t ? this.byteToCharMapWebSafe_ : this.byteToCharMap_,
+                                i = [];
+                            for (let t = 0; t < e.length; t += 3) {
+                                let n = e[t],
+                                    s = t + 1 < e.length,
+                                    a = s ? e[t + 1] : 0,
+                                    o = t + 2 < e.length,
+                                    c = o ? e[t + 2] : 0,
+                                    l = n >> 2,
+                                    u = (3 & n) << 4 | a >> 4,
+                                    h = (15 & a) << 2 | c >> 6,
+                                    d = 63 & c;
+                                !o && (d = 64, s || (h = 64)), i.push(r[l], r[u], r[h], r[d])
+                            }
+                            return i.join("")
+                        },
+                        encodeString(e, t) {
+                            return this.HAS_NATIVE_SUPPORT && !t ? btoa(e) : this.encodeByteArray(o(e), t)
+                        },
+                        decodeString(e, t) {
+                            return this.HAS_NATIVE_SUPPORT && !t ? atob(e) : c(this.decodeStringToByteArray(e, t))
+                        },
+                        decodeStringToByteArray(e, t) {
+                            this.init_();
+                            let r = t ? this.charToByteMapWebSafe_ : this.charToByteMap_,
+                                i = [];
+                            for (let t = 0; t < e.length;) {
+                                let n = r[e.charAt(t++)],
+                                    s = t < e.length ? r[e.charAt(t)] : 0,
+                                    a = ++t < e.length ? r[e.charAt(t)] : 64,
+                                    o = ++t < e.length ? r[e.charAt(t)] : 64;
+                                if (++t, null == n || null == s || null == a || null == o) throw new u;
+                                let c = n << 2 | s >> 4;
+                                if (i.push(c), 64 !== a) {
+                                    let e = s << 4 & 240 | a >> 2;
+                                    if (i.push(e), 64 !== o) {
+                                        let e = a << 6 & 192 | o;
+                                        i.push(e)
+                                    }
+                                }
+                            }
+                            return i
+                        },
+                        init_() {
+                            if (!this.byteToCharMap_) {
+                                this.byteToCharMap_ = {}, this.charToByteMap_ = {}, this.byteToCharMapWebSafe_ = {}, this.charToByteMapWebSafe_ = {};
+                                for (let e = 0; e < this.ENCODED_VALS.length; e++) this.byteToCharMap_[e] = this.ENCODED_VALS.charAt(e), this.charToByteMap_[this.byteToCharMap_[e]] = e, this.byteToCharMapWebSafe_[e] = this.ENCODED_VALS_WEBSAFE.charAt(e), this.charToByteMapWebSafe_[this.byteToCharMapWebSafe_[e]] = e, e >= this.ENCODED_VALS_BASE.length && (this.charToByteMap_[this.ENCODED_VALS_WEBSAFE.charAt(e)] = e, this.charToByteMapWebSafe_[this.ENCODED_VALS.charAt(e)] = e)
+                            }
+                        }
+                    };
+                class u extends Error {
+                    constructor() {
+                        super(...arguments), this.name = "DecodeBase64StringError"
+                    }
+                }
+                let h = function(e) {
+                        let t = o(e);
+                        return l.encodeByteArray(t, !0)
+                    },
+                    d = function(e) {
+                        return h(e).replace(/\./g, "")
+                    },
+                    p = function(e) {
+                        try {
+                            return l.decodeString(e, !0)
+                        } catch (e) {
+                            console.error("base64Decode failed: ", e)
+                        }
+                        return null
+                    },
+                    f = () => {
+                        try {
+                            return ("u" > typeof self ? self : "u" > typeof window ? window : e.g).__FIREBASE_DEFAULTS__ || (() => {
+                                if (void 0 === a.default || void 0 === a.default.env) return;
+                                let e = a.default.env.__FIREBASE_DEFAULTS__;
+                                if (e) return JSON.parse(e)
+                            })() || (() => {
+                                let e;
+                                if ("u" < typeof document) return;
+                                try {
+                                    e = document.cookie.match(/__FIREBASE_DEFAULTS__=([^;]+)/)
+                                } catch (e) {
+                                    return
+                                }
+                                let t = e && p(e[1]);
+                                return t && JSON.parse(t)
+                            })()
+                        } catch (e) {
+                            console.info(`Unable to get __FIREBASE_DEFAULTS__ due to: ${e}`);
+                            return
+                        }
+                    },
+                    m = () => f() ? .config;
+                class g {
+                    constructor() {
+                        this.reject = () => {}, this.resolve = () => {}, this.promise = new Promise((e, t) => {
+                            this.resolve = e, this.reject = t
+                        })
+                    }
+                    wrapCallback(e) {
+                        return (t, r) => {
+                            t ? this.reject(t) : this.resolve(r), "function" == typeof e && (this.promise.catch(() => {}), 1 === e.length ? e(t) : e(t, r))
+                        }
+                    }
+                }
+
+                function y(e) {
+                    try {
+                        return (e.startsWith("http://") || e.startsWith("https://") ? new URL(e).hostname : e).endsWith(".cloudworkstations.dev")
+                    } catch {
+                        return !1
+                    }
+                }
+                async function _(e) {
+                    return (await fetch(e, {
+                        credentials: "include"
+                    })).ok
+                }
+                let w = {},
+                    v = !1;
+
+                function I() {
+                    return "u" > typeof navigator && "string" == typeof navigator.userAgent ? navigator.userAgent : ""
+                }
+
+                function b() {
+                    return "u" > typeof WorkerGlobalScope && "u" > typeof self && self instanceof WorkerGlobalScope
+                }
+
+                function E() {
+                    try {
+                        return "object" == typeof indexedDB
+                    } catch (e) {
+                        return !1
+                    }
+                }
+
+                function S() {
+                    return new Promise((e, t) => {
+                        try {
+                            let r = !0,
+                                i = "validate-browser-context-for-indexeddb-analytics-module",
+                                n = self.indexedDB.open(i);
+                            n.onsuccess = () => {
+                                n.result.close(), r || self.indexedDB.deleteDatabase(i), e(!0)
+                            }, n.onupgradeneeded = () => {
+                                r = !1
+                            }, n.onerror = () => {
+                                t(n.error ? .message || "")
+                            }
+                        } catch (e) {
+                            t(e)
+                        }
+                    })
+                }
+                class T extends Error {
+                    constructor(e, t, r) {
+                        super(t), this.code = e, this.customData = r, this.name = "FirebaseError", Object.setPrototypeOf(this, T.prototype), Error.captureStackTrace && Error.captureStackTrace(this, C.prototype.create)
+                    }
+                }
+                class C {
+                    constructor(e, t, r) {
+                        this.service = e, this.serviceName = t, this.errors = r
+                    }
+                    create(e, ...t) {
+                        var r, i;
+                        let n = t[0] || {},
+                            s = `${this.service}/${e}`,
+                            a = this.errors[e],
+                            o = a ? (r = a, i = n, r.replace(P, (e, t) => {
+                                let r = i[t];
+                                return null != r ? String(r) : `<${t}?>`
+                            })) : "Error",
+                            c = `${this.serviceName}: ${o} (${s}).`;
+                        return new T(s, c, n)
+                    }
+                }
+                let P = /\{\$([^}]+)}/g;
+
+                function A(e, t) {
+                    if (e === t) return !0;
+                    let r = Object.keys(e),
+                        i = Object.keys(t);
+                    for (let n of r) {
+                        if (!i.includes(n)) return !1;
+                        let r = e[n],
+                            s = t[n];
+                        if (k(r) && k(s)) {
+                            if (!A(r, s)) return !1
+                        } else if (r !== s) return !1
+                    }
+                    for (let e of i)
+                        if (!r.includes(e)) return !1;
+                    return !0
+                }
+
+                function k(e) {
+                    return null !== e && "object" == typeof e
+                }
+                class R {
+                    constructor(e, t) {
+                        this.observers = [], this.unsubscribes = [], this.observerCount = 0, this.task = Promise.resolve(), this.finalized = !1, this.onNoObservers = t, this.task.then(() => {
+                            e(this)
+                        }).catch(e => {
+                            this.error(e)
+                        })
+                    }
+                    next(e) {
+                        this.forEachObserver(t => {
+                            t.next(e)
+                        })
+                    }
+                    error(e) {
+                        this.forEachObserver(t => {
+                            t.error(e)
+                        }), this.close(e)
+                    }
+                    complete() {
+                        this.forEachObserver(e => {
+                            e.complete()
+                        }), this.close()
+                    }
+                    subscribe(e, t, r) {
+                        let i;
+                        if (void 0 === e && void 0 === t && void 0 === r) throw Error("Missing Observer.");
+                        void 0 === (i = ! function(e, t) {
+                            if ("object" != typeof e || null === e) return !1;
+                            for (let r of t)
+                                if (r in e && "function" == typeof e[r]) return !0;
+                            return !1
+                        }(e, ["next", "error", "complete"]) ? {
+                            next: e,
+                            error: t,
+                            complete: r
+                        } : e).next && (i.next = O), void 0 === i.error && (i.error = O), void 0 === i.complete && (i.complete = O);
+                        let n = this.unsubscribeOne.bind(this, this.observers.length);
+                        return this.finalized && this.task.then(() => {
+                            try {
+                                this.finalError ? i.error(this.finalError) : i.complete()
+                            } catch (e) {}
+                        }), this.observers.push(i), n
+                    }
+                    unsubscribeOne(e) {
+                        void 0 !== this.observers && void 0 !== this.observers[e] && (delete this.observers[e], this.observerCount -= 1, 0 === this.observerCount && void 0 !== this.onNoObservers && this.onNoObservers(this))
+                    }
+                    forEachObserver(e) {
+                        if (!this.finalized)
+                            for (let t = 0; t < this.observers.length; t++) this.sendOne(t, e)
+                    }
+                    sendOne(e, t) {
+                        this.task.then(() => {
+                            if (void 0 !== this.observers && void 0 !== this.observers[e]) try {
+                                t(this.observers[e])
+                            } catch (e) {
+                                "u" > typeof console && console.error && console.error(e)
+                            }
+                        })
+                    }
+                    close(e) {
+                        this.finalized || (this.finalized = !0, void 0 !== e && (this.finalError = e), this.task.then(() => {
+                            this.observers = void 0, this.onNoObservers = void 0
+                        }))
+                    }
+                }
+
+                function O() {}
+                e.s(["Deferred", 0, g, "ErrorFactory", 0, C, "FirebaseError", 0, T, "base64Decode", 0, p, "base64urlEncodeWithoutPadding", 0, d, "createSubscribe", 0, function(e, t) {
+                    let r = new R(e, t);
+                    return r.subscribe.bind(r)
+                }, "deepEqual", 0, A, "extractQuerystring", 0, function(e) {
+                    let t = e.indexOf("?");
+                    if (!t) return "";
+                    let r = e.indexOf("#", t);
+                    return e.substring(t, r > 0 ? r : void 0)
+                }, "getDefaultAppConfig", 0, m, "getDefaultEmulatorHost", 0, e => f() ? .emulatorHosts ? .[e], "getExperimentalSetting", 0, e => f() ? .[`_${e}`], "getModularInstance", 0, function(e) {
+                    return e && e._delegate ? e._delegate : e
+                }, "getUA", 0, I, "isBrowser", 0, function() {
+                    return "u" > typeof window || b()
+                }, "isBrowserExtension", 0, function() {
+                    let e = "object" == typeof chrome ? chrome.runtime : "object" == typeof browser ? browser.runtime : void 0;
+                    return "object" == typeof e && void 0 !== e.id
+                }, "isCloudWorkstation", 0, y, "isCloudflareWorker", 0, function() {
+                    return "u" > typeof navigator && "Cloudflare-Workers" === navigator.userAgent
+                }, "isEmpty", 0, function(e) {
+                    for (let t in e)
+                        if (Object.prototype.hasOwnProperty.call(e, t)) return !1;
+                    return !0
+                }, "isIE", 0, function() {
+                    let e = I();
+                    return e.indexOf("MSIE ") >= 0 || e.indexOf("Trident/") >= 0
+                }, "isIndexedDBAvailable", 0, E, "isMobileCordova", 0, function() {
+                    return "u" > typeof window && !!(window.cordova || window.phonegap || window.PhoneGap) && /ios|iphone|ipod|ipad|android|blackberry|iemobile/i.test(I())
+                }, "isReactNative", 0, function() {
+                    return "object" == typeof navigator && "ReactNative" === navigator.product
+                }, "isWebWorker", 0, b, "pingServer", 0, _, "querystring", 0, function(e) {
+                    let t = [];
+                    for (let [r, i] of Object.entries(e)) Array.isArray(i) ? i.forEach(e => {
+                        t.push(encodeURIComponent(r) + "=" + encodeURIComponent(e))
+                    }) : t.push(encodeURIComponent(r) + "=" + encodeURIComponent(i));
+                    return t.length ? "&" + t.join("&") : ""
+                }, "querystringDecode", 0, function(e) {
+                    let t = {};
+                    return e.replace(/^\?/, "").split("&").forEach(e => {
+                        if (e) {
+                            let [r, i] = e.split("=");
+                            t[decodeURIComponent(r)] = decodeURIComponent(i)
+                        }
+                    }), t
+                }, "updateEmulatorBanner", 0, function(e, t) {
+                    if ("u" < typeof window || "u" < typeof document || !y(window.location.host) || w[e] === t || w[e] || v) return;
+
+                    function r(e) {
+                        return `__firebase__banner__${e}`
+                    }
+                    w[e] = t;
+                    let i = "__firebase__banner",
+                        n = function() {
+                            let e = {
+                                prod: [],
+                                emulator: []
+                            };
+                            for (let t of Object.keys(w)) w[t] ? e.emulator.push(t) : e.prod.push(t);
+                            return e
+                        }().prod.length > 0;
+
+                    function s() {
+                        let e, t, s = (e = document.getElementById(i), t = !1, e || ((e = document.createElement("div")).setAttribute("id", i), t = !0), {
+                                created: t,
+                                element: e
+                            }),
+                            a = r("text"),
+                            o = document.getElementById(a) || document.createElement("span"),
+                            c = r("learnmore"),
+                            l = document.getElementById(c) || document.createElement("a"),
+                            u = r("preprendIcon"),
+                            h = document.getElementById(u) || document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        if (s.created) {
+                            let e, t = s.element;
+                            t.style.display = "flex", t.style.background = "#7faaf0", t.style.position = "fixed", t.style.bottom = "5px", t.style.left = "5px", t.style.padding = ".5em", t.style.borderRadius = "5px", t.style.alignItems = "center", l.setAttribute("id", c), l.innerText = "Learn more", l.href = "https://firebase.google.com/docs/studio/preview-apps#preview-backend", l.setAttribute("target", "__blank"), l.style.paddingLeft = "5px", l.style.textDecoration = "underline";
+                            let r = ((e = document.createElement("span")).style.cursor = "pointer", e.style.marginLeft = "16px", e.style.fontSize = "24px", e.innerHTML = " &times;", e.onclick = () => {
+                                let e;
+                                v = !0, (e = document.getElementById(i)) && e.remove()
+                            }, e);
+                            h.setAttribute("width", "24"), h.setAttribute("id", u), h.setAttribute("height", "24"), h.setAttribute("viewBox", "0 0 24 24"), h.setAttribute("fill", "none"), h.style.marginLeft = "-6px", t.append(h, o, l, r), document.body.appendChild(t)
+                        }
+                        n ? (o.innerText = "Preview backend disconnected.", h.innerHTML = `<g clip-path="url(#clip0_6013_33858)">
+<path d="M4.8 17.6L12 5.6L19.2 17.6H4.8ZM6.91667 16.4H17.0833L12 7.93333L6.91667 16.4ZM12 15.6C12.1667 15.6 12.3056 15.5444 12.4167 15.4333C12.5389 15.3111 12.6 15.1667 12.6 15C12.6 14.8333 12.5389 14.6944 12.4167 14.5833C12.3056 14.4611 12.1667 14.4 12 14.4C11.8333 14.4 11.6889 14.4611 11.5667 14.5833C11.4556 14.6944 11.4 14.8333 11.4 15C11.4 15.1667 11.4556 15.3111 11.5667 15.4333C11.6889 15.5444 11.8333 15.6 12 15.6ZM11.4 13.6H12.6V10.4H11.4V13.6Z" fill="#212121"/>
+</g>
+<defs>
+<clipPath id="clip0_6013_33858">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>`) : (h.innerHTML = `<g clip-path="url(#clip0_6083_34804)">
+<path d="M11.4 15.2H12.6V11.2H11.4V15.2ZM12 10C12.1667 10 12.3056 9.94444 12.4167 9.83333C12.5389 9.71111 12.6 9.56667 12.6 9.4C12.6 9.23333 12.5389 9.09444 12.4167 8.98333C12.3056 8.86111 12.1667 8.8 12 8.8C11.8333 8.8 11.6889 8.86111 11.5667 8.98333C11.4556 9.09444 11.4 9.23333 11.4 9.4C11.4 9.56667 11.4556 9.71111 11.5667 9.83333C11.6889 9.94444 11.8333 10 12 10ZM12 18.4C11.1222 18.4 10.2944 18.2333 9.51667 17.9C8.73889 17.5667 8.05556 17.1111 7.46667 16.5333C6.88889 15.9444 6.43333 15.2611 6.1 14.4833C5.76667 13.7056 5.6 12.8778 5.6 12C5.6 11.1111 5.76667 10.2833 6.1 9.51667C6.43333 8.73889 6.88889 8.06111 7.46667 7.48333C8.05556 6.89444 8.73889 6.43333 9.51667 6.1C10.2944 5.76667 11.1222 5.6 12 5.6C12.8889 5.6 13.7167 5.76667 14.4833 6.1C15.2611 6.43333 15.9389 6.89444 16.5167 7.48333C17.1056 8.06111 17.5667 8.73889 17.9 9.51667C18.2333 10.2833 18.4 11.1111 18.4 12C18.4 12.8778 18.2333 13.7056 17.9 14.4833C17.5667 15.2611 17.1056 15.9444 16.5167 16.5333C15.9389 17.1111 15.2611 17.5667 14.4833 17.9C13.7167 18.2333 12.8889 18.4 12 18.4ZM12 17.2C13.4444 17.2 14.6722 16.6944 15.6833 15.6833C16.6944 14.6722 17.2 13.4444 17.2 12C17.2 10.5556 16.6944 9.32778 15.6833 8.31667C14.6722 7.30555 13.4444 6.8 12 6.8C10.5556 6.8 9.32778 7.30555 8.31667 8.31667C7.30556 9.32778 6.8 10.5556 6.8 12C6.8 13.4444 7.30556 14.6722 8.31667 15.6833C9.32778 16.6944 10.5556 17.2 12 17.2Z" fill="#212121"/>
+</g>
+<defs>
+<clipPath id="clip0_6083_34804">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>`, o.innerText = "Preview backend running in this workspace."), o.setAttribute("id", a)
+                    }
+                    "loading" === document.readyState ? window.addEventListener("DOMContentLoaded", s) : s()
+                }, "validateIndexedDBOpenable", 0, S], 897427);
+                class N {
+                    constructor(e, t, r) {
+                        this.name = e, this.instanceFactory = t, this.type = r, this.multipleInstances = !1, this.serviceProps = {}, this.instantiationMode = "LAZY", this.onInstanceCreated = null
+                    }
+                    setInstantiationMode(e) {
+                        return this.instantiationMode = e, this
+                    }
+                    setMultipleInstances(e) {
+                        return this.multipleInstances = e, this
+                    }
+                    setServiceProps(e) {
+                        return this.serviceProps = e, this
+                    }
+                    setInstanceCreatedCallback(e) {
+                        return this.onInstanceCreated = e, this
+                    }
+                }
+                let L = "[DEFAULT]";
+                class D {
+                    constructor(e, t) {
+                        this.name = e, this.container = t, this.component = null, this.instances = new Map, this.instancesDeferred = new Map, this.instancesOptions = new Map, this.onInitCallbacks = new Map
+                    }
+                    get(e) {
+                        let t = this.normalizeInstanceIdentifier(e);
+                        if (!this.instancesDeferred.has(t)) {
+                            let e = new g;
+                            if (this.instancesDeferred.set(t, e), this.isInitialized(t) || this.shouldAutoInitialize()) try {
+                                let r = this.getOrInitializeService({
+                                    instanceIdentifier: t
+                                });
+                                r && e.resolve(r)
+                            } catch (e) {}
+                        }
+                        return this.instancesDeferred.get(t).promise
+                    }
+                    getImmediate(e) {
+                        let t = this.normalizeInstanceIdentifier(e ? .identifier),
+                            r = e ? .optional ? ? !1;
+                        if (this.isInitialized(t) || this.shouldAutoInitialize()) try {
+                            return this.getOrInitializeService({
+                                instanceIdentifier: t
+                            })
+                        } catch (e) {
+                            if (r) return null;
+                            throw e
+                        }
+                        if (r) return null;
+                        throw Error(`Service ${this.name} is not available`)
+                    }
+                    getComponent() {
+                        return this.component
+                    }
+                    setComponent(e) {
+                        if (e.name !== this.name) throw Error(`Mismatching Component ${e.name} for Provider ${this.name}.`);
+                        if (this.component) throw Error(`Component for ${this.name} has already been provided`);
+                        if (this.component = e, this.shouldAutoInitialize()) {
+                            if ("EAGER" === e.instantiationMode) try {
+                                this.getOrInitializeService({
+                                    instanceIdentifier: L
+                                })
+                            } catch (e) {}
+                            for (let [e, t] of this.instancesDeferred.entries()) {
+                                let r = this.normalizeInstanceIdentifier(e);
+                                try {
+                                    let e = this.getOrInitializeService({
+                                        instanceIdentifier: r
+                                    });
+                                    t.resolve(e)
+                                } catch (e) {}
+                            }
+                        }
+                    }
+                    clearInstance(e = L) {
+                        this.instancesDeferred.delete(e), this.instancesOptions.delete(e), this.instances.delete(e)
+                    }
+                    async delete() {
+                        let e = Array.from(this.instances.values());
+                        await Promise.all([...e.filter(e => "INTERNAL" in e).map(e => e.INTERNAL.delete()), ...e.filter(e => "_delete" in e).map(e => e._delete())])
+                    }
+                    isComponentSet() {
+                        return null != this.component
+                    }
+                    isInitialized(e = L) {
+                        return this.instances.has(e)
+                    }
+                    getOptions(e = L) {
+                        return this.instancesOptions.get(e) || {}
+                    }
+                    initialize(e = {}) {
+                        let {
+                            options: t = {}
+                        } = e, r = this.normalizeInstanceIdentifier(e.instanceIdentifier);
+                        if (this.isInitialized(r)) throw Error(`${this.name}(${r}) has already been initialized`);
+                        if (!this.isComponentSet()) throw Error(`Component ${this.name} has not been registered yet`);
+                        let i = this.getOrInitializeService({
+                            instanceIdentifier: r,
+                            options: t
+                        });
+                        for (let [e, t] of this.instancesDeferred.entries()) r === this.normalizeInstanceIdentifier(e) && t.resolve(i);
+                        return i
+                    }
+                    onInit(e, t) {
+                        let r = this.normalizeInstanceIdentifier(t),
+                            i = this.onInitCallbacks.get(r) ? ? new Set;
+                        i.add(e), this.onInitCallbacks.set(r, i);
+                        let n = this.instances.get(r);
+                        return n && e(n, r), () => {
+                            i.delete(e)
+                        }
+                    }
+                    invokeOnInitCallbacks(e, t) {
+                        let r = this.onInitCallbacks.get(t);
+                        if (r)
+                            for (let i of r) try {
+                                i(e, t)
+                            } catch {}
+                    }
+                    getOrInitializeService({
+                        instanceIdentifier: e,
+                        options: t = {}
+                    }) {
+                        var r;
+                        let i = this.instances.get(e);
+                        if (!i && this.component && (i = this.component.instanceFactory(this.container, {
+                                instanceIdentifier: (r = e) === L ? void 0 : r,
+                                options: t
+                            }), this.instances.set(e, i), this.instancesOptions.set(e, t), this.invokeOnInitCallbacks(i, e), this.component.onInstanceCreated)) try {
+                            this.component.onInstanceCreated(this.container, e, i)
+                        } catch {}
+                        return i || null
+                    }
+                    normalizeInstanceIdentifier(e = L) {
+                        return this.component ? this.component.multipleInstances ? e : L : e
+                    }
+                    shouldAutoInitialize() {
+                        return !!this.component && "EXPLICIT" !== this.component.instantiationMode
+                    }
+                }
+                class U {
+                    constructor(e) {
+                        this.name = e, this.providers = new Map
+                    }
+                    addComponent(e) {
+                        let t = this.getProvider(e.name);
+                        if (t.isComponentSet()) throw Error(`Component ${e.name} has already been registered with ${this.name}`);
+                        t.setComponent(e)
+                    }
+                    addOrOverwriteComponent(e) {
+                        this.getProvider(e.name).isComponentSet() && this.providers.delete(e.name), this.addComponent(e)
+                    }
+                    getProvider(e) {
+                        if (this.providers.has(e)) return this.providers.get(e);
+                        let t = new D(e, this);
+                        return this.providers.set(e, t), t
+                    }
+                    getProviders() {
+                        return Array.from(this.providers.values())
+                    }
+                }
+                e.s(["Component", 0, N, "ComponentContainer", 0, U], 308070);
+                let M = [];
+                (n = s || (s = {}))[n.DEBUG = 0] = "DEBUG", n[n.VERBOSE = 1] = "VERBOSE", n[n.INFO = 2] = "INFO", n[n.WARN = 3] = "WARN", n[n.ERROR = 4] = "ERROR", n[n.SILENT = 5] = "SILENT";
+                let j = {
+                        debug: s.DEBUG,
+                        verbose: s.VERBOSE,
+                        info: s.INFO,
+                        warn: s.WARN,
+                        error: s.ERROR,
+                        silent: s.SILENT
+                    },
+                    x = s.INFO,
+                    F = {
+                        [s.DEBUG]: "log",
+                        [s.VERBOSE]: "log",
+                        [s.INFO]: "info",
+                        [s.WARN]: "warn",
+                        [s.ERROR]: "error"
+                    },
+                    B = (e, t, ...r) => {
+                        if (t < e.logLevel) return;
+                        let i = new Date().toISOString(),
+                            n = F[t];
+                        if (n) console[n](`[${i}]  ${e.name}:`, ...r);
+                        else throw Error(`Attempted to log a message with an invalid logType (value: ${t})`)
+                    };
+                class V {
+                    constructor(e) {
+                        this.name = e, this._logLevel = x, this._logHandler = B, this._userLogHandler = null, M.push(this)
+                    }
+                    get logLevel() {
+                        return this._logLevel
+                    }
+                    set logLevel(e) {
+                        if (!(e in s)) throw TypeError(`Invalid value "${e}" assigned to \`logLevel\``);
+                        this._logLevel = e
+                    }
+                    setLogLevel(e) {
+                        this._logLevel = "string" == typeof e ? j[e] : e
+                    }
+                    get logHandler() {
+                        return this._logHandler
+                    }
+                    set logHandler(e) {
+                        if ("function" != typeof e) throw TypeError("Value assigned to `logHandler` must be a function");
+                        this._logHandler = e
+                    }
+                    get userLogHandler() {
+                        return this._userLogHandler
+                    }
+                    set userLogHandler(e) {
+                        this._userLogHandler = e
+                    }
+                    debug(...e) {
+                        this._userLogHandler && this._userLogHandler(this, s.DEBUG, ...e), this._logHandler(this, s.DEBUG, ...e)
+                    }
+                    log(...e) {
+                        this._userLogHandler && this._userLogHandler(this, s.VERBOSE, ...e), this._logHandler(this, s.VERBOSE, ...e)
+                    }
+                    info(...e) {
+                        this._userLogHandler && this._userLogHandler(this, s.INFO, ...e), this._logHandler(this, s.INFO, ...e)
+                    }
+                    warn(...e) {
+                        this._userLogHandler && this._userLogHandler(this, s.WARN, ...e), this._logHandler(this, s.WARN, ...e)
+                    }
+                    error(...e) {
+                        this._userLogHandler && this._userLogHandler(this, s.ERROR, ...e), this._logHandler(this, s.ERROR, ...e)
+                    }
+                }
+                e.s(["LogLevel", 0, s, "Logger", 0, V, "setLogLevel", 0, function(e) {
+                    M.forEach(t => {
+                        t.setLogLevel(e)
+                    })
+                }, "setUserLogHandler", 0, function(e, t) {
+                    for (let r of M) {
+                        let i = null;
+                        t && t.level && (i = j[t.level]), null === e ? r.userLogHandler = null : r.userLogHandler = (t, r, ...n) => {
+                            let a = n.map(e => {
+                                if (null == e) return null;
+                                if ("string" == typeof e) return e;
+                                if ("number" == typeof e || "boolean" == typeof e) return e.toString();
+                                if (e instanceof Error) return e.message;
+                                try {
+                                    return JSON.stringify(e)
+                                } catch (e) {
+                                    return null
+                                }
+                            }).filter(e => e).join(" ");
+                            r >= (i ? ? t.logLevel) && e({
+                                level: s[r].toLowerCase(),
+                                message: a,
+                                args: n,
+                                type: t.name
+                            })
+                        }
+                    }
+                }], 683877);
+                let $ = new WeakMap,
+                    H = new WeakMap,
+                    W = new WeakMap,
+                    q = new WeakMap,
+                    z = new WeakMap,
+                    K = {
+                        get(e, t, r) {
+                            if (e instanceof IDBTransaction) {
+                                if ("done" === t) return H.get(e);
+                                if ("objectStoreNames" === t) return e.objectStoreNames || W.get(e);
+                                if ("store" === t) return r.objectStoreNames[1] ? void 0 : r.objectStore(r.objectStoreNames[0])
+                            }
+                            return G(e[t])
+                        },
+                        set: (e, t, r) => (e[t] = r, !0),
+                        has: (e, t) => e instanceof IDBTransaction && ("done" === t || "store" === t) || t in e
+                    };
+
+                function G(e) {
+                    if (e instanceof IDBRequest) {
+                        let t;
+                        return (t = new Promise((t, r) => {
+                            let i = () => {
+                                    e.removeEventListener("success", n), e.removeEventListener("error", s)
+                                },
+                                n = () => {
+                                    t(G(e.result)), i()
+                                },
+                                s = () => {
+                                    r(e.error), i()
+                                };
+                            e.addEventListener("success", n), e.addEventListener("error", s)
+                        })).then(t => {
+                            t instanceof IDBCursor && $.set(t, e)
+                        }).catch(() => {}), z.set(t, e), t
+                    }
+                    if (q.has(e)) return q.get(e);
+                    let i = function(e) {
+                        if ("function" == typeof e) return e !== IDBDatabase.prototype.transaction || "objectStoreNames" in IDBTransaction.prototype ? (r || (r = [IDBCursor.prototype.advance, IDBCursor.prototype.continue, IDBCursor.prototype.continuePrimaryKey])).includes(e) ? function(...t) {
+                            return e.apply(J(this), t), G($.get(this))
+                        } : function(...t) {
+                            return G(e.apply(J(this), t))
+                        } : function(t, ...r) {
+                            let i = e.call(J(this), t, ...r);
+                            return W.set(i, t.sort ? t.sort() : [t]), G(i)
+                        };
+                        return e instanceof IDBTransaction && function(e) {
+                            if (H.has(e)) return;
+                            let t = new Promise((t, r) => {
+                                let i = () => {
+                                        e.removeEventListener("complete", n), e.removeEventListener("error", s), e.removeEventListener("abort", s)
+                                    },
+                                    n = () => {
+                                        t(), i()
+                                    },
+                                    s = () => {
+                                        r(e.error || new DOMException("AbortError", "AbortError")), i()
+                                    };
+                                e.addEventListener("complete", n), e.addEventListener("error", s), e.addEventListener("abort", s)
+                            });
+                            H.set(e, t)
+                        }(e), (t || (t = [IDBDatabase, IDBObjectStore, IDBIndex, IDBCursor, IDBTransaction])).some(t => e instanceof t) ? new Proxy(e, K) : e
+                    }(e);
+                    return i !== e && (q.set(e, i), z.set(i, e)), i
+                }
+                let J = e => z.get(e),
+                    Y = ["get", "getKey", "getAll", "getAllKeys", "count"],
+                    X = ["put", "add", "delete", "clear"],
+                    Q = new Map;
+
+                function Z(e, t) {
+                    if (!(e instanceof IDBDatabase && !(t in e) && "string" == typeof t)) return;
+                    if (Q.get(t)) return Q.get(t);
+                    let r = t.replace(/FromIndex$/, ""),
+                        i = t !== r,
+                        n = X.includes(r);
+                    if (!(r in (i ? IDBIndex : IDBObjectStore).prototype) || !(n || Y.includes(r))) return;
+                    let s = async function(e, ...t) {
+                        let s = this.transaction(e, n ? "readwrite" : "readonly"),
+                            a = s.store;
+                        return i && (a = a.index(t.shift())), (await Promise.all([a[r](...t), n && s.done]))[0]
+                    };
+                    return Q.set(t, s), s
+                }
+                K = { ...i = K,
+                    get: (e, t, r) => Z(e, t) || i.get(e, t, r),
+                    has: (e, t) => !!Z(e, t) || i.has(e, t)
+                };
+                class ee {
+                    constructor(e) {
+                        this.container = e
+                    }
+                    getPlatformInfoString() {
+                        return this.container.getProviders().map(e => {
+                            let t;
+                            if (t = e.getComponent(), t ? .type !== "VERSION") return null; {
+                                let t = e.getImmediate();
+                                return `${t.library}/${t.version}`
+                            }
+                        }).filter(e => e).join(" ")
+                    }
+                }
+                let et = "@firebase/app",
+                    er = "0.14.7",
+                    ei = new V("@firebase/app"),
+                    en = "[DEFAULT]",
+                    es = {
+                        [et]: "fire-core",
+                        "@firebase/app-compat": "fire-core-compat",
+                        "@firebase/analytics": "fire-analytics",
+                        "@firebase/analytics-compat": "fire-analytics-compat",
+                        "@firebase/app-check": "fire-app-check",
+                        "@firebase/app-check-compat": "fire-app-check-compat",
+                        "@firebase/auth": "fire-auth",
+                        "@firebase/auth-compat": "fire-auth-compat",
+                        "@firebase/database": "fire-rtdb",
+                        "@firebase/data-connect": "fire-data-connect",
+                        "@firebase/database-compat": "fire-rtdb-compat",
+                        "@firebase/functions": "fire-fn",
+                        "@firebase/functions-compat": "fire-fn-compat",
+                        "@firebase/installations": "fire-iid",
+                        "@firebase/installations-compat": "fire-iid-compat",
+                        "@firebase/messaging": "fire-fcm",
+                        "@firebase/messaging-compat": "fire-fcm-compat",
+                        "@firebase/performance": "fire-perf",
+                        "@firebase/performance-compat": "fire-perf-compat",
+                        "@firebase/remote-config": "fire-rc",
+                        "@firebase/remote-config-compat": "fire-rc-compat",
+                        "@firebase/storage": "fire-gcs",
+                        "@firebase/storage-compat": "fire-gcs-compat",
+                        "@firebase/firestore": "fire-fst",
+                        "@firebase/firestore-compat": "fire-fst-compat",
+                        "@firebase/ai": "fire-vertex",
+                        "fire-js": "fire-js",
+                        firebase: "fire-js-all"
+                    },
+                    ea = new Map,
+                    eo = new Map,
+                    ec = new Map;
+
+                function el(e, t) {
+                    try {
+                        e.container.addComponent(t)
+                    } catch (r) {
+                        ei.debug(`Component ${t.name} failed to register with FirebaseApp ${e.name}`, r)
+                    }
+                }
+
+                function eu(e) {
+                    let t = e.name;
+                    if (ec.has(t)) return ei.debug(`There were multiple attempts to register component ${t}.`), !1;
+                    for (let r of (ec.set(t, e), ea.values())) el(r, e);
+                    for (let t of eo.values()) el(t, e);
+                    return !0
+                }
+                let eh = new C("app", "Firebase", {
+                    "no-app": "No Firebase App '{$appName}' has been created - call initializeApp() first",
+                    "bad-app-name": "Illegal App name: '{$appName}'",
+                    "duplicate-app": "Firebase App named '{$appName}' already exists with different options or config",
+                    "app-deleted": "Firebase App named '{$appName}' already deleted",
+                    "server-app-deleted": "Firebase Server App has been deleted",
+                    "no-options": "Need to provide options, when not being deployed to hosting via source.",
+                    "invalid-app-argument": "firebase.{$appName}() takes either no argument or a Firebase App instance.",
+                    "invalid-log-argument": "First argument to `onLog` must be null or a function.",
+                    "idb-open": "Error thrown when opening IndexedDB. Original error: {$originalErrorMessage}.",
+                    "idb-get": "Error thrown when reading from IndexedDB. Original error: {$originalErrorMessage}.",
+                    "idb-set": "Error thrown when writing to IndexedDB. Original error: {$originalErrorMessage}.",
+                    "idb-delete": "Error thrown when deleting from IndexedDB. Original error: {$originalErrorMessage}.",
+                    "finalization-registry-not-supported": "FirebaseServerApp deleteOnDeref field defined but the JS runtime does not support FinalizationRegistry.",
+                    "invalid-server-app-environment": "FirebaseServerApp is not for use in browser environments."
+                });
+                class ed {
+                    constructor(e, t, r) {
+                        this._isDeleted = !1, this._options = { ...e
+                        }, this._config = { ...t
+                        }, this._name = t.name, this._automaticDataCollectionEnabled = t.automaticDataCollectionEnabled, this._container = r, this.container.addComponent(new N("app", () => this, "PUBLIC"))
+                    }
+                    get automaticDataCollectionEnabled() {
+                        return this.checkDestroyed(), this._automaticDataCollectionEnabled
+                    }
+                    set automaticDataCollectionEnabled(e) {
+                        this.checkDestroyed(), this._automaticDataCollectionEnabled = e
+                    }
+                    get name() {
+                        return this.checkDestroyed(), this._name
+                    }
+                    get options() {
+                        return this.checkDestroyed(), this._options
+                    }
+                    get config() {
+                        return this.checkDestroyed(), this._config
+                    }
+                    get container() {
+                        return this._container
+                    }
+                    get isDeleted() {
+                        return this._isDeleted
+                    }
+                    set isDeleted(e) {
+                        this._isDeleted = e
+                    }
+                    checkDestroyed() {
+                        if (this.isDeleted) throw eh.create("app-deleted", {
+                            appName: this._name
+                        })
+                    }
+                }
+
+                function ep(e, t = {}) {
+                    let r = e;
+                    "object" != typeof t && (t = {
+                        name: t
+                    });
+                    let i = {
+                            name: en,
+                            automaticDataCollectionEnabled: !0,
+                            ...t
+                        },
+                        n = i.name;
+                    if ("string" != typeof n || !n) throw eh.create("bad-app-name", {
+                        appName: String(n)
+                    });
+                    if (r || (r = m()), !r) throw eh.create("no-options");
+                    let s = ea.get(n);
+                    if (s)
+                        if (A(r, s.options) && A(i, s.config)) return s;
+                        else throw eh.create("duplicate-app", {
+                            appName: n
+                        });
+                    let a = new U(n);
+                    for (let e of ec.values()) a.addComponent(e);
+                    let o = new ed(r, i, a);
+                    return ea.set(n, o), o
+                }
+
+                function ef(e, t, r) {
+                    let i = es[e] ? ? e;
+                    r && (i += `-${r}`);
+                    let n = i.match(/\s|\//),
+                        s = t.match(/\s|\//);
+                    if (n || s) {
+                        let e = [`Unable to register library "${i}" with version "${t}":`];
+                        n && e.push(`library name "${i}" contains illegal characters (whitespace or "/")`), n && s && e.push("and"), s && e.push(`version name "${t}" contains illegal characters (whitespace or "/")`), ei.warn(e.join(" "));
+                        return
+                    }
+                    eu(new N(`${i}-version`, () => ({
+                        library: i,
+                        version: t
+                    }), "VERSION"))
+                }
+                let em = "firebase-heartbeat-store",
+                    eg = null;
+
+                function ey() {
+                    return eg || (eg = (function(e, {
+                        blocked: t,
+                        upgrade: r,
+                        blocking: i,
+                        terminated: n
+                    } = {}) {
+                        let s = indexedDB.open(e, 1),
+                            a = G(s);
+                        return r && s.addEventListener("upgradeneeded", e => {
+                            r(G(s.result), e.oldVersion, e.newVersion, G(s.transaction), e)
+                        }), t && s.addEventListener("blocked", e => t(e.oldVersion, e.newVersion, e)), a.then(e => {
+                            n && e.addEventListener("close", () => n()), i && e.addEventListener("versionchange", e => i(e.oldVersion, e.newVersion, e))
+                        }).catch(() => {}), a
+                    })("firebase-heartbeat-database", {
+                        upgrade: (e, t) => {
+                            if (0 === t) try {
+                                e.createObjectStore(em)
+                            } catch (e) {
+                                console.warn(e)
+                            }
+                        }
+                    }).catch(e => {
+                        throw eh.create("idb-open", {
+                            originalErrorMessage: e.message
+                        })
+                    })), eg
+                }
+                async function e_(e) {
+                    try {
+                        let t = (await ey()).transaction(em),
+                            r = await t.objectStore(em).get(ev(e));
+                        return await t.done, r
+                    } catch (e) {
+                        if (e instanceof T) ei.warn(e.message);
+                        else {
+                            let t = eh.create("idb-get", {
+                                originalErrorMessage: e ? .message
+                            });
+                            ei.warn(t.message)
+                        }
+                    }
+                }
+                async function ew(e, t) {
+                    try {
+                        let r = (await ey()).transaction(em, "readwrite"),
+                            i = r.objectStore(em);
+                        await i.put(t, ev(e)), await r.done
+                    } catch (e) {
+                        if (e instanceof T) ei.warn(e.message);
+                        else {
+                            let t = eh.create("idb-set", {
+                                originalErrorMessage: e ? .message
+                            });
+                            ei.warn(t.message)
+                        }
+                    }
+                }
+
+                function ev(e) {
+                    return `${e.name}!${e.options.appId}`
+                }
+                class eI {
+                    constructor(e) {
+                        this.container = e, this._heartbeatsCache = null;
+                        const t = this.container.getProvider("app").getImmediate();
+                        this._storage = new eE(t), this._heartbeatsCachePromise = this._storage.read().then(e => (this._heartbeatsCache = e, e))
+                    }
+                    async triggerHeartbeat() {
+                        try {
+                            let e = this.container.getProvider("platform-logger").getImmediate().getPlatformInfoString(),
+                                t = eb();
+                            if (this._heartbeatsCache ? .heartbeats == null && (this._heartbeatsCache = await this._heartbeatsCachePromise, this._heartbeatsCache ? .heartbeats == null) || this._heartbeatsCache.lastSentHeartbeatDate === t || this._heartbeatsCache.heartbeats.some(e => e.date === t)) return;
+                            if (this._heartbeatsCache.heartbeats.push({
+                                    date: t,
+                                    agent: e
+                                }), this._heartbeatsCache.heartbeats.length > 30) {
+                                let e = function(e) {
+                                    if (0 === e.length) return -1;
+                                    let t = 0,
+                                        r = e[0].date;
+                                    for (let i = 1; i < e.length; i++) e[i].date < r && (r = e[i].date, t = i);
+                                    return t
+                                }(this._heartbeatsCache.heartbeats);
+                                this._heartbeatsCache.heartbeats.splice(e, 1)
+                            }
+                            return this._storage.overwrite(this._heartbeatsCache)
+                        } catch (e) {
+                            ei.warn(e)
+                        }
+                    }
+                    async getHeartbeatsHeader() {
+                        try {
+                            if (null === this._heartbeatsCache && await this._heartbeatsCachePromise, this._heartbeatsCache ? .heartbeats == null || 0 === this._heartbeatsCache.heartbeats.length) return "";
+                            let e = eb(),
+                                {
+                                    heartbeatsToSend: t,
+                                    unsentEntries: r
+                                } = function(e, t = 1024) {
+                                    let r = [],
+                                        i = e.slice();
+                                    for (let n of e) {
+                                        let e = r.find(e => e.agent === n.agent);
+                                        if (e) {
+                                            if (e.dates.push(n.date), eS(r) > t) {
+                                                e.dates.pop();
+                                                break
+                                            }
+                                        } else if (r.push({
+                                                agent: n.agent,
+                                                dates: [n.date]
+                                            }), eS(r) > t) {
+                                            r.pop();
+                                            break
+                                        }
+                                        i = i.slice(1)
+                                    }
+                                    return {
+                                        heartbeatsToSend: r,
+                                        unsentEntries: i
+                                    }
+                                }(this._heartbeatsCache.heartbeats),
+                                i = d(JSON.stringify({
+                                    version: 2,
+                                    heartbeats: t
+                                }));
+                            return this._heartbeatsCache.lastSentHeartbeatDate = e, r.length > 0 ? (this._heartbeatsCache.heartbeats = r, await this._storage.overwrite(this._heartbeatsCache)) : (this._heartbeatsCache.heartbeats = [], this._storage.overwrite(this._heartbeatsCache)), i
+                        } catch (e) {
+                            return ei.warn(e), ""
+                        }
+                    }
+                }
+
+                function eb() {
+                    return new Date().toISOString().substring(0, 10)
+                }
+                class eE {
+                    constructor(e) {
+                        this.app = e, this._canUseIndexedDBPromise = this.runIndexedDBEnvironmentCheck()
+                    }
+                    async runIndexedDBEnvironmentCheck() {
+                        return !!E() && S().then(() => !0).catch(() => !1)
+                    }
+                    async read() {
+                        if (!await this._canUseIndexedDBPromise) return {
+                            heartbeats: []
+                        }; {
+                            let e = await e_(this.app);
+                            return e ? .heartbeats ? e : {
+                                heartbeats: []
+                            }
+                        }
+                    }
+                    async overwrite(e) {
+                        if (await this._canUseIndexedDBPromise) {
+                            let t = await this.read();
+                            return ew(this.app, {
+                                lastSentHeartbeatDate: e.lastSentHeartbeatDate ? ? t.lastSentHeartbeatDate,
+                                heartbeats: e.heartbeats
+                            })
+                        }
+                    }
+                    async add(e) {
+                        if (await this._canUseIndexedDBPromise) {
+                            let t = await this.read();
+                            return ew(this.app, {
+                                lastSentHeartbeatDate: e.lastSentHeartbeatDate ? ? t.lastSentHeartbeatDate,
+                                heartbeats: [...t.heartbeats, ...e.heartbeats]
+                            })
+                        }
+                    }
+                }
+
+                function eS(e) {
+                    return d(JSON.stringify({
+                        version: 2,
+                        heartbeats: e
+                    })).length
+                }
+                eu(new N("platform-logger", e => new ee(e), "PRIVATE")), eu(new N("heartbeat", e => new eI(e), "PRIVATE")), ef(et, er, ""), ef(et, er, "esm2020"), ef("fire-js", ""), e.s(["SDK_VERSION", 0, "12.8.0", "_getProvider", 0, function(e, t) {
+                    let r = e.container.getProvider("heartbeat").getImmediate({
+                        optional: !0
+                    });
+                    return r && r.triggerHeartbeat(), e.container.getProvider(t)
+                }, "_isFirebaseServerApp", 0, function(e) {
+                    return null != e && void 0 !== e.settings
+                }, "_registerComponent", 0, eu, "getApp", 0, function(e = en) {
+                    let t = ea.get(e);
+                    if (!t && e === en && m()) return ep();
+                    if (!t) throw eh.create("no-app", {
+                        appName: e
+                    });
+                    return t
+                }, "initializeApp", 0, ep, "registerVersion", 0, ef], 92953)
+            }, 151718, 181595, e => {
+                "use strict";
+                var t, r = e.i(92953),
+                    i = e.i(897427),
+                    n = e.i(683877),
+                    s = e.i(308070);
+
+                function a() {
+                    return {
+                        "dependent-sdk-initialized-before-auth": "Another Firebase SDK was initialized and is trying to use Auth before Auth is initialized. Please be sure to call `initializeAuth` or `getAuth` before starting any other Firebase SDK."
+                    }
+                }
+                let o = new i.ErrorFactory("auth", "Firebase", a()),
+                    c = new n.Logger("@firebase/auth");
+
+                function l(e, ...t) {
+                    c.logLevel <= n.LogLevel.ERROR && c.error(`Auth (${r.SDK_VERSION}): ${e}`, ...t)
+                }
+
+                function u(e, ...t) {
+                    throw f(e, ...t)
+                }
+
+                function h(e, ...t) {
+                    return f(e, ...t)
+                }
+
+                function d(e, t, r) {
+                    let n = { ...a(),
+                        [t]: r
+                    };
+                    return new i.ErrorFactory("auth", "Firebase", n).create(t, {
+                        appName: e.name
+                    })
+                }
+
+                function p(e) {
+                    return d(e, "operation-not-supported-in-this-environment", "Operations that alter the current user are not supported in conjunction with FirebaseServerApp")
+                }
+
+                function f(e, ...t) {
+                    if ("string" != typeof e) {
+                        let r = t[0],
+                            i = [...t.slice(1)];
+                        return i[0] && (i[0].appName = e.name), e._errorFactory.create(r, ...i)
+                    }
+                    return o.create(e, ...t)
+                }
+
+                function m(e, t, ...r) {
+                    if (!e) throw f(t, ...r)
+                }
+
+                function g(e) {
+                    let t = "INTERNAL ASSERTION FAILED: " + e;
+                    throw l(t), Error(t)
+                }
+
+                function y() {
+                    return "u" > typeof self && self.location ? .href || ""
+                }
+
+                function _() {
+                    return "u" > typeof self && self.location ? .protocol || null
+                }
+                class w {
+                    constructor(e, t) {
+                        this.shortDelay = e, this.longDelay = t,
+                            function(e, t) {
+                                e || g(t)
+                            }(t > e, "Short delay should be less than long delay!"), this.isMobile = (0, i.isMobileCordova)() || (0, i.isReactNative)()
+                    }
+                    get() {
+                        return !("u" > typeof navigator && navigator && "onLine" in navigator && "boolean" == typeof navigator.onLine && ("http:" === _() || "https:" === _() || (0, i.isBrowserExtension)() || "connection" in navigator)) || navigator.onLine ? this.isMobile ? this.longDelay : this.shortDelay : Math.min(5e3, this.shortDelay)
+                    }
+                }
+
+                function v(e, t) {
+                    var r, i;
+                    r = e.emulator, i = "Emulator should always be set here", r || g(i);
+                    let {
+                        url: n
+                    } = e.emulator;
+                    return t ? `${n}${t.startsWith("/")?t.slice(1):t}` : n
+                }
+                class I {
+                    static initialize(e, t, r) {
+                        this.fetchImpl = e, t && (this.headersImpl = t), r && (this.responseImpl = r)
+                    }
+                    static fetch() {
+                        return this.fetchImpl ? this.fetchImpl : "u" > typeof self && "fetch" in self ? self.fetch : "u" > typeof globalThis && globalThis.fetch ? globalThis.fetch : "u" > typeof fetch ? fetch : void g("Could not find fetch implementation, make sure you call FetchProvider.initialize() with an appropriate polyfill")
+                    }
+                    static headers() {
+                        return this.headersImpl ? this.headersImpl : "u" > typeof self && "Headers" in self ? self.Headers : "u" > typeof globalThis && globalThis.Headers ? globalThis.Headers : "u" > typeof Headers ? Headers : void g("Could not find Headers implementation, make sure you call FetchProvider.initialize() with an appropriate polyfill")
+                    }
+                    static response() {
+                        return this.responseImpl ? this.responseImpl : "u" > typeof self && "Response" in self ? self.Response : "u" > typeof globalThis && globalThis.Response ? globalThis.Response : "u" > typeof Response ? Response : void g("Could not find Response implementation, make sure you call FetchProvider.initialize() with an appropriate polyfill")
+                    }
+                }
+                let b = {
+                        CREDENTIAL_MISMATCH: "custom-token-mismatch",
+                        MISSING_CUSTOM_TOKEN: "internal-error",
+                        INVALID_IDENTIFIER: "invalid-email",
+                        MISSING_CONTINUE_URI: "internal-error",
+                        INVALID_PASSWORD: "wrong-password",
+                        MISSING_PASSWORD: "missing-password",
+                        INVALID_LOGIN_CREDENTIALS: "invalid-credential",
+                        EMAIL_EXISTS: "email-already-in-use",
+                        PASSWORD_LOGIN_DISABLED: "operation-not-allowed",
+                        INVALID_IDP_RESPONSE: "invalid-credential",
+                        INVALID_PENDING_TOKEN: "invalid-credential",
+                        FEDERATED_USER_ID_ALREADY_LINKED: "credential-already-in-use",
+                        MISSING_REQ_TYPE: "internal-error",
+                        EMAIL_NOT_FOUND: "user-not-found",
+                        RESET_PASSWORD_EXCEED_LIMIT: "too-many-requests",
+                        EXPIRED_OOB_CODE: "expired-action-code",
+                        INVALID_OOB_CODE: "invalid-action-code",
+                        MISSING_OOB_CODE: "internal-error",
+                        CREDENTIAL_TOO_OLD_LOGIN_AGAIN: "requires-recent-login",
+                        INVALID_ID_TOKEN: "invalid-user-token",
+                        TOKEN_EXPIRED: "user-token-expired",
+                        USER_NOT_FOUND: "user-token-expired",
+                        TOO_MANY_ATTEMPTS_TRY_LATER: "too-many-requests",
+                        PASSWORD_DOES_NOT_MEET_REQUIREMENTS: "password-does-not-meet-requirements",
+                        INVALID_CODE: "invalid-verification-code",
+                        INVALID_SESSION_INFO: "invalid-verification-id",
+                        INVALID_TEMPORARY_PROOF: "invalid-credential",
+                        MISSING_SESSION_INFO: "missing-verification-id",
+                        SESSION_EXPIRED: "code-expired",
+                        MISSING_ANDROID_PACKAGE_NAME: "missing-android-pkg-name",
+                        UNAUTHORIZED_DOMAIN: "unauthorized-continue-uri",
+                        INVALID_OAUTH_CLIENT_ID: "invalid-oauth-client-id",
+                        ADMIN_ONLY_OPERATION: "admin-restricted-operation",
+                        INVALID_MFA_PENDING_CREDENTIAL: "invalid-multi-factor-session",
+                        MFA_ENROLLMENT_NOT_FOUND: "multi-factor-info-not-found",
+                        MISSING_MFA_ENROLLMENT_ID: "missing-multi-factor-info",
+                        MISSING_MFA_PENDING_CREDENTIAL: "missing-multi-factor-session",
+                        SECOND_FACTOR_EXISTS: "second-factor-already-in-use",
+                        SECOND_FACTOR_LIMIT_EXCEEDED: "maximum-second-factor-count-exceeded",
+                        BLOCKING_FUNCTION_ERROR_RESPONSE: "internal-error",
+                        RECAPTCHA_NOT_ENABLED: "recaptcha-not-enabled",
+                        MISSING_RECAPTCHA_TOKEN: "missing-recaptcha-token",
+                        INVALID_RECAPTCHA_TOKEN: "invalid-recaptcha-token",
+                        INVALID_RECAPTCHA_ACTION: "invalid-recaptcha-action",
+                        MISSING_CLIENT_TYPE: "missing-client-type",
+                        MISSING_RECAPTCHA_VERSION: "missing-recaptcha-version",
+                        INVALID_RECAPTCHA_VERSION: "invalid-recaptcha-version",
+                        INVALID_REQ_TYPE: "invalid-req-type"
+                    },
+                    E = ["/v1/accounts:signInWithCustomToken", "/v1/accounts:signInWithEmailLink", "/v1/accounts:signInWithIdp", "/v1/accounts:signInWithPassword", "/v1/accounts:signInWithPhoneNumber", "/v1/token"],
+                    S = new w(3e4, 6e4);
+
+                function T(e, t) {
+                    return e.tenantId && !t.tenantId ? { ...t,
+                        tenantId: e.tenantId
+                    } : t
+                }
+                async function C(e, t, r, n, s = {}) {
+                    return P(e, s, async () => {
+                        let s = {},
+                            a = {};
+                        n && ("GET" === t ? a = n : s = {
+                            body: JSON.stringify(n)
+                        });
+                        let o = (0, i.querystring)({
+                                key: e.config.apiKey,
+                                ...a
+                            }).slice(1),
+                            c = await e._getAdditionalHeaders();
+                        c["Content-Type"] = "application/json", e.languageCode && (c["X-Firebase-Locale"] = e.languageCode);
+                        let l = {
+                            method: t,
+                            headers: c,
+                            ...s
+                        };
+                        return (0, i.isCloudflareWorker)() || (l.referrerPolicy = "no-referrer"), e.emulatorConfig && (0, i.isCloudWorkstation)(e.emulatorConfig.host) && (l.credentials = "include"), I.fetch()(await k(e, e.config.apiHost, r, o), l)
+                    })
+                }
+                async function P(e, t, r) {
+                    e._canInitEmulator = !1;
+                    let n = { ...b,
+                        ...t
+                    };
+                    try {
+                        let t = new R(e),
+                            i = await Promise.race([r(), t.promise]);
+                        t.clearNetworkTimeout();
+                        let s = await i.json();
+                        if ("needConfirmation" in s) throw O(e, "account-exists-with-different-credential", s);
+                        if (i.ok && !("errorMessage" in s)) return s; {
+                            let [t, r] = (i.ok ? s.errorMessage : s.error.message).split(" : ");
+                            if ("FEDERATED_USER_ID_ALREADY_LINKED" === t) throw O(e, "credential-already-in-use", s);
+                            if ("EMAIL_EXISTS" === t) throw O(e, "email-already-in-use", s);
+                            if ("USER_DISABLED" === t) throw O(e, "user-disabled", s);
+                            let a = n[t] || t.toLowerCase().replace(/[_\s]+/g, "-");
+                            if (r) throw d(e, a, r);
+                            u(e, a)
+                        }
+                    } catch (t) {
+                        if (t instanceof i.FirebaseError) throw t;
+                        u(e, "network-request-failed", {
+                            message: String(t)
+                        })
+                    }
+                }
+                async function A(e, t, r, i, n = {}) {
+                    let s = await C(e, t, r, i, n);
+                    return "mfaPendingCredential" in s && u(e, "multi-factor-auth-required", {
+                        _serverResponse: s
+                    }), s
+                }
+                async function k(e, t, r, i) {
+                    let n = `${t}${r}?${i}`,
+                        s = e.config.emulator ? v(e.config, n) : `${e.config.apiScheme}://${n}`;
+                    return E.includes(r) && (await e._persistenceManagerAvailable, "COOKIE" === e._getPersistenceType()) ? e._getPersistence()._getFinalTarget(s).toString() : s
+                }
+                class R {
+                    clearNetworkTimeout() {
+                        clearTimeout(this.timer)
+                    }
+                    constructor(e) {
+                        this.auth = e, this.timer = null, this.promise = new Promise((e, t) => {
+                            this.timer = setTimeout(() => t(h(this.auth, "network-request-failed")), S.get())
+                        })
+                    }
+                }
+
+                function O(e, t, r) {
+                    let i = {
+                        appName: e.name
+                    };
+                    r.email && (i.email = r.email), r.phoneNumber && (i.phoneNumber = r.phoneNumber);
+                    let n = h(e, t, i);
+                    return n.customData._tokenResponse = r, n
+                }
+
+                function N(e) {
+                    return void 0 !== e && void 0 !== e.enterprise
+                }
+                class L {
+                    constructor(e) {
+                        if (this.siteKey = "", this.recaptchaEnforcementState = [], void 0 === e.recaptchaKey) throw Error("recaptchaKey undefined");
+                        this.siteKey = e.recaptchaKey.split("/")[3], this.recaptchaEnforcementState = e.recaptchaEnforcementState
+                    }
+                    getProviderEnforcementState(e) {
+                        if (!this.recaptchaEnforcementState || 0 === this.recaptchaEnforcementState.length) return null;
+                        for (let t of this.recaptchaEnforcementState)
+                            if (t.provider && t.provider === e) switch (t.enforcementState) {
+                                case "ENFORCE":
+                                    return "ENFORCE";
+                                case "AUDIT":
+                                    return "AUDIT";
+                                case "OFF":
+                                    return "OFF";
+                                default:
+                                    return "ENFORCEMENT_STATE_UNSPECIFIED"
+                            }
+                        return null
+                    }
+                    isProviderEnabled(e) {
+                        return "ENFORCE" === this.getProviderEnforcementState(e) || "AUDIT" === this.getProviderEnforcementState(e)
+                    }
+                    isAnyProviderEnabled() {
+                        return this.isProviderEnabled("EMAIL_PASSWORD_PROVIDER") || this.isProviderEnabled("PHONE_PROVIDER")
+                    }
+                }
+                async function D(e, t) {
+                    return C(e, "GET", "/v2/recaptchaConfig", T(e, t))
+                }
+                async function U(e, t) {
+                    return C(e, "POST", "/v1/accounts:delete", t)
+                }
+                async function M(e, t) {
+                    return C(e, "POST", "/v1/accounts:lookup", t)
+                }
+
+                function j(e) {
+                    if (e) try {
+                        let t = new Date(Number(e));
+                        if (!isNaN(t.getTime())) return t.toUTCString()
+                    } catch (e) {}
+                }
+                async function x(e, t = !1) {
+                    let r = (0, i.getModularInstance)(e),
+                        n = await r.getIdToken(t),
+                        s = B(n);
+                    m(s && s.exp && s.auth_time && s.iat, r.auth, "internal-error");
+                    let a = "object" == typeof s.firebase ? s.firebase : void 0,
+                        o = a ? .sign_in_provider;
+                    return {
+                        claims: s,
+                        token: n,
+                        authTime: j(F(s.auth_time)),
+                        issuedAtTime: j(F(s.iat)),
+                        expirationTime: j(F(s.exp)),
+                        signInProvider: o || null,
+                        signInSecondFactor: a ? .sign_in_second_factor || null
+                    }
+                }
+
+                function F(e) {
+                    return 1e3 * Number(e)
+                }
+
+                function B(e) {
+                    let [t, r, n] = e.split(".");
+                    if (void 0 === t || void 0 === r || void 0 === n) return l("JWT malformed, contained fewer than 3 sections"), null;
+                    try {
+                        let e = (0, i.base64Decode)(r);
+                        if (!e) return l("Failed to decode base64 JWT payload"), null;
+                        return JSON.parse(e)
+                    } catch (e) {
+                        return l("Caught error parsing JWT payload as JSON", e ? .toString()), null
+                    }
+                }
+
+                function V(e) {
+                    let t = B(e);
+                    return m(t, "internal-error"), m(void 0 !== t.exp, "internal-error"), m(void 0 !== t.iat, "internal-error"), Number(t.exp) - Number(t.iat)
+                }
+                async function $(e, t, r = !1) {
+                    if (r) return t;
+                    try {
+                        return await t
+                    } catch (t) {
+                        throw t instanceof i.FirebaseError && function({
+                            code: e
+                        }) {
+                            return "auth/user-disabled" === e || "auth/user-token-expired" === e
+                        }(t) && e.auth.currentUser === e && await e.auth.signOut(), t
+                    }
+                }
+                class H {
+                    constructor(e) {
+                        this.user = e, this.isRunning = !1, this.timerId = null, this.errorBackoff = 3e4
+                    }
+                    _start() {
+                        this.isRunning || (this.isRunning = !0, this.schedule())
+                    }
+                    _stop() {
+                        this.isRunning && (this.isRunning = !1, null !== this.timerId && clearTimeout(this.timerId))
+                    }
+                    getInterval(e) {
+                        if (!e) return this.errorBackoff = 3e4, Math.max(0, (this.user.stsTokenManager.expirationTime ? ? 0) - Date.now() - 3e5); {
+                            let e = this.errorBackoff;
+                            return this.errorBackoff = Math.min(2 * this.errorBackoff, 96e4), e
+                        }
+                    }
+                    schedule(e = !1) {
+                        if (!this.isRunning) return;
+                        let t = this.getInterval(e);
+                        this.timerId = setTimeout(async () => {
+                            await this.iteration()
+                        }, t)
+                    }
+                    async iteration() {
+                        try {
+                            await this.user.getIdToken(!0)
+                        } catch (e) {
+                            e ? .code === "auth/network-request-failed" && this.schedule(!0);
+                            return
+                        }
+                        this.schedule()
+                    }
+                }
+                class W {
+                    constructor(e, t) {
+                        this.createdAt = e, this.lastLoginAt = t, this._initializeTime()
+                    }
+                    _initializeTime() {
+                        this.lastSignInTime = j(this.lastLoginAt), this.creationTime = j(this.createdAt)
+                    }
+                    _copy(e) {
+                        this.createdAt = e.createdAt, this.lastLoginAt = e.lastLoginAt, this._initializeTime()
+                    }
+                    toJSON() {
+                        return {
+                            createdAt: this.createdAt,
+                            lastLoginAt: this.lastLoginAt
+                        }
+                    }
+                }
+                async function q(e) {
+                    var t, r;
+                    let i = e.auth,
+                        n = await e.getIdToken(),
+                        s = await $(e, M(i, {
+                            idToken: n
+                        }));
+                    m(s ? .users.length, i, "internal-error");
+                    let a = s.users[0];
+                    e._notifyReloadListener(a);
+                    let o = a.providerUserInfo ? .length ? K(a.providerUserInfo) : [],
+                        c = (t = e.providerData, r = o, [...t.filter(e => !r.some(t => t.providerId === e.providerId)), ...r]),
+                        l = e.isAnonymous,
+                        u = !(e.email && a.passwordHash) && !c ? .length;
+                    Object.assign(e, {
+                        uid: a.localId,
+                        displayName: a.displayName || null,
+                        photoURL: a.photoUrl || null,
+                        email: a.email || null,
+                        emailVerified: a.emailVerified || !1,
+                        phoneNumber: a.phoneNumber || null,
+                        tenantId: a.tenantId || null,
+                        providerData: c,
+                        metadata: new W(a.createdAt, a.lastLoginAt),
+                        isAnonymous: !!l && u
+                    })
+                }
+                async function z(e) {
+                    let t = (0, i.getModularInstance)(e);
+                    await q(t), await t.auth._persistUserIfCurrent(t), t.auth._notifyListenersIfCurrent(t)
+                }
+
+                function K(e) {
+                    return e.map(({
+                        providerId: e,
+                        ...t
+                    }) => ({
+                        providerId: e,
+                        uid: t.rawId || "",
+                        displayName: t.displayName || null,
+                        email: t.email || null,
+                        phoneNumber: t.phoneNumber || null,
+                        photoURL: t.photoUrl || null
+                    }))
+                }
+                async function G(e, t) {
+                    let r = await P(e, {}, async () => {
+                        let r = (0, i.querystring)({
+                                grant_type: "refresh_token",
+                                refresh_token: t
+                            }).slice(1),
+                            {
+                                tokenApiHost: n,
+                                apiKey: s
+                            } = e.config,
+                            a = await k(e, n, "/v1/token", `key=${s}`),
+                            o = await e._getAdditionalHeaders();
+                        o["Content-Type"] = "application/x-www-form-urlencoded";
+                        let c = {
+                            method: "POST",
+                            headers: o,
+                            body: r
+                        };
+                        return e.emulatorConfig && (0, i.isCloudWorkstation)(e.emulatorConfig.host) && (c.credentials = "include"), I.fetch()(a, c)
+                    });
+                    return {
+                        accessToken: r.access_token,
+                        expiresIn: r.expires_in,
+                        refreshToken: r.refresh_token
+                    }
+                }
+                async function J(e, t) {
+                    return C(e, "POST", "/v2/accounts:revokeToken", T(e, t))
+                }
+                class Y {
+                    constructor() {
+                        this.refreshToken = null, this.accessToken = null, this.expirationTime = null
+                    }
+                    get isExpired() {
+                        return !this.expirationTime || Date.now() > this.expirationTime - 3e4
+                    }
+                    updateFromServerResponse(e) {
+                        m(e.idToken, "internal-error"), m(void 0 !== e.idToken, "internal-error"), m(void 0 !== e.refreshToken, "internal-error");
+                        let t = "expiresIn" in e && void 0 !== e.expiresIn ? Number(e.expiresIn) : V(e.idToken);
+                        this.updateTokensAndExpiration(e.idToken, e.refreshToken, t)
+                    }
+                    updateFromIdToken(e) {
+                        m(0 !== e.length, "internal-error");
+                        let t = V(e);
+                        this.updateTokensAndExpiration(e, null, t)
+                    }
+                    async getToken(e, t = !1) {
+                        return t || !this.accessToken || this.isExpired ? (m(this.refreshToken, e, "user-token-expired"), this.refreshToken) ? (await this.refresh(e, this.refreshToken), this.accessToken) : null : this.accessToken
+                    }
+                    clearRefreshToken() {
+                        this.refreshToken = null
+                    }
+                    async refresh(e, t) {
+                        let {
+                            accessToken: r,
+                            refreshToken: i,
+                            expiresIn: n
+                        } = await G(e, t);
+                        this.updateTokensAndExpiration(r, i, Number(n))
+                    }
+                    updateTokensAndExpiration(e, t, r) {
+                        this.refreshToken = t || null, this.accessToken = e || null, this.expirationTime = Date.now() + 1e3 * r
+                    }
+                    static fromJSON(e, t) {
+                        let {
+                            refreshToken: r,
+                            accessToken: i,
+                            expirationTime: n
+                        } = t, s = new Y;
+                        return r && (m("string" == typeof r, "internal-error", {
+                            appName: e
+                        }), s.refreshToken = r), i && (m("string" == typeof i, "internal-error", {
+                            appName: e
+                        }), s.accessToken = i), n && (m("number" == typeof n, "internal-error", {
+                            appName: e
+                        }), s.expirationTime = n), s
+                    }
+                    toJSON() {
+                        return {
+                            refreshToken: this.refreshToken,
+                            accessToken: this.accessToken,
+                            expirationTime: this.expirationTime
+                        }
+                    }
+                    _assign(e) {
+                        this.accessToken = e.accessToken, this.refreshToken = e.refreshToken, this.expirationTime = e.expirationTime
+                    }
+                    _clone() {
+                        return Object.assign(new Y, this.toJSON())
+                    }
+                    _performRefresh() {
+                        return g("not implemented")
+                    }
+                }
+
+                function X(e, t) {
+                    m("string" == typeof e || void 0 === e, "internal-error", {
+                        appName: t
+                    })
+                }
+                class Q {
+                    constructor({
+                        uid: e,
+                        auth: t,
+                        stsTokenManager: r,
+                        ...i
+                    }) {
+                        this.providerId = "firebase", this.proactiveRefresh = new H(this), this.reloadUserInfo = null, this.reloadListener = null, this.uid = e, this.auth = t, this.stsTokenManager = r, this.accessToken = r.accessToken, this.displayName = i.displayName || null, this.email = i.email || null, this.emailVerified = i.emailVerified || !1, this.phoneNumber = i.phoneNumber || null, this.photoURL = i.photoURL || null, this.isAnonymous = i.isAnonymous || !1, this.tenantId = i.tenantId || null, this.providerData = i.providerData ? [...i.providerData] : [], this.metadata = new W(i.createdAt || void 0, i.lastLoginAt || void 0)
+                    }
+                    async getIdToken(e) {
+                        let t = await $(this, this.stsTokenManager.getToken(this.auth, e));
+                        return m(t, this.auth, "internal-error"), this.accessToken !== t && (this.accessToken = t, await this.auth._persistUserIfCurrent(this), this.auth._notifyListenersIfCurrent(this)), t
+                    }
+                    getIdTokenResult(e) {
+                        return x(this, e)
+                    }
+                    reload() {
+                        return z(this)
+                    }
+                    _assign(e) {
+                        this !== e && (m(this.uid === e.uid, this.auth, "internal-error"), this.displayName = e.displayName, this.photoURL = e.photoURL, this.email = e.email, this.emailVerified = e.emailVerified, this.phoneNumber = e.phoneNumber, this.isAnonymous = e.isAnonymous, this.tenantId = e.tenantId, this.providerData = e.providerData.map(e => ({ ...e
+                        })), this.metadata._copy(e.metadata), this.stsTokenManager._assign(e.stsTokenManager))
+                    }
+                    _clone(e) {
+                        let t = new Q({ ...this,
+                            auth: e,
+                            stsTokenManager: this.stsTokenManager._clone()
+                        });
+                        return t.metadata._copy(this.metadata), t
+                    }
+                    _onReload(e) {
+                        m(!this.reloadListener, this.auth, "internal-error"), this.reloadListener = e, this.reloadUserInfo && (this._notifyReloadListener(this.reloadUserInfo), this.reloadUserInfo = null)
+                    }
+                    _notifyReloadListener(e) {
+                        this.reloadListener ? this.reloadListener(e) : this.reloadUserInfo = e
+                    }
+                    _startProactiveRefresh() {
+                        this.proactiveRefresh._start()
+                    }
+                    _stopProactiveRefresh() {
+                        this.proactiveRefresh._stop()
+                    }
+                    async _updateTokensIfNecessary(e, t = !1) {
+                        let r = !1;
+                        e.idToken && e.idToken !== this.stsTokenManager.accessToken && (this.stsTokenManager.updateFromServerResponse(e), r = !0), t && await q(this), await this.auth._persistUserIfCurrent(this), r && this.auth._notifyListenersIfCurrent(this)
+                    }
+                    async delete() {
+                        if ((0, r._isFirebaseServerApp)(this.auth.app)) return Promise.reject(p(this.auth));
+                        let e = await this.getIdToken();
+                        return await $(this, U(this.auth, {
+                            idToken: e
+                        })), this.stsTokenManager.clearRefreshToken(), this.auth.signOut()
+                    }
+                    toJSON() {
+                        return {
+                            uid: this.uid,
+                            email: this.email || void 0,
+                            emailVerified: this.emailVerified,
+                            displayName: this.displayName || void 0,
+                            isAnonymous: this.isAnonymous,
+                            photoURL: this.photoURL || void 0,
+                            phoneNumber: this.phoneNumber || void 0,
+                            tenantId: this.tenantId || void 0,
+                            providerData: this.providerData.map(e => ({ ...e
+                            })),
+                            stsTokenManager: this.stsTokenManager.toJSON(),
+                            _redirectEventId: this._redirectEventId,
+                            ...this.metadata.toJSON(),
+                            apiKey: this.auth.config.apiKey,
+                            appName: this.auth.name
+                        }
+                    }
+                    get refreshToken() {
+                        return this.stsTokenManager.refreshToken || ""
+                    }
+                    static _fromJSON(e, t) {
+                        let r = t.displayName ? ? void 0,
+                            i = t.email ? ? void 0,
+                            n = t.phoneNumber ? ? void 0,
+                            s = t.photoURL ? ? void 0,
+                            a = t.tenantId ? ? void 0,
+                            o = t._redirectEventId ? ? void 0,
+                            c = t.createdAt ? ? void 0,
+                            l = t.lastLoginAt ? ? void 0,
+                            {
+                                uid: u,
+                                emailVerified: h,
+                                isAnonymous: d,
+                                providerData: p,
+                                stsTokenManager: f
+                            } = t;
+                        m(u && f, e, "internal-error");
+                        let g = Y.fromJSON(this.name, f);
+                        m("string" == typeof u, e, "internal-error"), X(r, e.name), X(i, e.name), m("boolean" == typeof h, e, "internal-error"), m("boolean" == typeof d, e, "internal-error"), X(n, e.name), X(s, e.name), X(a, e.name), X(o, e.name), X(c, e.name), X(l, e.name);
+                        let y = new Q({
+                            uid: u,
+                            auth: e,
+                            email: i,
+                            emailVerified: h,
+                            displayName: r,
+                            isAnonymous: d,
+                            photoURL: s,
+                            phoneNumber: n,
+                            tenantId: a,
+                            stsTokenManager: g,
+                            createdAt: c,
+                            lastLoginAt: l
+                        });
+                        return p && Array.isArray(p) && (y.providerData = p.map(e => ({ ...e
+                        }))), o && (y._redirectEventId = o), y
+                    }
+                    static async _fromIdTokenResponse(e, t, r = !1) {
+                        let i = new Y;
+                        i.updateFromServerResponse(t);
+                        let n = new Q({
+                            uid: t.localId,
+                            auth: e,
+                            stsTokenManager: i,
+                            isAnonymous: r
+                        });
+                        return await q(n), n
+                    }
+                    static async _fromGetAccountInfoResponse(e, t, r) {
+                        let i = t.users[0];
+                        m(void 0 !== i.localId, "internal-error");
+                        let n = void 0 !== i.providerUserInfo ? K(i.providerUserInfo) : [],
+                            s = !(i.email && i.passwordHash) && !n ? .length,
+                            a = new Y;
+                        a.updateFromIdToken(r);
+                        let o = new Q({
+                            uid: i.localId,
+                            auth: e,
+                            stsTokenManager: a,
+                            isAnonymous: s
+                        });
+                        return Object.assign(o, {
+                            uid: i.localId,
+                            displayName: i.displayName || null,
+                            photoURL: i.photoUrl || null,
+                            email: i.email || null,
+                            emailVerified: i.emailVerified || !1,
+                            phoneNumber: i.phoneNumber || null,
+                            tenantId: i.tenantId || null,
+                            providerData: n,
+                            metadata: new W(i.createdAt, i.lastLoginAt),
+                            isAnonymous: !(i.email && i.passwordHash) && !n ? .length
+                        }), o
+                    }
+                }
+                let Z = new Map;
+
+                function ee(e) {
+                    var t, r;
+                    t = "Expected a class definition", e instanceof Function || g(t);
+                    let i = Z.get(e);
+                    return i ? (r = "Instance stored in cache mismatched with class", i instanceof e || g(r)) : (i = new e, Z.set(e, i)), i
+                }
+                class et {
+                    constructor() {
+                        this.type = "NONE", this.storage = {}
+                    }
+                    async _isAvailable() {
+                        return !0
+                    }
+                    async _set(e, t) {
+                        this.storage[e] = t
+                    }
+                    async _get(e) {
+                        let t = this.storage[e];
+                        return void 0 === t ? null : t
+                    }
+                    async _remove(e) {
+                        delete this.storage[e]
+                    }
+                    _addListener(e, t) {}
+                    _removeListener(e, t) {}
+                }
+
+                function er(e, t, r) {
+                    return `firebase:${e}:${t}:${r}`
+                }
+                et.type = "NONE";
+                class ei {
+                    constructor(e, t, r) {
+                        this.persistence = e, this.auth = t, this.userKey = r;
+                        const {
+                            config: i,
+                            name: n
+                        } = this.auth;
+                        this.fullUserKey = er(this.userKey, i.apiKey, n), this.fullPersistenceKey = er("persistence", i.apiKey, n), this.boundEventHandler = t._onStorageEvent.bind(t), this.persistence._addListener(this.fullUserKey, this.boundEventHandler)
+                    }
+                    setCurrentUser(e) {
+                        return this.persistence._set(this.fullUserKey, e.toJSON())
+                    }
+                    async getCurrentUser() {
+                        let e = await this.persistence._get(this.fullUserKey);
+                        if (!e) return null;
+                        if ("string" == typeof e) {
+                            let t = await M(this.auth, {
+                                idToken: e
+                            }).catch(() => void 0);
+                            return t ? Q._fromGetAccountInfoResponse(this.auth, t, e) : null
+                        }
+                        return Q._fromJSON(this.auth, e)
+                    }
+                    removeCurrentUser() {
+                        return this.persistence._remove(this.fullUserKey)
+                    }
+                    savePersistenceForRedirect() {
+                        return this.persistence._set(this.fullPersistenceKey, this.persistence.type)
+                    }
+                    async setPersistence(e) {
+                        if (this.persistence === e) return;
+                        let t = await this.getCurrentUser();
+                        if (await this.removeCurrentUser(), this.persistence = e, t) return this.setCurrentUser(t)
+                    }
+                    delete() {
+                        this.persistence._removeListener(this.fullUserKey, this.boundEventHandler)
+                    }
+                    static async create(e, t, r = "authUser") {
+                        if (!t.length) return new ei(ee(et), e, r);
+                        let i = (await Promise.all(t.map(async e => {
+                                if (await e._isAvailable()) return e
+                            }))).filter(e => e),
+                            n = i[0] || ee(et),
+                            s = er(r, e.config.apiKey, e.name),
+                            a = null;
+                        for (let r of t) try {
+                            let t = await r._get(s);
+                            if (t) {
+                                let i;
+                                if ("string" == typeof t) {
+                                    let r = await M(e, {
+                                        idToken: t
+                                    }).catch(() => void 0);
+                                    if (!r) break;
+                                    i = await Q._fromGetAccountInfoResponse(e, r, t)
+                                } else i = Q._fromJSON(e, t);
+                                r !== n && (a = i), n = r;
+                                break
+                            }
+                        } catch {}
+                        let o = i.filter(e => e._shouldAllowMigration);
+                        return n._shouldAllowMigration && o.length && (n = o[0], a && await n._set(s, a.toJSON()), await Promise.all(t.map(async e => {
+                            if (e !== n) try {
+                                await e._remove(s)
+                            } catch {}
+                        }))), new ei(n, e, r)
+                    }
+                }
+
+                function en(e) {
+                    let t = e.toLowerCase();
+                    if (t.includes("opera/") || t.includes("opr/") || t.includes("opios/")) return "Opera"; {
+                        if (ec(t)) return "IEMobile";
+                        if (t.includes("msie") || t.includes("trident/")) return "IE";
+                        if (t.includes("edge/")) return "Edge";
+                        if (es(t)) return "Firefox";
+                        if (t.includes("silk/")) return "Silk";
+                        if (eu(t)) return "Blackberry";
+                        if (eh(t)) return "Webos";
+                        if (ea(t)) return "Safari";
+                        if ((t.includes("chrome/") || eo(t)) && !t.includes("edge/")) return "Chrome";
+                        if (el(t)) return "Android";
+                        let r = e.match(/([a-zA-Z\d\.]+)\/[a-zA-Z\d\.]*$/);
+                        if (r ? .length === 2) return r[1]
+                    }
+                    return "Other"
+                }
+
+                function es(e = (0, i.getUA)()) {
+                    return /firefox\//i.test(e)
+                }
+
+                function ea(e = (0, i.getUA)()) {
+                    let t = e.toLowerCase();
+                    return t.includes("safari/") && !t.includes("chrome/") && !t.includes("crios/") && !t.includes("android")
+                }
+
+                function eo(e = (0, i.getUA)()) {
+                    return /crios\//i.test(e)
+                }
+
+                function ec(e = (0, i.getUA)()) {
+                    return /iemobile/i.test(e)
+                }
+
+                function el(e = (0, i.getUA)()) {
+                    return /android/i.test(e)
+                }
+
+                function eu(e = (0, i.getUA)()) {
+                    return /blackberry/i.test(e)
+                }
+
+                function eh(e = (0, i.getUA)()) {
+                    return /webos/i.test(e)
+                }
+
+                function ed(e = (0, i.getUA)()) {
+                    return /iphone|ipad|ipod/i.test(e) || /macintosh/i.test(e) && /mobile/i.test(e)
+                }
+
+                function ep(e = (0, i.getUA)()) {
+                    return ed(e) || el(e) || eh(e) || eu(e) || /windows phone/i.test(e) || ec(e)
+                }
+
+                function ef(e, t = []) {
+                    let n;
+                    switch (e) {
+                        case "Browser":
+                            n = en((0, i.getUA)());
+                            break;
+                        case "Worker":
+                            n = `${en((0,i.getUA)())}-${e}`;
+                            break;
+                        default:
+                            n = e
+                    }
+                    let s = t.length ? t.join(",") : "FirebaseCore-web";
+                    return `${n}/JsCore/${r.SDK_VERSION}/${s}`
+                }
+                class em {
+                    constructor(e) {
+                        this.auth = e, this.queue = []
+                    }
+                    pushCallback(e, t) {
+                        let r = t => new Promise((r, i) => {
+                            try {
+                                let i = e(t);
+                                r(i)
+                            } catch (e) {
+                                i(e)
+                            }
+                        });
+                        r.onAbort = t, this.queue.push(r);
+                        let i = this.queue.length - 1;
+                        return () => {
+                            this.queue[i] = () => Promise.resolve()
+                        }
+                    }
+                    async runMiddleware(e) {
+                        if (this.auth.currentUser === e) return;
+                        let t = [];
+                        try {
+                            for (let r of this.queue) await r(e), r.onAbort && t.push(r.onAbort)
+                        } catch (e) {
+                            for (let e of (t.reverse(), t)) try {
+                                e()
+                            } catch (e) {}
+                            throw this.auth._errorFactory.create("login-blocked", {
+                                originalMessage: e ? .message
+                            })
+                        }
+                    }
+                }
+                async function eg(e, t = {}) {
+                    return C(e, "GET", "/v2/passwordPolicy", T(e, t))
+                }
+                class ey {
+                    constructor(e) {
+                        const t = e.customStrengthOptions;
+                        this.customStrengthOptions = {}, this.customStrengthOptions.minPasswordLength = t.minPasswordLength ? ? 6, t.maxPasswordLength && (this.customStrengthOptions.maxPasswordLength = t.maxPasswordLength), void 0 !== t.containsLowercaseCharacter && (this.customStrengthOptions.containsLowercaseLetter = t.containsLowercaseCharacter), void 0 !== t.containsUppercaseCharacter && (this.customStrengthOptions.containsUppercaseLetter = t.containsUppercaseCharacter), void 0 !== t.containsNumericCharacter && (this.customStrengthOptions.containsNumericCharacter = t.containsNumericCharacter), void 0 !== t.containsNonAlphanumericCharacter && (this.customStrengthOptions.containsNonAlphanumericCharacter = t.containsNonAlphanumericCharacter), this.enforcementState = e.enforcementState, "ENFORCEMENT_STATE_UNSPECIFIED" === this.enforcementState && (this.enforcementState = "OFF"), this.allowedNonAlphanumericCharacters = e.allowedNonAlphanumericCharacters ? .join("") ? ? "", this.forceUpgradeOnSignin = e.forceUpgradeOnSignin ? ? !1, this.schemaVersion = e.schemaVersion
+                    }
+                    validatePassword(e) {
+                        let t = {
+                            isValid: !0,
+                            passwordPolicy: this
+                        };
+                        return this.validatePasswordLengthOptions(e, t), this.validatePasswordCharacterOptions(e, t), t.isValid && (t.isValid = t.meetsMinPasswordLength ? ? !0), t.isValid && (t.isValid = t.meetsMaxPasswordLength ? ? !0), t.isValid && (t.isValid = t.containsLowercaseLetter ? ? !0), t.isValid && (t.isValid = t.containsUppercaseLetter ? ? !0), t.isValid && (t.isValid = t.containsNumericCharacter ? ? !0), t.isValid && (t.isValid = t.containsNonAlphanumericCharacter ? ? !0), t
+                    }
+                    validatePasswordLengthOptions(e, t) {
+                        let r = this.customStrengthOptions.minPasswordLength,
+                            i = this.customStrengthOptions.maxPasswordLength;
+                        r && (t.meetsMinPasswordLength = e.length >= r), i && (t.meetsMaxPasswordLength = e.length <= i)
+                    }
+                    validatePasswordCharacterOptions(e, t) {
+                        let r;
+                        this.updatePasswordCharacterOptionsStatuses(t, !1, !1, !1, !1);
+                        for (let i = 0; i < e.length; i++) r = e.charAt(i), this.updatePasswordCharacterOptionsStatuses(t, r >= "a" && r <= "z", r >= "A" && r <= "Z", r >= "0" && r <= "9", this.allowedNonAlphanumericCharacters.includes(r))
+                    }
+                    updatePasswordCharacterOptionsStatuses(e, t, r, i, n) {
+                        this.customStrengthOptions.containsLowercaseLetter && (e.containsLowercaseLetter || (e.containsLowercaseLetter = t)), this.customStrengthOptions.containsUppercaseLetter && (e.containsUppercaseLetter || (e.containsUppercaseLetter = r)), this.customStrengthOptions.containsNumericCharacter && (e.containsNumericCharacter || (e.containsNumericCharacter = i)), this.customStrengthOptions.containsNonAlphanumericCharacter && (e.containsNonAlphanumericCharacter || (e.containsNonAlphanumericCharacter = n))
+                    }
+                }
+                class e_ {
+                    constructor(e, t, r, i) {
+                        this.app = e, this.heartbeatServiceProvider = t, this.appCheckServiceProvider = r, this.config = i, this.currentUser = null, this.emulatorConfig = null, this.operations = Promise.resolve(), this.authStateSubscription = new ev(this), this.idTokenSubscription = new ev(this), this.beforeStateQueue = new em(this), this.redirectUser = null, this.isProactiveRefreshEnabled = !1, this.EXPECTED_PASSWORD_POLICY_SCHEMA_VERSION = 1, this._canInitEmulator = !0, this._isInitialized = !1, this._deleted = !1, this._initializationPromise = null, this._popupRedirectResolver = null, this._errorFactory = o, this._agentRecaptchaConfig = null, this._tenantRecaptchaConfigs = {}, this._projectPasswordPolicy = null, this._tenantPasswordPolicies = {}, this._resolvePersistenceManagerAvailable = void 0, this.lastNotifiedUid = void 0, this.languageCode = null, this.tenantId = null, this.settings = {
+                            appVerificationDisabledForTesting: !1
+                        }, this.frameworks = [], this.name = e.name, this.clientVersion = i.sdkClientVersion, this._persistenceManagerAvailable = new Promise(e => this._resolvePersistenceManagerAvailable = e)
+                    }
+                    _initializeWithPersistence(e, t) {
+                        return t && (this._popupRedirectResolver = ee(t)), this._initializationPromise = this.queue(async () => {
+                            if (!this._deleted) {
+                                if (this.persistenceManager = await ei.create(this, e), this._resolvePersistenceManagerAvailable ? .(), !this._deleted) {
+                                    if (this._popupRedirectResolver ? ._shouldInitProactively) try {
+                                        await this._popupRedirectResolver._initialize(this)
+                                    } catch (e) {}
+                                    await this.initializeCurrentUser(t), this.lastNotifiedUid = this.currentUser ? .uid || null, this._deleted || (this._isInitialized = !0)
+                                }
+                            }
+                        }), this._initializationPromise
+                    }
+                    async _onStorageEvent() {
+                        if (this._deleted) return;
+                        let e = await this.assertedPersistence.getCurrentUser();
+                        if (this.currentUser || e) {
+                            if (this.currentUser && e && this.currentUser.uid === e.uid) {
+                                this._currentUser._assign(e), await this.currentUser.getIdToken();
+                                return
+                            }
+                            await this._updateCurrentUser(e, !0)
+                        }
+                    }
+                    async initializeCurrentUserFromIdToken(e) {
+                        try {
+                            let t = await M(this, {
+                                    idToken: e
+                                }),
+                                r = await Q._fromGetAccountInfoResponse(this, t, e);
+                            await this.directlySetCurrentUser(r)
+                        } catch (e) {
+                            console.warn("FirebaseServerApp could not login user with provided authIdToken: ", e), await this.directlySetCurrentUser(null)
+                        }
+                    }
+                    async initializeCurrentUser(e) {
+                        if ((0, r._isFirebaseServerApp)(this.app)) {
+                            let e = this.app.settings.authIdToken;
+                            return e ? new Promise(t => {
+                                setTimeout(() => this.initializeCurrentUserFromIdToken(e).then(t, t))
+                            }) : this.directlySetCurrentUser(null)
+                        }
+                        let t = await this.assertedPersistence.getCurrentUser(),
+                            i = t,
+                            n = !1;
+                        if (e && this.config.authDomain) {
+                            await this.getOrInitRedirectPersistenceManager();
+                            let t = this.redirectUser ? ._redirectEventId,
+                                r = i ? ._redirectEventId,
+                                s = await this.tryRedirectSignIn(e);
+                            (!t || t === r) && s ? .user && (i = s.user, n = !0)
+                        }
+                        if (!i) return this.directlySetCurrentUser(null);
+                        if (!i._redirectEventId) {
+                            if (n) try {
+                                await this.beforeStateQueue.runMiddleware(i)
+                            } catch (e) {
+                                i = t, this._popupRedirectResolver._overrideRedirectResult(this, () => Promise.reject(e))
+                            }
+                            return i ? this.reloadAndSetCurrentUserOrClear(i) : this.directlySetCurrentUser(null)
+                        }
+                        return (m(this._popupRedirectResolver, this, "argument-error"), await this.getOrInitRedirectPersistenceManager(), this.redirectUser && this.redirectUser._redirectEventId === i._redirectEventId) ? this.directlySetCurrentUser(i) : this.reloadAndSetCurrentUserOrClear(i)
+                    }
+                    async tryRedirectSignIn(e) {
+                        let t = null;
+                        try {
+                            t = await this._popupRedirectResolver._completeRedirectFn(this, e, !0)
+                        } catch (e) {
+                            await this._setRedirectUser(null)
+                        }
+                        return t
+                    }
+                    async reloadAndSetCurrentUserOrClear(e) {
+                        try {
+                            await q(e)
+                        } catch (e) {
+                            if (e ? .code !== "auth/network-request-failed") return this.directlySetCurrentUser(null)
+                        }
+                        return this.directlySetCurrentUser(e)
+                    }
+                    useDeviceLanguage() {
+                        this.languageCode = function() {
+                            if ("u" < typeof navigator) return null;
+                            let e = navigator;
+                            return e.languages && e.languages[0] || e.language || null
+                        }()
+                    }
+                    async _delete() {
+                        this._deleted = !0
+                    }
+                    async updateCurrentUser(e) {
+                        if ((0, r._isFirebaseServerApp)(this.app)) return Promise.reject(p(this));
+                        let t = e ? (0, i.getModularInstance)(e) : null;
+                        return t && m(t.auth.config.apiKey === this.config.apiKey, this, "invalid-user-token"), this._updateCurrentUser(t && t._clone(this))
+                    }
+                    async _updateCurrentUser(e, t = !1) {
+                        if (!this._deleted) return e && m(this.tenantId === e.tenantId, this, "tenant-id-mismatch"), t || await this.beforeStateQueue.runMiddleware(e), this.queue(async () => {
+                            await this.directlySetCurrentUser(e), this.notifyAuthListeners()
+                        })
+                    }
+                    async signOut() {
+                        return (0, r._isFirebaseServerApp)(this.app) ? Promise.reject(p(this)) : (await this.beforeStateQueue.runMiddleware(null), (this.redirectPersistenceManager || this._popupRedirectResolver) && await this._setRedirectUser(null), this._updateCurrentUser(null, !0))
+                    }
+                    setPersistence(e) {
+                        return (0, r._isFirebaseServerApp)(this.app) ? Promise.reject(p(this)) : this.queue(async () => {
+                            await this.assertedPersistence.setPersistence(ee(e))
+                        })
+                    }
+                    _getRecaptchaConfig() {
+                        return null == this.tenantId ? this._agentRecaptchaConfig : this._tenantRecaptchaConfigs[this.tenantId]
+                    }
+                    async validatePassword(e) {
+                        this._getPasswordPolicyInternal() || await this._updatePasswordPolicy();
+                        let t = this._getPasswordPolicyInternal();
+                        return t.schemaVersion !== this.EXPECTED_PASSWORD_POLICY_SCHEMA_VERSION ? Promise.reject(this._errorFactory.create("unsupported-password-policy-schema-version", {})) : t.validatePassword(e)
+                    }
+                    _getPasswordPolicyInternal() {
+                        return null === this.tenantId ? this._projectPasswordPolicy : this._tenantPasswordPolicies[this.tenantId]
+                    }
+                    async _updatePasswordPolicy() {
+                        let e = new ey(await eg(this));
+                        null === this.tenantId ? this._projectPasswordPolicy = e : this._tenantPasswordPolicies[this.tenantId] = e
+                    }
+                    _getPersistenceType() {
+                        return this.assertedPersistence.persistence.type
+                    }
+                    _getPersistence() {
+                        return this.assertedPersistence.persistence
+                    }
+                    _updateErrorMap(e) {
+                        this._errorFactory = new i.ErrorFactory("auth", "Firebase", e())
+                    }
+                    onAuthStateChanged(e, t, r) {
+                        return this.registerStateListener(this.authStateSubscription, e, t, r)
+                    }
+                    beforeAuthStateChanged(e, t) {
+                        return this.beforeStateQueue.pushCallback(e, t)
+                    }
+                    onIdTokenChanged(e, t, r) {
+                        return this.registerStateListener(this.idTokenSubscription, e, t, r)
+                    }
+                    authStateReady() {
+                        return new Promise((e, t) => {
+                            if (this.currentUser) e();
+                            else {
+                                let r = this.onAuthStateChanged(() => {
+                                    r(), e()
+                                }, t)
+                            }
+                        })
+                    }
+                    async revokeAccessToken(e) {
+                        if (this.currentUser) {
+                            let t = {
+                                providerId: "apple.com",
+                                tokenType: "ACCESS_TOKEN",
+                                token: e,
+                                idToken: await this.currentUser.getIdToken()
+                            };
+                            null != this.tenantId && (t.tenantId = this.tenantId), await J(this, t)
+                        }
+                    }
+                    toJSON() {
+                        return {
+                            apiKey: this.config.apiKey,
+                            authDomain: this.config.authDomain,
+                            appName: this.name,
+                            currentUser: this._currentUser ? .toJSON()
+                        }
+                    }
+                    async _setRedirectUser(e, t) {
+                        let r = await this.getOrInitRedirectPersistenceManager(t);
+                        return null === e ? r.removeCurrentUser() : r.setCurrentUser(e)
+                    }
+                    async getOrInitRedirectPersistenceManager(e) {
+                        if (!this.redirectPersistenceManager) {
+                            let t = e && ee(e) || this._popupRedirectResolver;
+                            m(t, this, "argument-error"), this.redirectPersistenceManager = await ei.create(this, [ee(t._redirectPersistence)], "redirectUser"), this.redirectUser = await this.redirectPersistenceManager.getCurrentUser()
+                        }
+                        return this.redirectPersistenceManager
+                    }
+                    async _redirectUserForId(e) {
+                        return (this._isInitialized && await this.queue(async () => {}), this._currentUser ? ._redirectEventId === e) ? this._currentUser : this.redirectUser ? ._redirectEventId === e ? this.redirectUser : null
+                    }
+                    async _persistUserIfCurrent(e) {
+                        if (e === this.currentUser) return this.queue(async () => this.directlySetCurrentUser(e))
+                    }
+                    _notifyListenersIfCurrent(e) {
+                        e === this.currentUser && this.notifyAuthListeners()
+                    }
+                    _key() {
+                        return `${this.config.authDomain}:${this.config.apiKey}:${this.name}`
+                    }
+                    _startProactiveRefresh() {
+                        this.isProactiveRefreshEnabled = !0, this.currentUser && this._currentUser._startProactiveRefresh()
+                    }
+                    _stopProactiveRefresh() {
+                        this.isProactiveRefreshEnabled = !1, this.currentUser && this._currentUser._stopProactiveRefresh()
+                    }
+                    get _currentUser() {
+                        return this.currentUser
+                    }
+                    notifyAuthListeners() {
+                        if (!this._isInitialized) return;
+                        this.idTokenSubscription.next(this.currentUser);
+                        let e = this.currentUser ? .uid ? ? null;
+                        this.lastNotifiedUid !== e && (this.lastNotifiedUid = e, this.authStateSubscription.next(this.currentUser))
+                    }
+                    registerStateListener(e, t, r, i) {
+                        if (this._deleted) return () => {};
+                        let n = "function" == typeof t ? t : t.next.bind(t),
+                            s = !1,
+                            a = this._isInitialized ? Promise.resolve() : this._initializationPromise;
+                        if (m(a, this, "internal-error"), a.then(() => {
+                                s || n(this.currentUser)
+                            }), "function" == typeof t) {
+                            let n = e.addObserver(t, r, i);
+                            return () => {
+                                s = !0, n()
+                            }
+                        } {
+                            let r = e.addObserver(t);
+                            return () => {
+                                s = !0, r()
+                            }
+                        }
+                    }
+                    async directlySetCurrentUser(e) {
+                        this.currentUser && this.currentUser !== e && this._currentUser._stopProactiveRefresh(), e && this.isProactiveRefreshEnabled && e._startProactiveRefresh(), this.currentUser = e, e ? await this.assertedPersistence.setCurrentUser(e) : await this.assertedPersistence.removeCurrentUser()
+                    }
+                    queue(e) {
+                        return this.operations = this.operations.then(e, e), this.operations
+                    }
+                    get assertedPersistence() {
+                        return m(this.persistenceManager, this, "internal-error"), this.persistenceManager
+                    }
+                    _logFramework(e) {
+                        !e || this.frameworks.includes(e) || (this.frameworks.push(e), this.frameworks.sort(), this.clientVersion = ef(this.config.clientPlatform, this._getFrameworks()))
+                    }
+                    _getFrameworks() {
+                        return this.frameworks
+                    }
+                    async _getAdditionalHeaders() {
+                        let e = {
+                            "X-Client-Version": this.clientVersion
+                        };
+                        this.app.options.appId && (e["X-Firebase-gmpid"] = this.app.options.appId);
+                        let t = await this.heartbeatServiceProvider.getImmediate({
+                            optional: !0
+                        }) ? .getHeartbeatsHeader();
+                        t && (e["X-Firebase-Client"] = t);
+                        let r = await this._getAppCheckToken();
+                        return r && (e["X-Firebase-AppCheck"] = r), e
+                    }
+                    async _getAppCheckToken() {
+                        if ((0, r._isFirebaseServerApp)(this.app) && this.app.settings.appCheckToken) return this.app.settings.appCheckToken;
+                        let e = await this.appCheckServiceProvider.getImmediate({
+                            optional: !0
+                        }) ? .getToken();
+                        return e ? .error && function(e, ...t) {
+                            c.logLevel <= n.LogLevel.WARN && c.warn(`Auth (${r.SDK_VERSION}): ${e}`, ...t)
+                        }(`Error while retrieving App Check token: ${e.error}`), e ? .token
+                    }
+                }
+
+                function ew(e) {
+                    return (0, i.getModularInstance)(e)
+                }
+                class ev {
+                    constructor(e) {
+                        this.auth = e, this.observer = null, this.addObserver = (0, i.createSubscribe)(e => this.observer = e)
+                    }
+                    get next() {
+                        return m(this.observer, this.auth, "internal-error"), this.observer.next.bind(this.observer)
+                    }
+                }
+                let eI = {
+                    async loadJS() {
+                        throw Error("Unable to load external scripts")
+                    },
+                    recaptchaV2Script: "",
+                    recaptchaEnterpriseScript: "",
+                    gapiScript: ""
+                };
+
+                function eb(e) {
+                    return `__${e}${Math.floor(1e6*Math.random())}`
+                }
+                class eE {
+                    constructor() {
+                        this.enterprise = new eS
+                    }
+                    ready(e) {
+                        e()
+                    }
+                    execute(e, t) {
+                        return Promise.resolve("token")
+                    }
+                    render(e, t) {
+                        return ""
+                    }
+                }
+                class eS {
+                    ready(e) {
+                        e()
+                    }
+                    execute(e, t) {
+                        return Promise.resolve("token")
+                    }
+                    render(e, t) {
+                        return ""
+                    }
+                }
+                let eT = "NO_RECAPTCHA";
+                class eC {
+                    constructor(e) {
+                        this.type = "recaptcha-enterprise", this.auth = ew(e)
+                    }
+                    async verify(e = "verify", t = !1) {
+                        async function r(e) {
+                            if (!t) {
+                                if (null == e.tenantId && null != e._agentRecaptchaConfig) return e._agentRecaptchaConfig.siteKey;
+                                if (null != e.tenantId && void 0 !== e._tenantRecaptchaConfigs[e.tenantId]) return e._tenantRecaptchaConfigs[e.tenantId].siteKey
+                            }
+                            return new Promise(async (t, r) => {
+                                D(e, {
+                                    clientType: "CLIENT_TYPE_WEB",
+                                    version: "RECAPTCHA_ENTERPRISE"
+                                }).then(i => {
+                                    if (void 0 === i.recaptchaKey) r(Error("recaptcha Enterprise site key undefined"));
+                                    else {
+                                        let r = new L(i);
+                                        return null == e.tenantId ? e._agentRecaptchaConfig = r : e._tenantRecaptchaConfigs[e.tenantId] = r, t(r.siteKey)
+                                    }
+                                }).catch(e => {
+                                    r(e)
+                                })
+                            })
+                        }
+
+                        function i(t, r, i) {
+                            let n = window.grecaptcha;
+                            N(n) ? n.enterprise.ready(() => {
+                                n.enterprise.execute(t, {
+                                    action: e
+                                }).then(e => {
+                                    r(e)
+                                }).catch(() => {
+                                    r(eT)
+                                })
+                            }) : i(Error("No reCAPTCHA enterprise script loaded."))
+                        }
+                        return this.auth.settings.appVerificationDisabledForTesting ? new eE().execute("siteKey", {
+                            action: "verify"
+                        }) : new Promise((e, n) => {
+                            r(this.auth).then(r => {
+                                if (!t && N(window.grecaptcha)) i(r, e, n);
+                                else {
+                                    var s;
+                                    if ("u" < typeof window) return void n(Error("RecaptchaVerifier is only supported in browser"));
+                                    let t = eI.recaptchaEnterpriseScript;
+                                    0 !== t.length && (t += r), (s = t, eI.loadJS(s)).then(() => {
+                                        i(r, e, n)
+                                    }).catch(e => {
+                                        n(e)
+                                    })
+                                }
+                            }).catch(e => {
+                                n(e)
+                            })
+                        })
+                    }
+                }
+                async function eP(e, t, r, i = !1, n = !1) {
+                    let s, a = new eC(e);
+                    if (n) s = eT;
+                    else try {
+                        s = await a.verify(r)
+                    } catch (e) {
+                        s = await a.verify(r, !0)
+                    }
+                    let o = { ...t
+                    };
+                    if ("mfaSmsEnrollment" === r || "mfaSmsSignIn" === r) {
+                        if ("phoneEnrollmentInfo" in o) {
+                            let e = o.phoneEnrollmentInfo.phoneNumber,
+                                t = o.phoneEnrollmentInfo.recaptchaToken;
+                            Object.assign(o, {
+                                phoneEnrollmentInfo: {
+                                    phoneNumber: e,
+                                    recaptchaToken: t,
+                                    captchaResponse: s,
+                                    clientType: "CLIENT_TYPE_WEB",
+                                    recaptchaVersion: "RECAPTCHA_ENTERPRISE"
+                                }
+                            })
+                        } else if ("phoneSignInInfo" in o) {
+                            let e = o.phoneSignInInfo.recaptchaToken;
+                            Object.assign(o, {
+                                phoneSignInInfo: {
+                                    recaptchaToken: e,
+                                    captchaResponse: s,
+                                    clientType: "CLIENT_TYPE_WEB",
+                                    recaptchaVersion: "RECAPTCHA_ENTERPRISE"
+                                }
+                            })
+                        }
+                        return o
+                    }
+                    return i ? Object.assign(o, {
+                        captchaResp: s
+                    }) : Object.assign(o, {
+                        captchaResponse: s
+                    }), Object.assign(o, {
+                        clientType: "CLIENT_TYPE_WEB"
+                    }), Object.assign(o, {
+                        recaptchaVersion: "RECAPTCHA_ENTERPRISE"
+                    }), o
+                }
+                async function eA(e, t, r, i, n) {
+                    if ("EMAIL_PASSWORD_PROVIDER" === n)
+                        if (!e._getRecaptchaConfig() ? .isProviderEnabled("EMAIL_PASSWORD_PROVIDER")) return i(e, t).catch(async n => {
+                            if ("auth/missing-recaptcha-token" !== n.code) return Promise.reject(n); {
+                                console.log(`${r} is protected by reCAPTCHA Enterprise for this project. Automatically triggering the reCAPTCHA flow and restarting the flow.`);
+                                let n = await eP(e, t, r, "getOobCode" === r);
+                                return i(e, n)
+                            }
+                        });
+                        else {
+                            let n = await eP(e, t, r, "getOobCode" === r);
+                            return i(e, n)
+                        }
+                    if ("PHONE_PROVIDER" !== n) return Promise.reject(n + " provider is not supported.");
+                    if (e._getRecaptchaConfig() ? .isProviderEnabled("PHONE_PROVIDER")) {
+                        let n = await eP(e, t, r);
+                        return i(e, n).catch(async n => {
+                            if (e._getRecaptchaConfig() ? .getProviderEnforcementState("PHONE_PROVIDER") === "AUDIT" && ("auth/missing-recaptcha-token" === n.code || "auth/invalid-app-credential" === n.code)) {
+                                console.log(`Failed to verify with reCAPTCHA Enterprise. Automatically triggering the reCAPTCHA v2 flow to complete the ${r} flow.`);
+                                let n = await eP(e, t, r, !1, !0);
+                                return i(e, n)
+                            }
+                            return Promise.reject(n)
+                        })
+                    } {
+                        let n = await eP(e, t, r, !1, !0);
+                        return i(e, n)
+                    }
+                }
+                async function ek(e) {
+                    let t = ew(e),
+                        r = new L(await D(t, {
+                            clientType: "CLIENT_TYPE_WEB",
+                            version: "RECAPTCHA_ENTERPRISE"
+                        }));
+                    null == t.tenantId ? t._agentRecaptchaConfig = r : t._tenantRecaptchaConfigs[t.tenantId] = r, r.isAnyProviderEnabled() && new eC(t).verify()
+                }
+
+                function eR(e) {
+                    let t = e.indexOf(":");
+                    return t < 0 ? "" : e.substr(0, t + 1)
+                }
+
+                function eO(e) {
+                    if (!e) return null;
+                    let t = Number(e);
+                    return isNaN(t) ? null : t
+                }
+                class eN {
+                    constructor(e, t) {
+                        this.providerId = e, this.signInMethod = t
+                    }
+                    toJSON() {
+                        return g("not implemented")
+                    }
+                    _getIdTokenResponse(e) {
+                        return g("not implemented")
+                    }
+                    _linkToIdToken(e, t) {
+                        return g("not implemented")
+                    }
+                    _getReauthenticationResolver(e) {
+                        return g("not implemented")
+                    }
+                }
+                async function eL(e, t) {
+                    return C(e, "POST", "/v1/accounts:signUp", t)
+                }
+                async function eD(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithPassword", T(e, t))
+                }
+                async function eU(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithEmailLink", T(e, t))
+                }
+                async function eM(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithEmailLink", T(e, t))
+                }
+                class ej extends eN {
+                    constructor(e, t, r, i = null) {
+                        super("password", r), this._email = e, this._password = t, this._tenantId = i
+                    }
+                    static _fromEmailAndPassword(e, t) {
+                        return new ej(e, t, "password")
+                    }
+                    static _fromEmailAndCode(e, t, r = null) {
+                        return new ej(e, t, "emailLink", r)
+                    }
+                    toJSON() {
+                        return {
+                            email: this._email,
+                            password: this._password,
+                            signInMethod: this.signInMethod,
+                            tenantId: this._tenantId
+                        }
+                    }
+                    static fromJSON(e) {
+                        let t = "string" == typeof e ? JSON.parse(e) : e;
+                        if (t ? .email && t ? .password) {
+                            if ("password" === t.signInMethod) return this._fromEmailAndPassword(t.email, t.password);
+                            else if ("emailLink" === t.signInMethod) return this._fromEmailAndCode(t.email, t.password, t.tenantId)
+                        }
+                        return null
+                    }
+                    async _getIdTokenResponse(e) {
+                        switch (this.signInMethod) {
+                            case "password":
+                                return eA(e, {
+                                    returnSecureToken: !0,
+                                    email: this._email,
+                                    password: this._password,
+                                    clientType: "CLIENT_TYPE_WEB"
+                                }, "signInWithPassword", eD, "EMAIL_PASSWORD_PROVIDER");
+                            case "emailLink":
+                                return eU(e, {
+                                    email: this._email,
+                                    oobCode: this._password
+                                });
+                            default:
+                                u(e, "internal-error")
+                        }
+                    }
+                    async _linkToIdToken(e, t) {
+                        switch (this.signInMethod) {
+                            case "password":
+                                return eA(e, {
+                                    idToken: t,
+                                    returnSecureToken: !0,
+                                    email: this._email,
+                                    password: this._password,
+                                    clientType: "CLIENT_TYPE_WEB"
+                                }, "signUpPassword", eL, "EMAIL_PASSWORD_PROVIDER");
+                            case "emailLink":
+                                return eM(e, {
+                                    idToken: t,
+                                    email: this._email,
+                                    oobCode: this._password
+                                });
+                            default:
+                                u(e, "internal-error")
+                        }
+                    }
+                    _getReauthenticationResolver(e) {
+                        return this._getIdTokenResponse(e)
+                    }
+                }
+                async function ex(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithIdp", T(e, t))
+                }
+                class eF extends eN {
+                    constructor() {
+                        super(...arguments), this.pendingToken = null
+                    }
+                    static _fromParams(e) {
+                        let t = new eF(e.providerId, e.signInMethod);
+                        return e.idToken || e.accessToken ? (e.idToken && (t.idToken = e.idToken), e.accessToken && (t.accessToken = e.accessToken), e.nonce && !e.pendingToken && (t.nonce = e.nonce), e.pendingToken && (t.pendingToken = e.pendingToken)) : e.oauthToken && e.oauthTokenSecret ? (t.accessToken = e.oauthToken, t.secret = e.oauthTokenSecret) : u("argument-error"), t
+                    }
+                    toJSON() {
+                        return {
+                            idToken: this.idToken,
+                            accessToken: this.accessToken,
+                            secret: this.secret,
+                            nonce: this.nonce,
+                            pendingToken: this.pendingToken,
+                            providerId: this.providerId,
+                            signInMethod: this.signInMethod
+                        }
+                    }
+                    static fromJSON(e) {
+                        let {
+                            providerId: t,
+                            signInMethod: r,
+                            ...i
+                        } = "string" == typeof e ? JSON.parse(e) : e;
+                        if (!t || !r) return null;
+                        let n = new eF(t, r);
+                        return n.idToken = i.idToken || void 0, n.accessToken = i.accessToken || void 0, n.secret = i.secret, n.nonce = i.nonce, n.pendingToken = i.pendingToken || null, n
+                    }
+                    _getIdTokenResponse(e) {
+                        return ex(e, this.buildRequest())
+                    }
+                    _linkToIdToken(e, t) {
+                        let r = this.buildRequest();
+                        return r.idToken = t, ex(e, r)
+                    }
+                    _getReauthenticationResolver(e) {
+                        let t = this.buildRequest();
+                        return t.autoCreate = !1, ex(e, t)
+                    }
+                    buildRequest() {
+                        let e = {
+                            requestUri: "http://localhost",
+                            returnSecureToken: !0
+                        };
+                        if (this.pendingToken) e.pendingToken = this.pendingToken;
+                        else {
+                            let t = {};
+                            this.idToken && (t.id_token = this.idToken), this.accessToken && (t.access_token = this.accessToken), this.secret && (t.oauth_token_secret = this.secret), t.providerId = this.providerId, this.nonce && !this.pendingToken && (t.nonce = this.nonce), e.postBody = (0, i.querystring)(t)
+                        }
+                        return e
+                    }
+                }
+                async function eB(e, t) {
+                    return C(e, "POST", "/v1/accounts:sendVerificationCode", T(e, t))
+                }
+                async function eV(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithPhoneNumber", T(e, t))
+                }
+                async function e$(e, t) {
+                    let r = await A(e, "POST", "/v1/accounts:signInWithPhoneNumber", T(e, t));
+                    if (r.temporaryProof) throw O(e, "account-exists-with-different-credential", r);
+                    return r
+                }
+                let eH = {
+                    USER_NOT_FOUND: "user-not-found"
+                };
+                async function eW(e, t) {
+                    return A(e, "POST", "/v1/accounts:signInWithPhoneNumber", T(e, { ...t,
+                        operation: "REAUTH"
+                    }), eH)
+                }
+                class eq extends eN {
+                    constructor(e) {
+                        super("phone", "phone"), this.params = e
+                    }
+                    static _fromVerification(e, t) {
+                        return new eq({
+                            verificationId: e,
+                            verificationCode: t
+                        })
+                    }
+                    static _fromTokenResponse(e, t) {
+                        return new eq({
+                            phoneNumber: e,
+                            temporaryProof: t
+                        })
+                    }
+                    _getIdTokenResponse(e) {
+                        return eV(e, this._makeVerificationRequest())
+                    }
+                    _linkToIdToken(e, t) {
+                        return e$(e, {
+                            idToken: t,
+                            ...this._makeVerificationRequest()
+                        })
+                    }
+                    _getReauthenticationResolver(e) {
+                        return eW(e, this._makeVerificationRequest())
+                    }
+                    _makeVerificationRequest() {
+                        let {
+                            temporaryProof: e,
+                            phoneNumber: t,
+                            verificationId: r,
+                            verificationCode: i
+                        } = this.params;
+                        return e && t ? {
+                            temporaryProof: e,
+                            phoneNumber: t
+                        } : {
+                            sessionInfo: r,
+                            code: i
+                        }
+                    }
+                    toJSON() {
+                        let e = {
+                            providerId: this.providerId
+                        };
+                        return this.params.phoneNumber && (e.phoneNumber = this.params.phoneNumber), this.params.temporaryProof && (e.temporaryProof = this.params.temporaryProof), this.params.verificationCode && (e.verificationCode = this.params.verificationCode), this.params.verificationId && (e.verificationId = this.params.verificationId), e
+                    }
+                    static fromJSON(e) {
+                        "string" == typeof e && (e = JSON.parse(e));
+                        let {
+                            verificationId: t,
+                            verificationCode: r,
+                            phoneNumber: i,
+                            temporaryProof: n
+                        } = e;
+                        return r || t || i || n ? new eq({
+                            verificationId: t,
+                            verificationCode: r,
+                            phoneNumber: i,
+                            temporaryProof: n
+                        }) : null
+                    }
+                }
+                class ez {
+                    constructor(e) {
+                        const t = (0, i.querystringDecode)((0, i.extractQuerystring)(e)),
+                            r = t.apiKey ? ? null,
+                            n = t.oobCode ? ? null,
+                            s = function(e) {
+                                switch (e) {
+                                    case "recoverEmail":
+                                        return "RECOVER_EMAIL";
+                                    case "resetPassword":
+                                        return "PASSWORD_RESET";
+                                    case "signIn":
+                                        return "EMAIL_SIGNIN";
+                                    case "verifyEmail":
+                                        return "VERIFY_EMAIL";
+                                    case "verifyAndChangeEmail":
+                                        return "VERIFY_AND_CHANGE_EMAIL";
+                                    case "revertSecondFactorAddition":
+                                        return "REVERT_SECOND_FACTOR_ADDITION";
+                                    default:
+                                        return null
+                                }
+                            }(t.mode ? ? null);
+                        m(r && n && s, "argument-error"), this.apiKey = r, this.operation = s, this.code = n, this.continueUrl = t.continueUrl ? ? null, this.languageCode = t.lang ? ? null, this.tenantId = t.tenantId ? ? null
+                    }
+                    static parseLink(e) {
+                        let t, r, n, s = (r = (t = (0, i.querystringDecode)((0, i.extractQuerystring)(e)).link) ? (0, i.querystringDecode)((0, i.extractQuerystring)(t)).deep_link_id : null, ((n = (0, i.querystringDecode)((0, i.extractQuerystring)(e)).deep_link_id) ? (0, i.querystringDecode)((0, i.extractQuerystring)(n)).link : null) || n || r || t || e);
+                        try {
+                            return new ez(s)
+                        } catch {
+                            return null
+                        }
+                    }
+                }
+                class eK {
+                    constructor() {
+                        this.providerId = eK.PROVIDER_ID
+                    }
+                    static credential(e, t) {
+                        return ej._fromEmailAndPassword(e, t)
+                    }
+                    static credentialWithLink(e, t) {
+                        let r = ez.parseLink(t);
+                        return m(r, "argument-error"), ej._fromEmailAndCode(e, r.code, r.tenantId)
+                    }
+                }
+                eK.PROVIDER_ID = "password", eK.EMAIL_PASSWORD_SIGN_IN_METHOD = "password", eK.EMAIL_LINK_SIGN_IN_METHOD = "emailLink";
+                class eG {
+                    constructor(e) {
+                        this.providerId = e, this.defaultLanguageCode = null, this.customParameters = {}
+                    }
+                    setDefaultLanguage(e) {
+                        this.defaultLanguageCode = e
+                    }
+                    setCustomParameters(e) {
+                        return this.customParameters = e, this
+                    }
+                    getCustomParameters() {
+                        return this.customParameters
+                    }
+                }
+                class eJ extends eG {
+                    constructor() {
+                        super(...arguments), this.scopes = []
+                    }
+                    addScope(e) {
+                        return this.scopes.includes(e) || this.scopes.push(e), this
+                    }
+                    getScopes() {
+                        return [...this.scopes]
+                    }
+                }
+                class eY extends eJ {
+                    constructor() {
+                        super("facebook.com")
+                    }
+                    static credential(e) {
+                        return eF._fromParams({
+                            providerId: eY.PROVIDER_ID,
+                            signInMethod: eY.FACEBOOK_SIGN_IN_METHOD,
+                            accessToken: e
+                        })
+                    }
+                    static credentialFromResult(e) {
+                        return eY.credentialFromTaggedObject(e)
+                    }
+                    static credentialFromError(e) {
+                        return eY.credentialFromTaggedObject(e.customData || {})
+                    }
+                    static credentialFromTaggedObject({
+                        _tokenResponse: e
+                    }) {
+                        if (!e || !("oauthAccessToken" in e) || !e.oauthAccessToken) return null;
+                        try {
+                            return eY.credential(e.oauthAccessToken)
+                        } catch {
+                            return null
+                        }
+                    }
+                }
+                eY.FACEBOOK_SIGN_IN_METHOD = "facebook.com", eY.PROVIDER_ID = "facebook.com";
+                class eX extends eJ {
+                    constructor() {
+                        super("google.com"), this.addScope("profile")
+                    }
+                    static credential(e, t) {
+                        return eF._fromParams({
+                            providerId: eX.PROVIDER_ID,
+                            signInMethod: eX.GOOGLE_SIGN_IN_METHOD,
+                            idToken: e,
+                            accessToken: t
+                        })
+                    }
+                    static credentialFromResult(e) {
+                        return eX.credentialFromTaggedObject(e)
+                    }
+                    static credentialFromError(e) {
+                        return eX.credentialFromTaggedObject(e.customData || {})
+                    }
+                    static credentialFromTaggedObject({
+                        _tokenResponse: e
+                    }) {
+                        if (!e) return null;
+                        let {
+                            oauthIdToken: t,
+                            oauthAccessToken: r
+                        } = e;
+                        if (!t && !r) return null;
+                        try {
+                            return eX.credential(t, r)
+                        } catch {
+                            return null
+                        }
+                    }
+                }
+                eX.GOOGLE_SIGN_IN_METHOD = "google.com", eX.PROVIDER_ID = "google.com";
+                class eQ extends eJ {
+                    constructor() {
+                        super("github.com")
+                    }
+                    static credential(e) {
+                        return eF._fromParams({
+                            providerId: eQ.PROVIDER_ID,
+                            signInMethod: eQ.GITHUB_SIGN_IN_METHOD,
+                            accessToken: e
+                        })
+                    }
+                    static credentialFromResult(e) {
+                        return eQ.credentialFromTaggedObject(e)
+                    }
+                    static credentialFromError(e) {
+                        return eQ.credentialFromTaggedObject(e.customData || {})
+                    }
+                    static credentialFromTaggedObject({
+                        _tokenResponse: e
+                    }) {
+                        if (!e || !("oauthAccessToken" in e) || !e.oauthAccessToken) return null;
+                        try {
+                            return eQ.credential(e.oauthAccessToken)
+                        } catch {
+                            return null
+                        }
+                    }
+                }
+                eQ.GITHUB_SIGN_IN_METHOD = "github.com", eQ.PROVIDER_ID = "github.com";
+                class eZ extends eJ {
+                    constructor() {
+                        super("twitter.com")
+                    }
+                    static credential(e, t) {
+                        return eF._fromParams({
+                            providerId: eZ.PROVIDER_ID,
+                            signInMethod: eZ.TWITTER_SIGN_IN_METHOD,
+                            oauthToken: e,
+                            oauthTokenSecret: t
+                        })
+                    }
+                    static credentialFromResult(e) {
+                        return eZ.credentialFromTaggedObject(e)
+                    }
+                    static credentialFromError(e) {
+                        return eZ.credentialFromTaggedObject(e.customData || {})
+                    }
+                    static credentialFromTaggedObject({
+                        _tokenResponse: e
+                    }) {
+                        if (!e) return null;
+                        let {
+                            oauthAccessToken: t,
+                            oauthTokenSecret: r
+                        } = e;
+                        if (!t || !r) return null;
+                        try {
+                            return eZ.credential(t, r)
+                        } catch {
+                            return null
+                        }
+                    }
+                }
+                eZ.TWITTER_SIGN_IN_METHOD = "twitter.com", eZ.PROVIDER_ID = "twitter.com";
+                class e1 {
+                    constructor(e) {
+                        this.user = e.user, this.providerId = e.providerId, this._tokenResponse = e._tokenResponse, this.operationType = e.operationType
+                    }
+                    static async _fromIdTokenResponse(e, t, r, i = !1) {
+                        return new e1({
+                            user: await Q._fromIdTokenResponse(e, r, i),
+                            providerId: e0(r),
+                            _tokenResponse: r,
+                            operationType: t
+                        })
+                    }
+                    static async _forOperation(e, t, r) {
+                        return await e._updateTokensIfNecessary(r, !0), new e1({
+                            user: e,
+                            providerId: e0(r),
+                            _tokenResponse: r,
+                            operationType: t
+                        })
+                    }
+                }
+
+                function e0(e) {
+                    return e.providerId ? e.providerId : "phoneNumber" in e ? "phone" : null
+                }
+                class e6 extends i.FirebaseError {
+                    constructor(e, t, r, i) {
+                        super(t.code, t.message), this.operationType = r, this.user = i, Object.setPrototypeOf(this, e6.prototype), this.customData = {
+                            appName: e.name,
+                            tenantId: e.tenantId ? ? void 0,
+                            _serverResponse: t.customData._serverResponse,
+                            operationType: r
+                        }
+                    }
+                    static _fromErrorAndOperation(e, t, r, i) {
+                        return new e6(e, t, r, i)
+                    }
+                }
+
+                function e3(e, t, r, i) {
+                    return ("reauthenticate" === t ? r._getReauthenticationResolver(e) : r._getIdTokenResponse(e)).catch(r => {
+                        if ("auth/multi-factor-auth-required" === r.code) throw e6._fromErrorAndOperation(e, r, t, i);
+                        throw r
+                    })
+                }
+                async function e4(e, t, r = !1) {
+                    let i = await $(e, t._linkToIdToken(e.auth, await e.getIdToken()), r);
+                    return e1._forOperation(e, "link", i)
+                }
+                async function e5(e, t, i = !1) {
+                    let {
+                        auth: n
+                    } = e;
+                    if ((0, r._isFirebaseServerApp)(n.app)) return Promise.reject(p(n));
+                    let s = "reauthenticate";
+                    try {
+                        let r = await $(e, e3(n, s, t, e), i);
+                        m(r.idToken, n, "internal-error");
+                        let a = B(r.idToken);
+                        m(a, n, "internal-error");
+                        let {
+                            sub: o
+                        } = a;
+                        return m(e.uid === o, n, "user-mismatch"), e1._forOperation(e, s, r)
+                    } catch (e) {
+                        throw e ? .code === "auth/user-not-found" && u(n, "user-mismatch"), e
+                    }
+                }
+                async function e2(e, t, i = !1) {
+                    if ((0, r._isFirebaseServerApp)(e.app)) return Promise.reject(p(e));
+                    let n = "signIn",
+                        s = await e3(e, n, t),
+                        a = await e1._fromIdTokenResponse(e, n, s);
+                    return i || await e._updateCurrentUser(a.user), a
+                }
+                class e8 {
+                    constructor(e, t) {
+                        this.factorId = e, this.uid = t.mfaEnrollmentId, this.enrollmentTime = new Date(t.enrolledAt).toUTCString(), this.displayName = t.displayName
+                    }
+                    static _fromServerResponse(e, t) {
+                        return "phoneInfo" in t ? e7._fromServerResponse(e, t) : "totpInfo" in t ? e9._fromServerResponse(e, t) : u(e, "internal-error")
+                    }
+                }
+                class e7 extends e8 {
+                    constructor(e) {
+                        super("phone", e), this.phoneNumber = e.phoneInfo
+                    }
+                    static _fromServerResponse(e, t) {
+                        return new e7(t)
+                    }
+                }
+                class e9 extends e8 {
+                    constructor(e) {
+                        super("totp", e)
+                    }
+                    static _fromServerResponse(e, t) {
+                        return new e9(t)
+                    }
+                }
+                async function te(e, t) {
+                    return C(e, "POST", "/v1/accounts:update", t)
+                }
+                async function tt(e, {
+                    displayName: t,
+                    photoURL: r
+                }) {
+                    if (void 0 === t && void 0 === r) return;
+                    let n = (0, i.getModularInstance)(e),
+                        s = await n.getIdToken(),
+                        a = await $(n, te(n.auth, {
+                            idToken: s,
+                            displayName: t,
+                            photoUrl: r,
+                            returnSecureToken: !0
+                        }));
+                    n.displayName = a.displayName || null, n.photoURL = a.photoUrl || null;
+                    let o = n.providerData.find(({
+                        providerId: e
+                    }) => "password" === e);
+                    o && (o.displayName = n.displayName, o.photoURL = n.photoURL), await n._updateTokensIfNecessary(a)
+                }
+
+                function tr(e, t, r, n) {
+                    return (0, i.getModularInstance)(e).onIdTokenChanged(t, r, n)
+                }
+
+                function ti(e, t) {
+                    return C(e, "POST", "/v2/accounts/mfaEnrollment:start", T(e, t))
+                }
+                new WeakMap;
+                let tn = "__sak";
+                class ts {
+                    constructor(e, t) {
+                        this.storageRetriever = e, this.type = t
+                    }
+                    _isAvailable() {
+                        try {
+                            if (!this.storage) return Promise.resolve(!1);
+                            return this.storage.setItem(tn, "1"), this.storage.removeItem(tn), Promise.resolve(!0)
+                        } catch {
+                            return Promise.resolve(!1)
+                        }
+                    }
+                    _set(e, t) {
+                        return this.storage.setItem(e, JSON.stringify(t)), Promise.resolve()
+                    }
+                    _get(e) {
+                        let t = this.storage.getItem(e);
+                        return Promise.resolve(t ? JSON.parse(t) : null)
+                    }
+                    _remove(e) {
+                        return this.storage.removeItem(e), Promise.resolve()
+                    }
+                    get storage() {
+                        return this.storageRetriever()
+                    }
+                }
+                class ta extends ts {
+                    constructor() {
+                        super(() => window.localStorage, "LOCAL"), this.boundEventHandler = (e, t) => this.onStorageEvent(e, t), this.listeners = {}, this.localCache = {}, this.pollTimer = null, this.fallbackToPolling = ep(), this._shouldAllowMigration = !0
+                    }
+                    forAllChangedKeys(e) {
+                        for (let t of Object.keys(this.listeners)) {
+                            let r = this.storage.getItem(t),
+                                i = this.localCache[t];
+                            r !== i && e(t, i, r)
+                        }
+                    }
+                    onStorageEvent(e, t = !1) {
+                        if (!e.key) return void this.forAllChangedKeys((e, t, r) => {
+                            this.notifyListeners(e, r)
+                        });
+                        let r = e.key;
+                        t ? this.detachListener() : this.stopPolling();
+                        let n = () => {
+                                let e = this.storage.getItem(r);
+                                (t || this.localCache[r] !== e) && this.notifyListeners(r, e)
+                            },
+                            s = this.storage.getItem(r);
+                        (0, i.isIE)() && 10 === document.documentMode && s !== e.newValue && e.newValue !== e.oldValue ? setTimeout(n, 10) : n()
+                    }
+                    notifyListeners(e, t) {
+                        this.localCache[e] = t;
+                        let r = this.listeners[e];
+                        if (r)
+                            for (let e of Array.from(r)) e(t ? JSON.parse(t) : t)
+                    }
+                    startPolling() {
+                        this.stopPolling(), this.pollTimer = setInterval(() => {
+                            this.forAllChangedKeys((e, t, r) => {
+                                this.onStorageEvent(new StorageEvent("storage", {
+                                    key: e,
+                                    oldValue: t,
+                                    newValue: r
+                                }), !0)
+                            })
+                        }, 1e3)
+                    }
+                    stopPolling() {
+                        this.pollTimer && (clearInterval(this.pollTimer), this.pollTimer = null)
+                    }
+                    attachListener() {
+                        window.addEventListener("storage", this.boundEventHandler)
+                    }
+                    detachListener() {
+                        window.removeEventListener("storage", this.boundEventHandler)
+                    }
+                    _addListener(e, t) {
+                        0 === Object.keys(this.listeners).length && (this.fallbackToPolling ? this.startPolling() : this.attachListener()), this.listeners[e] || (this.listeners[e] = new Set, this.localCache[e] = this.storage.getItem(e)), this.listeners[e].add(t)
+                    }
+                    _removeListener(e, t) {
+                        this.listeners[e] && (this.listeners[e].delete(t), 0 === this.listeners[e].size && delete this.listeners[e]), 0 === Object.keys(this.listeners).length && (this.detachListener(), this.stopPolling())
+                    }
+                    async _set(e, t) {
+                        await super._set(e, t), this.localCache[e] = JSON.stringify(t)
+                    }
+                    async _get(e) {
+                        let t = await super._get(e);
+                        return this.localCache[e] = JSON.stringify(t), t
+                    }
+                    async _remove(e) {
+                        await super._remove(e), delete this.localCache[e]
+                    }
+                }
+                ta.type = "LOCAL";
+                class to extends ts {
+                    constructor() {
+                        super(() => window.sessionStorage, "SESSION")
+                    }
+                    _addListener(e, t) {}
+                    _removeListener(e, t) {}
+                }
+                to.type = "SESSION";
+                class tc {
+                    constructor(e) {
+                        this.eventTarget = e, this.handlersMap = {}, this.boundEventHandler = this.handleEvent.bind(this)
+                    }
+                    static _getInstance(e) {
+                        let t = this.receivers.find(t => t.isListeningto(e));
+                        if (t) return t;
+                        let r = new tc(e);
+                        return this.receivers.push(r), r
+                    }
+                    isListeningto(e) {
+                        return this.eventTarget === e
+                    }
+                    async handleEvent(e) {
+                        let {
+                            eventId: t,
+                            eventType: r,
+                            data: i
+                        } = e.data, n = this.handlersMap[r];
+                        if (!n ? .size) return;
+                        e.ports[0].postMessage({
+                            status: "ack",
+                            eventId: t,
+                            eventType: r
+                        });
+                        let s = Array.from(n).map(async t => t(e.origin, i)),
+                            a = await Promise.all(s.map(async e => {
+                                try {
+                                    let t = await e;
+                                    return {
+                                        fulfilled: !0,
+                                        value: t
+                                    }
+                                } catch (e) {
+                                    return {
+                                        fulfilled: !1,
+                                        reason: e
+                                    }
+                                }
+                            }));
+                        e.ports[0].postMessage({
+                            status: "done",
+                            eventId: t,
+                            eventType: r,
+                            response: a
+                        })
+                    }
+                    _subscribe(e, t) {
+                        0 === Object.keys(this.handlersMap).length && this.eventTarget.addEventListener("message", this.boundEventHandler), this.handlersMap[e] || (this.handlersMap[e] = new Set), this.handlersMap[e].add(t)
+                    }
+                    _unsubscribe(e, t) {
+                        this.handlersMap[e] && t && this.handlersMap[e].delete(t), t && 0 !== this.handlersMap[e].size || delete this.handlersMap[e], 0 === Object.keys(this.handlersMap).length && this.eventTarget.removeEventListener("message", this.boundEventHandler)
+                    }
+                }
+
+                function tl(e = "", t = 10) {
+                    let r = "";
+                    for (let e = 0; e < t; e++) r += Math.floor(10 * Math.random());
+                    return e + r
+                }
+                tc.receivers = [];
+                class tu {
+                    constructor(e) {
+                        this.target = e, this.handlers = new Set
+                    }
+                    removeMessageHandler(e) {
+                        e.messageChannel && (e.messageChannel.port1.removeEventListener("message", e.onMessage), e.messageChannel.port1.close()), this.handlers.delete(e)
+                    }
+                    async _send(e, t, r = 50) {
+                        let i, n, s = "u" > typeof MessageChannel ? new MessageChannel : null;
+                        if (!s) throw Error("connection_unavailable");
+                        return new Promise((a, o) => {
+                            let c = tl("", 20);
+                            s.port1.start();
+                            let l = setTimeout(() => {
+                                o(Error("unsupported_event"))
+                            }, r);
+                            n = {
+                                messageChannel: s,
+                                onMessage(e) {
+                                    if (e.data.eventId === c) switch (e.data.status) {
+                                        case "ack":
+                                            clearTimeout(l), i = setTimeout(() => {
+                                                o(Error("timeout"))
+                                            }, 3e3);
+                                            break;
+                                        case "done":
+                                            clearTimeout(i), a(e.data.response);
+                                            break;
+                                        default:
+                                            clearTimeout(l), clearTimeout(i), o(Error("invalid_response"))
+                                    }
+                                }
+                            }, this.handlers.add(n), s.port1.addEventListener("message", n.onMessage), this.target.postMessage({
+                                eventType: e,
+                                eventId: c,
+                                data: t
+                            }, [s.port2])
+                        }).finally(() => {
+                            n && this.removeMessageHandler(n)
+                        })
+                    }
+                }
+
+                function th() {
+                    return window
+                }
+
+                function td() {
+                    return void 0 !== th().WorkerGlobalScope && "function" == typeof th().importScripts
+                }
+                async function tp() {
+                    if (!navigator ? .serviceWorker) return null;
+                    try {
+                        return (await navigator.serviceWorker.ready).active
+                    } catch {
+                        return null
+                    }
+                }
+                let tf = "firebaseLocalStorageDb",
+                    tm = "firebaseLocalStorage",
+                    tg = "fbase_key";
+                class ty {
+                    constructor(e) {
+                        this.request = e
+                    }
+                    toPromise() {
+                        return new Promise((e, t) => {
+                            this.request.addEventListener("success", () => {
+                                e(this.request.result)
+                            }), this.request.addEventListener("error", () => {
+                                t(this.request.error)
+                            })
+                        })
+                    }
+                }
+
+                function t_(e, t) {
+                    return e.transaction([tm], t ? "readwrite" : "readonly").objectStore(tm)
+                }
+
+                function tw() {
+                    let e = indexedDB.open(tf, 1);
+                    return new Promise((t, r) => {
+                        e.addEventListener("error", () => {
+                            r(e.error)
+                        }), e.addEventListener("upgradeneeded", () => {
+                            let t = e.result;
+                            try {
+                                t.createObjectStore(tm, {
+                                    keyPath: tg
+                                })
+                            } catch (e) {
+                                r(e)
+                            }
+                        }), e.addEventListener("success", async () => {
+                            let r = e.result;
+                            r.objectStoreNames.contains(tm) ? t(r) : (r.close(), await new ty(indexedDB.deleteDatabase(tf)).toPromise(), t(await tw()))
+                        })
+                    })
+                }
+                async function tv(e, t, r) {
+                    return new ty(t_(e, !0).put({
+                        [tg]: t,
+                        value: r
+                    })).toPromise()
+                }
+                async function tI(e, t) {
+                    let r = t_(e, !1).get(t),
+                        i = await new ty(r).toPromise();
+                    return void 0 === i ? null : i.value
+                }
+
+                function tb(e, t) {
+                    return new ty(t_(e, !0).delete(t)).toPromise()
+                }
+                class tE {
+                    constructor() {
+                        this.type = "LOCAL", this._shouldAllowMigration = !0, this.listeners = {}, this.localCache = {}, this.pollTimer = null, this.pendingWrites = 0, this.receiver = null, this.sender = null, this.serviceWorkerReceiverAvailable = !1, this.activeServiceWorker = null, this._workerInitializationPromise = this.initializeServiceWorkerMessaging().then(() => {}, () => {})
+                    }
+                    async _openDb() {
+                        return this.db || (this.db = await tw()), this.db
+                    }
+                    async _withRetries(e) {
+                        let t = 0;
+                        for (;;) try {
+                            let t = await this._openDb();
+                            return await e(t)
+                        } catch (e) {
+                            if (t++ > 3) throw e;
+                            this.db && (this.db.close(), this.db = void 0)
+                        }
+                    }
+                    async initializeServiceWorkerMessaging() {
+                        return td() ? this.initializeReceiver() : this.initializeSender()
+                    }
+                    async initializeReceiver() {
+                        this.receiver = tc._getInstance(td() ? self : null), this.receiver._subscribe("keyChanged", async (e, t) => ({
+                            keyProcessed: (await this._poll()).includes(t.key)
+                        })), this.receiver._subscribe("ping", async (e, t) => ["keyChanged"])
+                    }
+                    async initializeSender() {
+                        if (this.activeServiceWorker = await tp(), !this.activeServiceWorker) return;
+                        this.sender = new tu(this.activeServiceWorker);
+                        let e = await this.sender._send("ping", {}, 800);
+                        e && e[0] ? .fulfilled && e[0] ? .value.includes("keyChanged") && (this.serviceWorkerReceiverAvailable = !0)
+                    }
+                    async notifyServiceWorker(e) {
+                        if (this.sender && this.activeServiceWorker && (navigator ? .serviceWorker ? .controller || null) === this.activeServiceWorker) try {
+                            await this.sender._send("keyChanged", {
+                                key: e
+                            }, this.serviceWorkerReceiverAvailable ? 800 : 50)
+                        } catch {}
+                    }
+                    async _isAvailable() {
+                        try {
+                            if (!indexedDB) return !1;
+                            let e = await tw();
+                            return await tv(e, tn, "1"), await tb(e, tn), !0
+                        } catch {}
+                        return !1
+                    }
+                    async _withPendingWrite(e) {
+                        this.pendingWrites++;
+                        try {
+                            await e()
+                        } finally {
+                            this.pendingWrites--
+                        }
+                    }
+                    async _set(e, t) {
+                        return this._withPendingWrite(async () => (await this._withRetries(r => tv(r, e, t)), this.localCache[e] = t, this.notifyServiceWorker(e)))
+                    }
+                    async _get(e) {
+                        let t = await this._withRetries(t => tI(t, e));
+                        return this.localCache[e] = t, t
+                    }
+                    async _remove(e) {
+                        return this._withPendingWrite(async () => (await this._withRetries(t => tb(t, e)), delete this.localCache[e], this.notifyServiceWorker(e)))
+                    }
+                    async _poll() {
+                        let e = await this._withRetries(e => new ty(t_(e, !1).getAll()).toPromise());
+                        if (!e || 0 !== this.pendingWrites) return [];
+                        let t = [],
+                            r = new Set;
+                        if (0 !== e.length)
+                            for (let {
+                                    fbase_key: i,
+                                    value: n
+                                } of e) r.add(i), JSON.stringify(this.localCache[i]) !== JSON.stringify(n) && (this.notifyListeners(i, n), t.push(i));
+                        for (let e of Object.keys(this.localCache)) this.localCache[e] && !r.has(e) && (this.notifyListeners(e, null), t.push(e));
+                        return t
+                    }
+                    notifyListeners(e, t) {
+                        this.localCache[e] = t;
+                        let r = this.listeners[e];
+                        if (r)
+                            for (let e of Array.from(r)) e(t)
+                    }
+                    startPolling() {
+                        this.stopPolling(), this.pollTimer = setInterval(async () => this._poll(), 800)
+                    }
+                    stopPolling() {
+                        this.pollTimer && (clearInterval(this.pollTimer), this.pollTimer = null)
+                    }
+                    _addListener(e, t) {
+                        0 === Object.keys(this.listeners).length && this.startPolling(), this.listeners[e] || (this.listeners[e] = new Set, this._get(e)), this.listeners[e].add(t)
+                    }
+                    _removeListener(e, t) {
+                        this.listeners[e] && (this.listeners[e].delete(t), 0 === this.listeners[e].size && delete this.listeners[e]), 0 === Object.keys(this.listeners).length && this.stopPolling()
+                    }
+                }
+
+                function tS(e, t) {
+                    return C(e, "POST", "/v2/accounts/mfaSignIn:start", T(e, t))
+                }
+                tE.type = "LOCAL", eb("rcb"), new w(3e4, 6e4);
+                let tT = "recaptcha";
+                async function tC(e, t, r) {
+                    if (!e._getRecaptchaConfig()) try {
+                        await ek(e)
+                    } catch (e) {
+                        console.log("Failed to initialize reCAPTCHA Enterprise config. Triggering the reCAPTCHA v2 verification.")
+                    }
+                    try {
+                        let i;
+                        if (i = "string" == typeof t ? {
+                                phoneNumber: t
+                            } : t, "session" in i) {
+                            let t = i.session;
+                            if ("phoneNumber" in i) {
+                                m("enroll" === t.type, e, "internal-error");
+                                let n = {
+                                        idToken: t.credential,
+                                        phoneEnrollmentInfo: {
+                                            phoneNumber: i.phoneNumber,
+                                            clientType: "CLIENT_TYPE_WEB"
+                                        }
+                                    },
+                                    s = async (e, t) => {
+                                        if (t.phoneEnrollmentInfo.captchaResponse === eT) {
+                                            m(r ? .type === tT, e, "argument-error");
+                                            let i = await tP(e, t, r);
+                                            return ti(e, i)
+                                        }
+                                        return ti(e, t)
+                                    },
+                                    a = eA(e, n, "mfaSmsEnrollment", s, "PHONE_PROVIDER");
+                                return (await a.catch(e => Promise.reject(e))).phoneSessionInfo.sessionInfo
+                            } {
+                                m("signin" === t.type, e, "internal-error");
+                                let n = i.multiFactorHint ? .uid || i.multiFactorUid;
+                                m(n, e, "missing-multi-factor-info");
+                                let s = {
+                                        mfaPendingCredential: t.credential,
+                                        mfaEnrollmentId: n,
+                                        phoneSignInInfo: {
+                                            clientType: "CLIENT_TYPE_WEB"
+                                        }
+                                    },
+                                    a = async (e, t) => {
+                                        if (t.phoneSignInInfo.captchaResponse === eT) {
+                                            m(r ? .type === tT, e, "argument-error");
+                                            let i = await tP(e, t, r);
+                                            return tS(e, i)
+                                        }
+                                        return tS(e, t)
+                                    },
+                                    o = eA(e, s, "mfaSmsSignIn", a, "PHONE_PROVIDER");
+                                return (await o.catch(e => Promise.reject(e))).phoneResponseInfo.sessionInfo
+                            }
+                        } {
+                            let t = {
+                                    phoneNumber: i.phoneNumber,
+                                    clientType: "CLIENT_TYPE_WEB"
+                                },
+                                n = async (e, t) => {
+                                    if (t.captchaResponse === eT) {
+                                        m(r ? .type === tT, e, "argument-error");
+                                        let i = await tP(e, t, r);
+                                        return eB(e, i)
+                                    }
+                                    return eB(e, t)
+                                },
+                                s = eA(e, t, "sendVerificationCode", n, "PHONE_PROVIDER");
+                            return (await s.catch(e => Promise.reject(e))).sessionInfo
+                        }
+                    } finally {
+                        r ? ._reset()
+                    }
+                }
+                async function tP(e, t, r) {
+                    m(r.type === tT, e, "argument-error");
+                    let i = await r.verify();
+                    m("string" == typeof i, e, "argument-error");
+                    let n = { ...t
+                    };
+                    if ("phoneEnrollmentInfo" in n) {
+                        let e = n.phoneEnrollmentInfo.phoneNumber,
+                            t = n.phoneEnrollmentInfo.captchaResponse,
+                            r = n.phoneEnrollmentInfo.clientType,
+                            s = n.phoneEnrollmentInfo.recaptchaVersion;
+                        return Object.assign(n, {
+                            phoneEnrollmentInfo: {
+                                phoneNumber: e,
+                                recaptchaToken: i,
+                                captchaResponse: t,
+                                clientType: r,
+                                recaptchaVersion: s
+                            }
+                        }), n
+                    }
+                    if (!("phoneSignInInfo" in n)) return Object.assign(n, {
+                        recaptchaToken: i
+                    }), n; {
+                        let e = n.phoneSignInInfo.captchaResponse,
+                            t = n.phoneSignInInfo.clientType,
+                            r = n.phoneSignInInfo.recaptchaVersion;
+                        return Object.assign(n, {
+                            phoneSignInInfo: {
+                                recaptchaToken: i,
+                                captchaResponse: e,
+                                clientType: t,
+                                recaptchaVersion: r
+                            }
+                        }), n
+                    }
+                }
+                class tA {
+                    constructor(e) {
+                        this.providerId = tA.PROVIDER_ID, this.auth = ew(e)
+                    }
+                    verifyPhoneNumber(e, t) {
+                        return tC(this.auth, e, (0, i.getModularInstance)(t))
+                    }
+                    static credential(e, t) {
+                        return eq._fromVerification(e, t)
+                    }
+                    static credentialFromResult(e) {
+                        return tA.credentialFromTaggedObject(e)
+                    }
+                    static credentialFromError(e) {
+                        return tA.credentialFromTaggedObject(e.customData || {})
+                    }
+                    static credentialFromTaggedObject({
+                        _tokenResponse: e
+                    }) {
+                        if (!e) return null;
+                        let {
+                            phoneNumber: t,
+                            temporaryProof: r
+                        } = e;
+                        return t && r ? eq._fromTokenResponse(t, r) : null
+                    }
+                }
+
+                function tk(e, t) {
+                    return t ? ee(t) : (m(e._popupRedirectResolver, e, "argument-error"), e._popupRedirectResolver)
+                }
+                tA.PROVIDER_ID = "phone", tA.PHONE_SIGN_IN_METHOD = "phone";
+                class tR extends eN {
+                    constructor(e) {
+                        super("custom", "custom"), this.params = e
+                    }
+                    _getIdTokenResponse(e) {
+                        return ex(e, this._buildIdpRequest())
+                    }
+                    _linkToIdToken(e, t) {
+                        return ex(e, this._buildIdpRequest(t))
+                    }
+                    _getReauthenticationResolver(e) {
+                        return ex(e, this._buildIdpRequest())
+                    }
+                    _buildIdpRequest(e) {
+                        let t = {
+                            requestUri: this.params.requestUri,
+                            sessionId: this.params.sessionId,
+                            postBody: this.params.postBody,
+                            tenantId: this.params.tenantId,
+                            pendingToken: this.params.pendingToken,
+                            returnSecureToken: !0,
+                            returnIdpCredential: !0
+                        };
+                        return e && (t.idToken = e), t
+                    }
+                }
+
+                function tO(e) {
+                    return e2(e.auth, new tR(e), e.bypassAuthState)
+                }
+
+                function tN(e) {
+                    let {
+                        auth: t,
+                        user: r
+                    } = e;
+                    return m(r, t, "internal-error"), e5(r, new tR(e), e.bypassAuthState)
+                }
+                async function tL(e) {
+                    let {
+                        auth: t,
+                        user: r
+                    } = e;
+                    return m(r, t, "internal-error"), e4(r, new tR(e), e.bypassAuthState)
+                }
+                class tD {
+                    constructor(e, t, r, i, n = !1) {
+                        this.auth = e, this.resolver = r, this.user = i, this.bypassAuthState = n, this.pendingPromise = null, this.eventManager = null, this.filter = Array.isArray(t) ? t : [t]
+                    }
+                    execute() {
+                        return new Promise(async (e, t) => {
+                            this.pendingPromise = {
+                                resolve: e,
+                                reject: t
+                            };
+                            try {
+                                this.eventManager = await this.resolver._initialize(this.auth), await this.onExecution(), this.eventManager.registerConsumer(this)
+                            } catch (e) {
+                                this.reject(e)
+                            }
+                        })
+                    }
+                    async onAuthEvent(e) {
+                        let {
+                            urlResponse: t,
+                            sessionId: r,
+                            postBody: i,
+                            tenantId: n,
+                            error: s,
+                            type: a
+                        } = e;
+                        if (s) return void this.reject(s);
+                        let o = {
+                            auth: this.auth,
+                            requestUri: t,
+                            sessionId: r,
+                            tenantId: n || void 0,
+                            postBody: i || void 0,
+                            user: this.user,
+                            bypassAuthState: this.bypassAuthState
+                        };
+                        try {
+                            this.resolve(await this.getIdpTask(a)(o))
+                        } catch (e) {
+                            this.reject(e)
+                        }
+                    }
+                    onError(e) {
+                        this.reject(e)
+                    }
+                    getIdpTask(e) {
+                        switch (e) {
+                            case "signInViaPopup":
+                            case "signInViaRedirect":
+                                return tO;
+                            case "linkViaPopup":
+                            case "linkViaRedirect":
+                                return tL;
+                            case "reauthViaPopup":
+                            case "reauthViaRedirect":
+                                return tN;
+                            default:
+                                u(this.auth, "internal-error")
+                        }
+                    }
+                    resolve(e) {
+                        var t, r;
+                        t = this.pendingPromise, r = "Pending promise was never set", t || g(r), this.pendingPromise.resolve(e), this.unregisterAndCleanUp()
+                    }
+                    reject(e) {
+                        var t, r;
+                        t = this.pendingPromise, r = "Pending promise was never set", t || g(r), this.pendingPromise.reject(e), this.unregisterAndCleanUp()
+                    }
+                    unregisterAndCleanUp() {
+                        this.eventManager && this.eventManager.unregisterConsumer(this), this.pendingPromise = null, this.cleanUp()
+                    }
+                }
+                let tU = new w(2e3, 1e4);
+                async function tM(e, t, i) {
+                    if ((0, r._isFirebaseServerApp)(e.app)) return Promise.reject(h(e, "operation-not-supported-in-this-environment"));
+                    let n = ew(e);
+                    if (!(t instanceof eG)) throw eG.name !== t.constructor.name && u(e, "argument-error"), d(e, "argument-error", `Type of ${t.constructor.name} does not match expected instance.Did you pass a reference from a different Auth SDK?`);
+                    let s = tk(n, i);
+                    return new tj(n, "signInViaPopup", t, s).executeNotNull()
+                }
+                class tj extends tD {
+                    constructor(e, t, r, i, n) {
+                        super(e, t, i, n), this.provider = r, this.authWindow = null, this.pollId = null, tj.currentPopupAction && tj.currentPopupAction.cancel(), tj.currentPopupAction = this
+                    }
+                    async executeNotNull() {
+                        let e = await this.execute();
+                        return m(e, this.auth, "internal-error"), e
+                    }
+                    async onExecution() {
+                        var e, t;
+                        e = 1 === this.filter.length, t = "Popup operations only handle one event", e || g(t);
+                        let r = tl();
+                        this.authWindow = await this.resolver._openPopup(this.auth, this.provider, this.filter[0], r), this.authWindow.associatedEvent = r, this.resolver._originValidation(this.auth).catch(e => {
+                            this.reject(e)
+                        }), this.resolver._isIframeWebStorageSupported(this.auth, e => {
+                            e || this.reject(h(this.auth, "web-storage-unsupported"))
+                        }), this.pollUserCancellation()
+                    }
+                    get eventId() {
+                        return this.authWindow ? .associatedEvent || null
+                    }
+                    cancel() {
+                        this.reject(h(this.auth, "cancelled-popup-request"))
+                    }
+                    cleanUp() {
+                        this.authWindow && this.authWindow.close(), this.pollId && window.clearTimeout(this.pollId), this.authWindow = null, this.pollId = null, tj.currentPopupAction = null
+                    }
+                    pollUserCancellation() {
+                        let e = () => {
+                            if (this.authWindow ? .window ? .closed) {
+                                this.pollId = window.setTimeout(() => {
+                                    this.pollId = null, this.reject(h(this.auth, "popup-closed-by-user"))
+                                }, 8e3);
+                                return
+                            }
+                            this.pollId = window.setTimeout(e, tU.get())
+                        };
+                        e()
+                    }
+                }
+                tj.currentPopupAction = null;
+                let tx = new Map;
+                class tF extends tD {
+                    constructor(e, t, r = !1) {
+                        super(e, ["signInViaRedirect", "linkViaRedirect", "reauthViaRedirect", "unknown"], t, void 0, r), this.eventId = null
+                    }
+                    async execute() {
+                        let e = tx.get(this.auth._key());
+                        if (!e) {
+                            try {
+                                let t = await tB(this.resolver, this.auth) ? await super.execute() : null;
+                                e = () => Promise.resolve(t)
+                            } catch (t) {
+                                e = () => Promise.reject(t)
+                            }
+                            tx.set(this.auth._key(), e)
+                        }
+                        return this.bypassAuthState || tx.set(this.auth._key(), () => Promise.resolve(null)), e()
+                    }
+                    async onAuthEvent(e) {
+                        if ("signInViaRedirect" === e.type) return super.onAuthEvent(e);
+                        if ("unknown" === e.type) return void this.resolve(null);
+                        if (e.eventId) {
+                            let t = await this.auth._redirectUserForId(e.eventId);
+                            if (t) return this.user = t, super.onAuthEvent(e);
+                            this.resolve(null)
+                        }
+                    }
+                    async onExecution() {}
+                    cleanUp() {}
+                }
+                async function tB(e, t) {
+                    var r;
+                    let i = er("pendingRedirect", (r = t).config.apiKey, r.name),
+                        n = ee(e._redirectPersistence);
+                    if (!await n._isAvailable()) return !1;
+                    let s = await n._get(i) === "true";
+                    return await n._remove(i), s
+                }
+
+                function tV(e, t) {
+                    tx.set(e._key(), t)
+                }
+                async function t$(e, t, i = !1) {
+                    if ((0, r._isFirebaseServerApp)(e.app)) return Promise.reject(p(e));
+                    let n = ew(e),
+                        s = tk(n, t),
+                        a = new tF(n, s, i),
+                        o = await a.execute();
+                    return o && !i && (delete o.user._redirectEventId, await n._persistUserIfCurrent(o.user), await n._setRedirectUser(null, t)), o
+                }
+                class tH {
+                    constructor(e) {
+                        this.auth = e, this.cachedEventUids = new Set, this.consumers = new Set, this.queuedRedirectEvent = null, this.hasHandledPotentialRedirect = !1, this.lastProcessedEventTime = Date.now()
+                    }
+                    registerConsumer(e) {
+                        this.consumers.add(e), this.queuedRedirectEvent && this.isEventForConsumer(this.queuedRedirectEvent, e) && (this.sendToConsumer(this.queuedRedirectEvent, e), this.saveEventToCache(this.queuedRedirectEvent), this.queuedRedirectEvent = null)
+                    }
+                    unregisterConsumer(e) {
+                        this.consumers.delete(e)
+                    }
+                    onEvent(e) {
+                        if (this.hasEventBeenHandled(e)) return !1;
+                        let t = !1;
+                        return this.consumers.forEach(r => {
+                            this.isEventForConsumer(e, r) && (t = !0, this.sendToConsumer(e, r), this.saveEventToCache(e))
+                        }), this.hasHandledPotentialRedirect || ! function(e) {
+                            switch (e.type) {
+                                case "signInViaRedirect":
+                                case "linkViaRedirect":
+                                case "reauthViaRedirect":
+                                    return !0;
+                                case "unknown":
+                                    return tq(e);
+                                default:
+                                    return !1
+                            }
+                        }(e) || (this.hasHandledPotentialRedirect = !0, t || (this.queuedRedirectEvent = e, t = !0)), t
+                    }
+                    sendToConsumer(e, t) {
+                        if (e.error && !tq(e)) {
+                            let r = e.error.code ? .split("auth/")[1] || "internal-error";
+                            t.onError(h(this.auth, r))
+                        } else t.onAuthEvent(e)
+                    }
+                    isEventForConsumer(e, t) {
+                        let r = null === t.eventId || !!e.eventId && e.eventId === t.eventId;
+                        return t.filter.includes(e.type) && r
+                    }
+                    hasEventBeenHandled(e) {
+                        return Date.now() - this.lastProcessedEventTime >= 6e5 && this.cachedEventUids.clear(), this.cachedEventUids.has(tW(e))
+                    }
+                    saveEventToCache(e) {
+                        this.cachedEventUids.add(tW(e)), this.lastProcessedEventTime = Date.now()
+                    }
+                }
+
+                function tW(e) {
+                    return [e.type, e.eventId, e.sessionId, e.tenantId].filter(e => e).join("-")
+                }
+
+                function tq({
+                    type: e,
+                    error: t
+                }) {
+                    return "unknown" === e && t ? .code === "auth/no-auth-event"
+                }
+                async function tz(e, t = {}) {
+                    return C(e, "GET", "/v1/projects", t)
+                }
+                let tK = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/,
+                    tG = /^https?/;
+                async function tJ(e) {
+                    if (e.config.emulator) return;
+                    let {
+                        authorizedDomains: t
+                    } = await tz(e);
+                    for (let e of t) try {
+                        if (function(e) {
+                                let t = y(),
+                                    {
+                                        protocol: r,
+                                        hostname: i
+                                    } = new URL(t);
+                                if (e.startsWith("chrome-extension://")) {
+                                    let n = new URL(e);
+                                    return "" === n.hostname && "" === i ? "chrome-extension:" === r && e.replace("chrome-extension://", "") === t.replace("chrome-extension://", "") : "chrome-extension:" === r && n.hostname === i
+                                }
+                                if (!tG.test(r)) return !1;
+                                if (tK.test(e)) return i === e;
+                                let n = e.replace(/\./g, "\\.");
+                                return RegExp("^(.+\\." + n + "|" + n + ")$", "i").test(i)
+                            }(e)) return
+                    } catch {}
+                    u(e, "unauthorized-domain")
+                }
+                let tY = new w(3e4, 6e4);
+
+                function tX() {
+                    let e = th().___jsl;
+                    if (e ? .H) {
+                        for (let t of Object.keys(e.H))
+                            if (e.H[t].r = e.H[t].r || [], e.H[t].L = e.H[t].L || [], e.H[t].r = [...e.H[t].L], e.CP)
+                                for (let t = 0; t < e.CP.length; t++) e.CP[t] = null
+                    }
+                }
+                let tQ = null,
+                    tZ = new w(5e3, 15e3),
+                    t1 = {
+                        style: {
+                            position: "absolute",
+                            top: "-100px",
+                            width: "1px",
+                            height: "1px"
+                        },
+                        "aria-hidden": "true",
+                        tabindex: "-1"
+                    },
+                    t0 = new Map([
+                        ["identitytoolkit.googleapis.com", "p"],
+                        ["staging-identitytoolkit.sandbox.googleapis.com", "s"],
+                        ["test-identitytoolkit.sandbox.googleapis.com", "t"]
+                    ]);
+                async function t6(e) {
+                    let t, n, s, a, o, c = await (tQ = tQ || new Promise((t, r) => {
+                            function i() {
+                                tX(), gapi.load("gapi.iframes", {
+                                    callback: () => {
+                                        t(gapi.iframes.getContext())
+                                    },
+                                    ontimeout: () => {
+                                        tX(), r(h(e, "network-request-failed"))
+                                    },
+                                    timeout: tY.get()
+                                })
+                            }
+                            if (th().gapi ? .iframes ? .Iframe) t(gapi.iframes.getContext());
+                            else if (th().gapi ? .load) i();
+                            else {
+                                var n;
+                                let t = eb("iframefcb");
+                                return th()[t] = () => {
+                                    gapi.load ? i() : r(h(e, "network-request-failed"))
+                                }, (n = `${eI.gapiScript}?onload=${t}`, eI.loadJS(n)).catch(e => r(e))
+                            }
+                        }).catch(e => {
+                            throw tQ = null, e
+                        })),
+                        l = th().gapi;
+                    return m(l, e, "internal-error"), c.open({
+                        where: document.body,
+                        url: (m((t = e.config).authDomain, e, "auth-domain-config-required"), n = t.emulator ? v(t, "emulator/auth/iframe") : `https://${e.config.authDomain}/__/auth/iframe`, s = {
+                            apiKey: t.apiKey,
+                            appName: e.name,
+                            v: r.SDK_VERSION
+                        }, (a = t0.get(e.config.apiHost)) && (s.eid = a), (o = e._getFrameworks()).length && (s.fw = o.join(",")), `${n}?${(0,i.querystring)(s).slice(1)}`),
+                        messageHandlersFilter: l.iframes.CROSS_ORIGIN_IFRAMES_FILTER,
+                        attributes: t1,
+                        dontclear: !0
+                    }, t => new Promise(async (r, i) => {
+                        await t.restyle({
+                            setHideOnLeave: !1
+                        });
+                        let n = h(e, "network-request-failed"),
+                            s = th().setTimeout(() => {
+                                i(n)
+                            }, tZ.get());
+
+                        function a() {
+                            th().clearTimeout(s), r(t)
+                        }
+                        t.ping(a).then(a, () => {
+                            i(n)
+                        })
+                    }))
+                }
+                let t3 = {
+                    location: "yes",
+                    resizable: "yes",
+                    statusbar: "yes",
+                    toolbar: "no"
+                };
+                class t4 {
+                    constructor(e) {
+                        this.window = e, this.associatedEvent = null
+                    }
+                    close() {
+                        if (this.window) try {
+                            this.window.close()
+                        } catch (e) {}
+                    }
+                }
+                let t5 = encodeURIComponent("fac");
+                async function t2(e, t, n, s, a, o) {
+                    m(e.config.authDomain, e, "auth-domain-config-required"), m(e.config.apiKey, e, "invalid-api-key");
+                    let c = {
+                        apiKey: e.config.apiKey,
+                        appName: e.name,
+                        authType: n,
+                        redirectUrl: s,
+                        v: r.SDK_VERSION,
+                        eventId: a
+                    };
+                    if (t instanceof eG)
+                        for (let [r, n] of (t.setDefaultLanguage(e.languageCode), c.providerId = t.providerId || "", (0, i.isEmpty)(t.getCustomParameters()) || (c.customParameters = JSON.stringify(t.getCustomParameters())), Object.entries(o || {}))) c[r] = n;
+                    if (t instanceof eJ) {
+                        let e = t.getScopes().filter(e => "" !== e);
+                        e.length > 0 && (c.scopes = e.join(","))
+                    }
+                    for (let t of (e.tenantId && (c.tid = e.tenantId), Object.keys(c))) void 0 === c[t] && delete c[t];
+                    let l = await e._getAppCheckToken(),
+                        u = l ? `#${t5}=${encodeURIComponent(l)}` : "";
+                    return `${function({config:e}){return e.emulator?v(e,"emulator/auth/handler"):`
+                    https: //${e.authDomain}/__/auth/handler`}(e)}?${(0,i.querystring)(c).slice(1)}${u}`}let t8="webStorageSupport",t7=class{constructor(){this.eventManagers={},this.iframes={},this.originValidationPromises={},this._redirectPersistence=to,this._completeRedirectFn=t$,this._overrideRedirectResult=tV}async _openPopup(e,t,r,n){var s,a;s=this.eventManagers[e._key()]?.manager,a="_initialize() not called before _openPopup()",s||g(a);let o=await t2(e,t,r,y(),n);return function(e,t,r,n=500,s=600){let a=Math.max((window.screen.availHeight-s)/2,0).toString(),o=Math.max((window.screen.availWidth-n)/2,0).toString(),c="",l={...t3,width:n.toString(),height:s.toString(),top:a,left:o},u=(0,i.getUA)().toLowerCase();r&&(c=eo(u)?"_blank":r),es(u)&&(t=t||"http://localhost",l.scrollbars="yes");let h=Object.entries(l).reduce((e,[t,r])=>`${e}${t}=${r},`,"");if(function(e=(0,i.getUA)()){return ed(e)&&!!window.navigator?.standalone}(u)&&"_self"!==c){var d,p;let e,r;return d=t||"",p=c,(e=document.createElement("a")).href=d,e.target=p,(r=document.createEvent("MouseEvent")).initMouseEvent("click",!0,!0,window,1,0,0,0,0,!1,!1,!1,!1,1,null),e.dispatchEvent(r),new t4(null)}let f=window.open(t||"",c,h);m(f,e,"popup-blocked");try{f.focus()}catch(e){}return new t4(f)}(e,o,tl())}async _openRedirect(e,t,r,i){var n;return await this._originValidation(e),n=await t2(e,t,r,y(),i),th().location.href=n,new Promise(()=>{})}_initialize(e){let t=e._key();if(this.eventManagers[t]){var r;let{manager:e,promise:i}=this.eventManagers[t];return e?Promise.resolve(e):(r="If manager is not set, promise should be",i||g(r),i)}let i=this.initAndGetManager(e);return this.eventManagers[t]={promise:i},i.catch(()=>{delete this.eventManagers[t]}),i}async initAndGetManager(e){let t=await t6(e),r=new tH(e);return t.register("authEvent",t=>(m(t?.authEvent,e,"invalid-auth-event"),{status:r.onEvent(t.authEvent)?"ACK":"ERROR"}),gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER),this.eventManagers[e._key()]={manager:r},this.iframes[e._key()]=t,r}_isIframeWebStorageSupported(e,t){this.iframes[e._key()].send(t8,{type:t8},r=>{let i=r?.[0]?.[t8];void 0!==i&&t(!!i),u(e,"internal-error")},gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER)}_originValidation(e){let t=e._key();return this.originValidationPromises[t]||(this.originValidationPromises[t]=tJ(e)),this.originValidationPromises[t]}get _shouldInitProactively(){return ep()||ea()||ed()}};var t9="@firebase/auth",re="1.12.0";class rt{constructor(e){this.auth=e,this.internalListeners=new Map}getUid(){return this.assertAuthConfigured(),this.auth.currentUser?.uid||null}async getToken(e){return(this.assertAuthConfigured(),await this.auth._initializationPromise,this.auth.currentUser)?{accessToken:await this.auth.currentUser.getIdToken(e)}:null}addAuthTokenListener(e){if(this.assertAuthConfigured(),this.internalListeners.has(e))return;let t=this.auth.onIdTokenChanged(t=>{e(t?.stsTokenManager.accessToken||null)});this.internalListeners.set(e,t),this.updateProactiveRefresh()}removeAuthTokenListener(e){this.assertAuthConfigured();let t=this.internalListeners.get(e);t&&(this.internalListeners.delete(e),t(),this.updateProactiveRefresh())}assertAuthConfigured(){m(this.auth._initializationPromise,"dependent-sdk-initialized-before-auth")}updateProactiveRefresh(){this.internalListeners.size>0?this.auth._startProactiveRefresh():this.auth._stopProactiveRefresh()}}let rr=(0,i.getExperimentalSetting)("authIdTokenMaxAge")||300,ri=null;eI={loadJS:e=>new Promise((t,r)=>{let i=document.createElement("script");i.setAttribute("src",e),i.onload=t,i.onerror=e=>{let t=h("internal-error");t.customData=e,r(t)},i.type="text/javascript",i.charset="UTF-8",(document.getElementsByTagName("head")?.[0]??document).appendChild(i)}),gapiScript:"https://apis.google.com/js/api.js",recaptchaV2Script:"https://www.google.com/recaptcha/api.js",recaptchaEnterpriseScript:"https://www.google.com/recaptcha/enterprise.js?render="},t="Browser",(0,r._registerComponent)(new s.Component("auth",(e,{options:r})=>{let i,n,s=e.getProvider("app").getImmediate(),a=e.getProvider("heartbeat"),o=e.getProvider("app-check-internal"),{apiKey:c,authDomain:l}=s.options;m(c&&!c.includes(":"),"invalid-api-key",{appName:s.name});let u=new e_(s,a,o,{apiKey:c,authDomain:l,clientPlatform:t,apiHost:"identitytoolkit.googleapis.com",tokenApiHost:"securetoken.googleapis.com",apiScheme:"https",sdkClientVersion:ef(t)});return n=(Array.isArray(i=r?.persistence||[])?i:[i]).map(ee),r?.errorMap&&u._updateErrorMap(r.errorMap),u._initializeWithPersistence(n,r?.popupRedirectResolver),u},"PUBLIC").setInstantiationMode("EXPLICIT").setInstanceCreatedCallback((e,t,r)=>{e.getProvider("auth-internal").initialize()})),(0,r._registerComponent)(new s.Component("auth-internal",e=>new rt(ew(e.getProvider("auth").getImmediate())),"PRIVATE").setInstantiationMode("EXPLICIT")),(0,r.registerVersion)(t9,re,function(e){switch(e){case"Node":return"node";case"ReactNative":return"rn";case"Worker":return"webworker";case"Cordova":return"cordova";case"WebExtension":return"web-extension";default:return}}(t)),(0,r.registerVersion)(t9,re,"esm2020"),e.s(["D",0,function(e){return(0,i.getModularInstance)(e).signOut()},"Y",0,eX,"al",0,tt,"d",0,tM,"p",0,function(e=(0,r.getApp)()){let t=(0,r._getProvider)(e,"auth");if(t.isInitialized())return t.getImmediate();let n=function(e,t){let n=(0,r._getProvider)(e,"auth");if(n.isInitialized()){let e=n.getImmediate(),r=n.getOptions();if((0,i.deepEqual)(r,t??{}))return e;u(e,"already-initialized")}return n.initialize({options:t})}(e,{popupRedirectResolver:t7,persistence:[tE,ta,to]}),s=(0,i.getExperimentalSetting)("authTokenSyncURL");if(s&&"boolean"==typeof isSecureContext&&isSecureContext){let e=new URL(s,location.origin);if(location.origin===e.origin){let t,r=(t=e.toString(),async e=>{let r=e&&await e.getIdTokenResult(),i=r&&(new Date().getTime()-Date.parse(r.issuedAtTime))/1e3;if(i&&i>rr)return;let n=r?.token;ri!==n&&(ri=n,await fetch(t,{method:n?"POST":"DELETE",headers:n?{Authorization:`Bearer ${n}`}:{}}))});(0,i.getModularInstance)(n).beforeAuthStateChanged(r,()=>r(n.currentUser)),tr(n,e=>r(e))}}let a=(0,i.getDefaultEmulatorHost)("auth");return a&&function(e,t){let r=ew(e);m(/^https?:\/\//.test(t),r,"invalid-emulator-scheme");let n=eR(t),{host:s,port:a}=function(e){let t=eR(e),r=/(\/\/)?([^?#/]+)/.exec(e.substr(t.length));if(!r)return{host:"",port:null};let i=r[2].split("@").pop()||"",n=/^(\[[^\]]+\])(:|$)/.exec(i);if(n){let e=n[1];return{host:e,port:eO(i.substr(e.length+1))}}{let[e,t]=i.split(":");return{host:e,port:eO(t)}}}(t),o=null===a?"":`:${a}`,c={url:`${n}//${s}${o}/`},l=Object.freeze({host:s,port:a,protocol:n.replace(":",""),options:Object.freeze({disableWarnings:!1})});if(!r._canInitEmulator){m(r.config.emulator&&r.emulatorConfig,r,"emulator-config-failed"),m((0,i.deepEqual)(c,r.config.emulator)&&(0,i.deepEqual)(l,r.emulatorConfig),r,"emulator-config-failed");return}r.config.emulator=c,r.emulatorConfig=l,r.settings.appVerificationDisabledForTesting=!0,(0,i.isCloudWorkstation)(s)?((0,i.pingServer)(`${n}//${s}${o}`),(0,i.updateEmulatorBanner)("Auth",!0)):function(){function e(){let e=document.createElement("p"),t=e.style;e.innerText="Running in emulator mode. Do not use with production credentials.",t.position="fixed",t.width="100%",t.backgroundColor="#ffffff",t.border=".1em solid #000000",t.color="#b50000",t.bottom="0px",t.left="0px",t.margin="0px",t.zIndex="10000",t.textAlign="center",e.classList.add("firebase-emulator-warning"),document.body.appendChild(e)}"u">typeof console&&"function"==typeof console.info&&console.info("WARNING: You are using the Auth Emulator, which is intended for local testing only.  Do not use with production credentials."),"u">typeof window&&"u">typeof document&&("loading"===document.readyState?window.addEventListener("DOMContentLoaded",e):e())}()}(n,`http://${a}`),n},"x",0,tr,"z",0,function(e,t,r,n){return(0,i.getModularInstance)(e).onAuthStateChanged(t,r,n)}],181595),e.s([],151718)},214539,e=>{"use strict";(0,e.i(92953).registerVersion)("firebase","12.8.0","app"),e.s([])},959141,e=>{"use strict";let t,r;e.i(247167),e.i(214539);var i=e.i(92953);e.i(151718);var n=e.i(181595),n=n,s=n;let a={apiKey:"AIzaSyB9U6Jy8vY57SxSZ_Lxni38YEx4-dK6ZKI",authDomain:"igcse-mcq.firebaseapp.com",projectId:"igcse-mcq",storageBucket:"igcse-mcq.firebasestorage.app",messagingSenderId:"655490655858",appId:"1:655490655858:web:d20cc891827c2a7bf444eb"},o=[["NEXT_PUBLIC_FIREBASE_API_KEY",a.apiKey],["NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",a.authDomain],["NEXT_PUBLIC_FIREBASE_PROJECT_ID",a.projectId],["NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",a.storageBucket],["NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",a.messagingSenderId],["NEXT_PUBLIC_FIREBASE_APP_ID",a.appId]].filter(([,e])=>!e).map(([e])=>e),c=0===o.length;if(c||console.warn(`Missing Firebase configuration: ${o.join(", ")}`),c){let e=(0,i.initializeApp)(a);t=(0,n.p)(e),(r=new s.Y).setCustomParameters({prompt:"select_account"})}else t=null,r=null;e.s(["auth",0,t,"googleProvider",0,r,"hasConfig",0,c],959141)},963416,e=>{"use strict";var t=e.i(247167);let r="quickmark.testAuthSession";function i(){return"true"===t.default.env.NEXT_PUBLIC_TEST_AUTH_ENABLED}function n(){if(!i())return null;let e=window.localStorage.getItem(r);if(!e)return null;try{let t=JSON.parse(e);if(!t?.token||!t?.user?.firebaseUid||!t?.user?.email)return null;return t}catch{return null}}e.s(["clearStoredTestAuthSession",0,function(){window.localStorage.removeItem(r)},"getStoredTestAuthSession",0,n,"getTestAuthToken",0,function(){return n()?.token??null},"isTestAuthEnabled",0,i])},494867,e=>{"use strict";let t="https://api.quickmark.co".trim();function r(e){let r=e?.NEXT_PUBLIC_API_BASE_URL?.trim()??t;return r?r.replace(/\/+$/,""):"http://localhost:3000"}e.s(["buildPaperAssetApiUrl",0,function(e,t,i){return`${r(i)}/api/papers/${e}/${t}`},"resolveClientApiBaseUrl",0,r])},173967,e=>{"use strict";let t="offlinePracticePacks",r=null;async function i(e,i){let n=await ("u"<typeof indexedDB?Promise.reject(Error("IndexedDB is not available.")):r||(r=new Promise((e,r)=>{let i=indexedDB.open("quickmark-pwa",1);i.onupgradeneeded=()=>{let e=i.result;e.objectStoreNames.contains(t)||e.createObjectStore(t,{keyPath:"paperId"})},i.onsuccess=()=>e(i.result),i.onerror=()=>r(i.error??Error("Failed to open IndexedDB."))})));return new Promise((r,s)=>{let a=n.transaction(t,e);Promise.resolve(i(a.objectStore(t))).then(e=>{a.oncomplete=()=>r(e),a.onerror=()=>s(a.error??Error("IndexedDB transaction failed.")),a.onabort=()=>s(a.error??Error("IndexedDB transaction aborted."))}).catch(e=>{s(e)})})}function n(e){return new Promise((t,r)=>{e.onsuccess=()=>t(e.result),e.onerror=()=>r(e.error??Error("IndexedDB request failed."))})}async function s(){return i("readonly",async e=>(await n(e.getAll())).sort((e,t)=>t.downloadedAt-e.downloadedAt))}async function a(e){return i("readonly",async t=>await n(t.get(e))??null)}async function o(e){await i("readwrite",async t=>{await n(t.put(e))})}async function c(e){await i("readwrite",async t=>{await n(t.delete(e))})}async function l(){await i("readwrite",async e=>{await n(e.clear())})}e.s(["clearOfflinePackRecords",0,l,"deleteOfflinePackRecord",0,c,"getOfflinePackRecord",0,a,"listOfflinePackRecords",0,s,"putOfflinePackRecord",0,o])},609478,e=>{"use strict";e.s(["useBoardStore",()=>n]);var t=e.i(768834),r=e.i(251688);let i=new Map,n=(0,t.create)((e,t)=>({boards:[],boardsLoading:!1,selectedBoard:"igcse",subjects:[],allSubjects:[],subjectsLoading:!1,subjectsError:null,fetchBoards:async()=>{e({boardsLoading:!0});try{let i=await r.boardsApi.getBoards();e({boards:i,boardsLoading:!1}),i.length>0&&t().fetchSubjects(t().selectedBoard)}catch(t){console.error("Failed to fetch boards:",t),e({boardsLoading:!1})}},warmSubjectsCache:async()=>{try{let[t,i,n]=await Promise.all([r.subjectsApi.getSubjects("igcse"),r.subjectsApi.getSubjects("olevel"),r.subjectsApi.getSubjects("alevel")]),s=new Set,a=[];for(let e of[...t,...i,...n])s.has(e.code)||(s.add(e.code),a.push(e));e({allSubjects:a})}catch(e){console.warn("Failed to warm subjects cache:",e)}},setSelectedBoard:r=>{e({selectedBoard:r}),t().fetchSubjects(r)},fetchSubjects:async n=>{let s=n||t().selectedBoard;if(i.has(s))return void await i.get(s);e({subjectsLoading:!0,subjectsError:null});let a=r.subjectsApi.getSubjects(s);i.set(s,a);try{let r=await a,i=t().allSubjects,n=new Set(i.map(e=>e.code)),s=[...i,...r.filter(e=>!n.has(e.code))];e({subjects:r,allSubjects:s,subjectsLoading:!1})}catch(t){console.error("Failed to fetch subjects:",t),e({subjectsError:t instanceof Error?t.message:"Failed to fetch subjects",subjectsLoading:!1})}finally{i.delete(s)}},getSubjectByCode:e=>t().allSubjects.find(t=>t.code===e)??t().subjects.find(t=>t.code===e),getPaperConfig:(e,r,i)=>{let n=t().subjects.find(t=>t.code===e);if(n)return i?n.papers.find(e=>e.paperNumber===r&&e.paperType===i):n.papers.find(e=>e.paperNumber===r)}}))},751556,35861,154399,20375,e=>{"use strict";e.s(["OFFLINE_PRACTICE_PACKS_UPDATED_EVENT",()=>y,"buildOfflinePracticePaperId",()=>I,"getOfflinePracticePack",()=>E,"getOfflinePracticeQuestionPaperObjectUrl",()=>P,"listOfflinePracticePacks",()=>b,"removeAllOfflinePracticePacks",()=>R,"removeOfflinePracticePack",()=>k,"saveOfflinePracticePack",()=>A],751556);var t=e.i(247167),r=e.i(494867),i=e.i(173967);e.s(["buildPaperId",()=>u,"formatPaperName",()=>p,"getNextPaper",()=>h,"getPreviousPaper",()=>d,"parsePaperId",()=>l],154399),e.s(["getSubjectName",()=>s,"isChemistrySubject",()=>a],35861);var n=e.i(609478);function s(e){let t=n.useBoardStore.getState().getSubjectByCode(e);return t?.name??e}function a(e){return s(e).toLowerCase().includes("chemistry")}let o=["m","s","w"];function c(e,t){return"m"===t?["2"]:["1","2","3"]}function l(e){let t,r,i,n,s=e.split("-"),a="IGCSE";a="A Levels"===s[1]?"A Levels":"O Level"===s[1]?"O Level":"IGCSE",t=s[2],r=s[3],i=s[4],n=s[5];let o=r[0];return{subjectCode:t,year:2e3+parseInt(r.slice(1),10),session:o,paperNumber:i,variant:n,qualification:a}}function u(e){let t=String(e.year).slice(-2),r=e.qualification||"IGCSE";return`CAIE-${r}-${e.subjectCode}-${e.session}${t}-${e.paperNumber}-${e.variant}`}function h(e){let t=l(e),r=c(t.paperNumber,t.session),i=r.indexOf(t.variant);if(i>=0&&i<r.length-1)return{...t,variant:r[i+1]};let n=o.indexOf(t.session);if(n<o.length-1){let e=o[n+1],r=c(t.paperNumber,e);return{...t,session:e,variant:r[0]}}let s=c(t.paperNumber,"m");return{...t,year:t.year+1,session:"m",variant:s[0]}}function d(e){let t=l(e),r=c(t.paperNumber,t.session),i=r.indexOf(t.variant);if(i>0)return{...t,variant:r[i-1]};let n=o.indexOf(t.session);if(n>0){let e=o[n-1],r=c(t.paperNumber,e);return{...t,session:e,variant:r[r.length-1]}}let s=c(t.paperNumber,"w");return{...t,year:t.year-1,session:"w",variant:s[s.length-1]}}function p(e){let t=s(e.subjectCode),r={s:"May/June",w:"Oct/Nov",m:"Feb/March"}[e.session]||e.session;return`${t} - Paper ${e.paperNumber}${e.variant} (${r} ${e.year})`}function f(t){let r=t?.trim();return r||new e.U(e.r(232136)).toString()}e.s(["applyPdfWorkerPolicy",0,function(e){e.GlobalWorkerOptions.workerSrc||(e.GlobalWorkerOptions.workerSrc=f(t.default.env.NEXT_PUBLIC_PDFJS_WORKER_SRC))},"resolvePdfWorkerSrc",0,f],20375);let m="quickmark.offlinePracticePacks.v1",g="qm-offline-practice-v1",y="quickmark:offline-practice-packs-updated",_=null;function w(){window.dispatchEvent(new CustomEvent(y))}async function v(){"u">typeof localStorage&&(_||(_=(async()=>{let e=localStorage.getItem(m);if(e)try{let t=JSON.parse(e);await Promise.all(Object.values(t).map(e=>(0,i.putOfflinePackRecord)(e))),localStorage.removeItem(m),w()}catch{localStorage.removeItem(m)}})()),await _)}function I(e){return u(e)}async function b(){return await v(),(0,i.listOfflinePackRecords)()}async function E(e){return await v(),(0,i.getOfflinePackRecord)(e)}async function S(e){if(!("caches"in window))throw Error("Offline downloads require browser cache support.");let t=await fetch(e,{cache:"no-store"});if(!t.ok)throw Error(`Failed to cache resource (${t.status})`);let r=await window.caches.open(g),i=t.clone(),n=t.clone();return await r.put(e,i),(await n.blob()).size}async function T(){if(!("caches"in window))return 0;let e=f(t.default.env.NEXT_PUBLIC_PDFJS_WORKER_SRC),r=await window.caches.open(g);if(await r.match(e))return 0;let i=await fetch(e,{cache:"no-store"});if(!i.ok)throw Error(`Failed to cache PDF worker (${i.status})`);let n=i.clone(),s=i.clone();return await r.put(e,n),(await s.blob()).size}async function C(e){if(!("caches"in window))return null;let t=await window.caches.open(g);return await t.match(e)??null}async function P(e){let t=await E(e);if(!t)return null;let r=await C(t.paper.questionPaper.url);if(!r)return null;let i=await r.blob();return URL.createObjectURL(i)}async function A(e){var t;let n,s={...e.paper,questionPaper:{...e.paper.questionPaper,url:(t=e.paper.paperId,(0,r.buildPaperAssetApiUrl)(t,"question-paper"))}},a=0;try{n=await S(s.questionPaper.url),a=await T()}catch(e){if(e instanceof Error&&("QuotaExceededError"===e.name||e.message.includes("quota")||e.message.includes("storage")))throw Error("Storage quota exceeded. Please remove some downloaded papers to free up space.");throw e}let o={version:1,paperId:e.paper.paperId,identifier:e.identifier,paper:s,answerKey:e.answerKey,downloadedAt:Date.now(),sizeBytes:n+a};try{await (0,i.putOfflinePackRecord)(o)}catch(e){if(e instanceof Error&&("QuotaExceededError"===e.name||e.message.includes("quota")||e.message.includes("storage")))throw Error("Storage quota exceeded. Please remove some downloaded papers to free up space.");throw e}return w(),o}async function k(e){let t=await E(e);if(t&&"caches"in window){let e=await window.caches.open(g);await e.delete(t.paper.questionPaper.url)}await (0,i.deleteOfflinePackRecord)(e),w()}async function R(){let e=await b();if("caches"in window){let t=await window.caches.open(g);await Promise.all(e.map(e=>t.delete(e.paper.questionPaper.url)))}await (0,i.clearOfflinePackRecords)(),w()}},251688,e=>{"use strict";e.s(["API_BASE_URL",()=>a,"ApiError",()=>o,"boardsApi",()=>m,"leaderboardApi",()=>v,"paperApi",()=>d,"rankedAdminApi",()=>I,"subjectsApi",()=>y,"telemetryApi",()=>p,"topicalsApi",()=>b,"userApi",()=>w]);var t=e.i(959141),r=e.i(494867),i=e.i(751556),n=e.i(963416),s=e.i(154399);let a=(0,r.resolveClientApiBaseUrl)();class o extends Error{status;details;constructor(e,t,r){super(t),this.name="ApiError",this.status=e,this.details=r}}async function c(e){if(!e.ok){let t,r=e.statusText;try{let i=await e.json();r=i.error||i.message||r,t=i}catch{r=await e.text()||e.statusText}throw new o(e.status,r,t)}let t=e.headers.get("content-type");return t&&t.includes("application/json")?e.json():{}}async function l(e=!1){let r=(0,n.getTestAuthToken)();if(r)return r;if(!t.hasConfig||!t.auth)return null;let i=t.auth.currentUser;if(!i)return null;try{return await i.getIdToken(e)}catch(e){return console.error("Failed to get auth token:",e),null}}async function u(e=!1){let t=await l(e);if(!t)throw new o(401,"Authentication required");return t}async function h(e,t={},r=!1,i=0){let n={...void 0!==t.body?{"Content-Type":"application/json"}:{},...t.headers};if(r){let e=await u(i>0);n.Authorization=`Bearer ${e}`}let s=await fetch(`${a}${e}`,{...t,headers:n});return 401===s.status&&r&&0===i?(console.warn("Token expired, refreshing and retrying request..."),h(e,t,r,i+1)):c(s)}let d={async resolve(e){try{return await h("/api/papers/resolve",{method:"POST",body:JSON.stringify(e)})}catch(r){let t=await (0,i.getOfflinePracticePack)((0,s.buildPaperId)(e));if(t)return t.paper;throw r}},async resolveFromCache(e){let t=(0,s.buildPaperId)(e),r=await (0,i.getOfflinePracticePack)(t);if(!r)throw Error(`Paper ${t} is not available offline. Download it first from the library.`);return r.paper},async getAnswerKey(e){try{return await h(`/api/papers/${e}/answer-key`)}catch(r){let t=await (0,i.getOfflinePracticePack)(e);if(t)return t.answerKey;throw r}},getQuestionPaperUrl:e=>(0,r.buildPaperAssetApiUrl)(e,"question-paper"),getMarkSchemeUrl:e=>(0,r.buildPaperAssetApiUrl)(e,"mark-scheme"),getExplanation:async(e,t,r)=>h(`/api/papers/${e}/explain`,{method:"POST",body:JSON.stringify({questionNumber:t,imageBase64:r})},!0)},p={async reportPaperLoadFailure(e){await h("/api/telemetry/paper-load",{method:"POST",headers:e.requestId?{"x-request-id":e.requestId}:void 0,body:JSON.stringify(e)},!0)}},f="igcse_boards_cache",m={async getBoards(){let e=localStorage.getItem(f);if(e)try{let{data:t,timestamp:r}=JSON.parse(e);if(Date.now()-r<864e5)return t}catch(e){console.warn("Failed to parse boards cache:",e)}let t=(await h("/api/boards")).boards;try{localStorage.setItem(f,JSON.stringify({data:t,timestamp:Date.now()}))}catch(e){console.warn("Failed to cache boards:",e)}return t},clearCache(){localStorage.removeItem(f)}},g="igcse_subjects_cache",y={async getSubjects(e){let t=e?`${g}_${e}`:g,r=localStorage.getItem(t);if(r)try{let{data:i,timestamp:n,etag:s}=JSON.parse(r),o=Date.now()-n,c=Array.isArray(i)&&i.some(e=>!e.category);if(o<3e5&&!c)return i;if(o<864e5&&s){let r=e?`/api/subjects?board=${e}`:"/api/subjects",n=await fetch(`${a}${r}`,{headers:{"If-None-Match":s}});if(304===n.status)return localStorage.setItem(t,JSON.stringify({data:i,timestamp:Date.now(),etag:s})),i;if(n.ok){let e=n.headers.get("etag"),r=(await n.json()).subjects;return localStorage.setItem(t,JSON.stringify({data:r,timestamp:Date.now(),etag:e})),r}}}catch(e){console.warn("Failed to revalidate subjects cache:",e);try{let{data:e,timestamp:t}=JSON.parse(r);if(Date.now()-t<864e5)return e}catch(e){console.warn("Failed to parse cached subjects during revalidation fallback:",e)}}let i=e?`/api/subjects?board=${e}`:"/api/subjects",n=await fetch(`${a}${i}`);if(!n.ok)throw new o(n.status,`Failed to fetch subjects: ${n.statusText}`);let s=n.headers.get("etag"),c=(await n.json()).subjects;try{localStorage.setItem(t,JSON.stringify({data:c,timestamp:Date.now(),etag:s}))}catch(e){console.warn("Failed to cache subjects:",e)}return c},getSubject:async e=>h(`/api/subjects/${e}`),clearCache(e){e?localStorage.removeItem(`${g}_${e}`):Object.keys(localStorage).forEach(e=>{e.startsWith(g)&&localStorage.removeItem(e)})}};function _(e){return{...e,subjectStats:e.subjectStats.map(e=>{let t=Array.isArray(e.attempts)?e.attempts:void 0,r="number"==typeof e.totalAttempts?e.totalAttempts:"number"==typeof e.attempts?e.attempts:t?.length??0,i="number"==typeof e.totalTimeSpent?e.totalTimeSpent:t?.reduce((e,t)=>e+(t.timeSpentSeconds??0),0);return{subjectCode:e.subjectCode,subjectName:e.subjectName||e.subjectCode,averageScore:e.averageScore,attempts:t,totalAttempts:r,totalTimeSpent:i}})}}let w={getProfile:async()=>h("/api/users/me",{},!0),updateProfile:async e=>h("/api/users/me",{method:"PATCH",body:JSON.stringify(e)},!0),updateUsername:async e=>h("/api/users/me/username",{method:"PATCH",body:JSON.stringify({username:e})},!0),getUserProfile:async e=>h(`/api/users/${e}`),async getUserStats(e,t="all"){let r=new URLSearchParams;return r.set("scope",t),_(await h(`/api/users/${e}/stats?${r.toString()}`))},getUserAchievements:async e=>(await h(`/api/users/${e}/achievements`)).achievements,getStats:async()=>_(await h("/api/attempts/stats",{},!0)),getReports:async()=>(await h("/api/reports/me",{},!0)).reports,getReport:async e=>(await h(`/api/reports/me/${e}`,{},!0)).report,getReportQuota:async()=>h("/api/reports/quota",{},!0),generateReport:async e=>h(`/api/reports/me/${e}/generate`,{method:"POST"},!0),getAllAchievements:async()=>(await h("/api/achievements")).achievements,getAchievements:async()=>(await h("/api/achievements/me",{},!0)).achievements,createAttempt:async e=>h("/api/attempts",{method:"POST",body:JSON.stringify(e)},!0),async getAttempts(e=50,t=0,r){let i=new URLSearchParams;return i.set("limit",e.toString()),i.set("offset",t.toString()),r&&i.set("subjectCode",r),h(`/api/attempts/me?${i.toString()}`,{},!0)},getAttempt:async e=>h(`/api/attempts/${e}`,{},!0),deleteAttempt:async e=>h(`/api/attempts/${e}`,{method:"DELETE"},!0),async deleteAttempts(e){let t=new URLSearchParams;return e&&t.set("subjectCode",e),h(t.toString()?`/api/attempts?${t.toString()}`:"/api/attempts",{method:"DELETE"},!0)},async syncUser(){let e=(0,n.getStoredTestAuthSession)();if(e){let t=localStorage.getItem("referralCode")||void 0;return h("/api/auth/sync-user",{method:"POST",body:JSON.stringify({email:e.user.email,name:e.user.name||e.user.email.split("@")[0],image:e.user.image||void 0,emailVerified:!0,referralCode:t})},!0)}if((!t.hasConfig||!t.auth)&&!(0,n.isTestAuthEnabled)())throw new o(503,"Authentication is unavailable");let r=t.auth.currentUser;if(!r)throw new o(401,"Not authenticated");if(!r.email)throw new o(400,"User email is required");let i=localStorage.getItem("referralCode")||void 0;return h("/api/auth/sync-user",{method:"POST",body:JSON.stringify({email:r.email,name:r.displayName||r.email.split("@")[0],image:r.photoURL||void 0,emailVerified:r.emailVerified||!1,referralCode:i})},!0)}},v={getRankedSeasons:async()=>h("/api/leaderboards/ranked/seasons"),async getRankedGlobal(e=50,t=1,r,i){let n=new URLSearchParams;return n.set("limit",e.toString()),n.set("page",t.toString()),r&&n.set("season",r),i&&n.set("boardCode",i),h(`/api/leaderboards/ranked/global?${n.toString()}`)},async getRankedBySubject(e,t=50,r=1,i){let n=new URLSearchParams;return n.set("limit",t.toString()),n.set("page",r.toString()),i&&n.set("season",i),h(`/api/leaderboards/ranked/${e}?${n.toString()}`)},getByPaper:async(e,t=100)=>(await h(`/api/leaderboards/paper/${e}?limit=${t}`)).leaderboard},I={getOverview:async()=>h("/api/admin/ranked/overview",{},!0),getSeasons:async()=>h("/api/admin/ranked/seasons",{},!0),reconcileSeason:async()=>h("/api/admin/ranked/seasons/reconcile",{method:"POST"},!0),setMaintenance:async e=>h(e?"/api/admin/ranked/maintenance/enable":"/api/admin/ranked/maintenance/disable",{method:"POST"},!0)},b={getSubjects:async()=>(await h("/api/topicals/subjects",{},!0)).subjects,async getSubjectInfo(e,t){let r=t?`?validity=${encodeURIComponent(t)}`:"";return h(`/api/topicals/${e}${r}`,{},!0)},getQuestions:async(e,t,r,i,n)=>h(`/api/topicals/${e}/questions`,{method:"POST",body:JSON.stringify({topicIds:t,...r,limit:i,offset:n})},!0),async getCount(e,t,r){let i=new URLSearchParams;return i.set("topicIds",t.join(",")),r?.years?.length&&i.set("years",r.years.join(",")),r?.sessions?.length&&i.set("sessions",r.sessions.join(",")),r?.variants?.length&&i.set("variants",r.variants.join(",")),(await h(`/api/topicals/${e}/count?${i.toString()}`,{},!0)).count},getImageUrl:(e,t,r)=>`${a}/api/topicals/images/${e}/${t}/${r}`,async fetchImageAsObjectUrl(e){let t=await l(),r={};t&&(r.Authorization=`Bearer ${t}`);let i=await fetch(e,{headers:r});if(!i.ok)throw Error(`Image fetch failed: ${i.status}`);let n=await i.blob();return URL.createObjectURL(n)}}}]);

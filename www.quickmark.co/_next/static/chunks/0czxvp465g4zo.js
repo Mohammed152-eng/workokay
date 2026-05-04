@@ -1,0 +1,2100 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push(["object" == typeof document ? document.currentScript : void 0, 195057, (e, t, r) => {
+    "use strict";
+    Object.defineProperty(r, "__esModule", {
+        value: !0
+    });
+    var s = {
+        formatUrl: function() {
+            return o
+        },
+        formatWithValidation: function() {
+            return u
+        },
+        urlObjectKeys: function() {
+            return l
+        }
+    };
+    for (var n in s) Object.defineProperty(r, n, {
+        enumerable: !0,
+        get: s[n]
+    });
+    let i = e.r(190809)._(e.r(998183)),
+        a = /https?|ftp|gopher|file/;
+
+    function o(e) {
+        let {
+            auth: t,
+            hostname: r
+        } = e, s = e.protocol || "", n = e.pathname || "", o = e.hash || "", l = e.query || "", u = !1;
+        t = t ? encodeURIComponent(t).replace(/%3A/i, ":") + "@" : "", e.host ? u = t + e.host : r && (u = t + (~r.indexOf(":") ? `[${r}]` : r), e.port && (u += ":" + e.port)), l && "object" == typeof l && (l = String(i.urlQueryToSearchParams(l)));
+        let c = e.search || l && `?${l}` || "";
+        return s && !s.endsWith(":") && (s += ":"), e.slashes || (!s || a.test(s)) && !1 !== u ? (u = "//" + (u || ""), n && "/" !== n[0] && (n = "/" + n)) : u || (u = ""), o && "#" !== o[0] && (o = "#" + o), c && "?" !== c[0] && (c = "?" + c), n = n.replace(/[?#]/g, encodeURIComponent), c = c.replace("#", "%23"), `${s}${u}${n}${c}${o}`
+    }
+    let l = ["auth", "hash", "host", "hostname", "href", "path", "pathname", "port", "protocol", "query", "search", "slashes"];
+
+    function u(e) {
+        return o(e)
+    }
+}, 818581, (e, t, r) => {
+    "use strict";
+    Object.defineProperty(r, "__esModule", {
+        value: !0
+    }), Object.defineProperty(r, "useMergedRef", {
+        enumerable: !0,
+        get: function() {
+            return n
+        }
+    });
+    let s = e.r(271645);
+
+    function n(e, t) {
+        let r = (0, s.useRef)(null),
+            n = (0, s.useRef)(null);
+        return (0, s.useCallback)(s => {
+            if (null === s) {
+                let e = r.current;
+                e && (r.current = null, e());
+                let t = n.current;
+                t && (n.current = null, t())
+            } else e && (r.current = i(e, s)), t && (n.current = i(t, s))
+        }, [e, t])
+    }
+
+    function i(e, t) {
+        if ("function" != typeof e) return e.current = t, () => {
+            e.current = null
+        }; {
+            let r = e(t);
+            return "function" == typeof r ? r : () => e(null)
+        }
+    }("function" == typeof r.default || "object" == typeof r.default && null !== r.default) && void 0 === r.default.__esModule && (Object.defineProperty(r.default, "__esModule", {
+        value: !0
+    }), Object.assign(r.default, r), t.exports = r.default)
+}, 573668, (e, t, r) => {
+    "use strict";
+    Object.defineProperty(r, "__esModule", {
+        value: !0
+    }), Object.defineProperty(r, "isLocalURL", {
+        enumerable: !0,
+        get: function() {
+            return i
+        }
+    });
+    let s = e.r(718967),
+        n = e.r(652817);
+
+    function i(e) {
+        if (!(0, s.isAbsoluteUrl)(e)) return !0;
+        try {
+            let t = (0, s.getLocationOrigin)(),
+                r = new URL(e, t);
+            return r.origin === t && (0, n.hasBasePath)(r.pathname)
+        } catch (e) {
+            return !1
+        }
+    }
+}, 284508, (e, t, r) => {
+    "use strict";
+    Object.defineProperty(r, "__esModule", {
+        value: !0
+    }), Object.defineProperty(r, "errorOnce", {
+        enumerable: !0,
+        get: function() {
+            return s
+        }
+    });
+    let s = e => {}
+}, 522016, (e, t, r) => {
+    "use strict";
+    Object.defineProperty(r, "__esModule", {
+        value: !0
+    });
+    var s = {
+        default: function() {
+            return b
+        },
+        useLinkStatus: function() {
+            return w
+        }
+    };
+    for (var n in s) Object.defineProperty(r, n, {
+        enumerable: !0,
+        get: s[n]
+    });
+    let i = e.r(190809),
+        a = e.r(843476),
+        o = i._(e.r(271645)),
+        l = e.r(195057),
+        u = e.r(8372),
+        c = e.r(818581),
+        d = e.r(718967),
+        p = e.r(405550);
+    e.r(233525);
+    let m = e.r(388540),
+        h = e.r(91949),
+        f = e.r(573668),
+        g = e.r(509396);
+
+    function b(t) {
+        var r, s;
+        let n, i, b, [w, v] = (0, o.useOptimistic)(h.IDLE_LINK_STATUS),
+            y = (0, o.useRef)(null),
+            {
+                href: k,
+                as: x,
+                children: j,
+                prefetch: I = null,
+                passHref: A,
+                replace: q,
+                shallow: T,
+                scroll: P,
+                onClick: M,
+                onMouseEnter: N,
+                onTouchStart: C,
+                legacyBehavior: O = !1,
+                onNavigate: _,
+                transitionTypes: E,
+                ref: R,
+                unstable_dynamicOnHover: L,
+                ...$
+            } = t;
+        n = j, O && ("string" == typeof n || "number" == typeof n) && (n = (0, a.jsx)("a", {
+            children: n
+        }));
+        let Q = o.default.useContext(u.AppRouterContext),
+            F = !1 !== I,
+            D = !1 !== I ? null === (s = I) || "auto" === s ? g.FetchStrategy.PPR : g.FetchStrategy.Full : g.FetchStrategy.PPR,
+            U = "string" == typeof(r = x || k) ? r : (0, l.formatUrl)(r);
+        if (O) {
+            if (n ? .$$typeof === Symbol.for("react.lazy")) throw Object.defineProperty(Error("`<Link legacyBehavior>` received a direct child that is either a Server Component, or JSX that was loaded with React.lazy(). This is not supported. Either remove legacyBehavior, or make the direct child a Client Component that renders the Link's `<a>` tag."), "__NEXT_ERROR_CODE", {
+                value: "E863",
+                enumerable: !1,
+                configurable: !0
+            });
+            i = o.default.Children.only(n)
+        }
+        let B = O ? i && "object" == typeof i && i.ref : R,
+            K = o.default.useCallback(e => (null !== Q && (y.current = (0, h.mountLinkInstance)(e, U, Q, D, F, v)), () => {
+                y.current && ((0, h.unmountLinkForCurrentNavigation)(y.current), y.current = null), (0, h.unmountPrefetchableInstance)(e)
+            }), [F, U, Q, D, v]),
+            H = {
+                ref: (0, c.useMergedRef)(K, B),
+                onClick(t) {
+                    O || "function" != typeof M || M(t), O && i.props && "function" == typeof i.props.onClick && i.props.onClick(t), !Q || t.defaultPrevented || function(t, r, s, n, i, a, l) {
+                        if ("u" > typeof window) {
+                            let u, {
+                                nodeName: c
+                            } = t.currentTarget;
+                            if ("A" === c.toUpperCase() && ((u = t.currentTarget.getAttribute("target")) && "_self" !== u || t.metaKey || t.ctrlKey || t.shiftKey || t.altKey || t.nativeEvent && 2 === t.nativeEvent.which) || t.currentTarget.hasAttribute("download")) return;
+                            if (!(0, f.isLocalURL)(r)) {
+                                n && (t.preventDefault(), location.replace(r));
+                                return
+                            }
+                            if (t.preventDefault(), a) {
+                                let e = !1;
+                                if (a({
+                                        preventDefault: () => {
+                                            e = !0
+                                        }
+                                    }), e) return
+                            }
+                            let {
+                                dispatchNavigateAction: d
+                            } = e.r(699781);
+                            o.default.startTransition(() => {
+                                d(r, n ? "replace" : "push", !1 === i ? m.ScrollBehavior.NoScroll : m.ScrollBehavior.Default, s.current, l)
+                            })
+                        }
+                    }(t, U, y, q, P, _, E)
+                },
+                onMouseEnter(e) {
+                    O || "function" != typeof N || N(e), O && i.props && "function" == typeof i.props.onMouseEnter && i.props.onMouseEnter(e), Q && F && (0, h.onNavigationIntent)(e.currentTarget, !0 === L)
+                },
+                onTouchStart: function(e) {
+                    O || "function" != typeof C || C(e), O && i.props && "function" == typeof i.props.onTouchStart && i.props.onTouchStart(e), Q && F && (0, h.onNavigationIntent)(e.currentTarget, !0 === L)
+                }
+            };
+        return (0, d.isAbsoluteUrl)(U) ? H.href = U : O && !A && ("a" !== i.type || "href" in i.props) || (H.href = (0, p.addBasePath)(U)), b = O ? o.default.cloneElement(i, H) : (0, a.jsx)("a", { ...$,
+            ...H,
+            children: n
+        }), (0, a.jsx)(S.Provider, {
+            value: w,
+            children: b
+        })
+    }
+    e.r(284508);
+    let S = (0, o.createContext)(h.IDLE_LINK_STATUS),
+        w = () => (0, o.useContext)(S);
+    ("function" == typeof r.default || "object" == typeof r.default && null !== r.default) && void 0 === r.default.__esModule && (Object.defineProperty(r.default, "__esModule", {
+        value: !0
+    }), Object.assign(r.default, r), t.exports = r.default)
+}, 769830, e => {
+    "use strict";
+    var t = e.i(768834);
+    let r = "Paper integrity check failed:",
+        s = "Question integrity check failed:";
+
+    function n(e, t) {
+        return e && t && e !== t ? `${r} QP ${e} does not match MS ${t}.` : null
+    }
+
+    function i(e) {
+        let t = (e ? ? "").split(" | ").map(e => e.trim()).filter(Boolean),
+            n = null,
+            i = null,
+            a = [];
+        for (let e of t) {
+            if (e.startsWith(r)) {
+                n = e;
+                continue
+            }
+            if (e.startsWith(s)) {
+                i = e;
+                continue
+            }
+            a.push(e)
+        }
+        return {
+            paper: n,
+            question: i,
+            other: a
+        }
+    }
+
+    function a(e) {
+        let t = [e.paper, e.question, ...e.other].filter(Boolean);
+        return t.length > 0 ? t.join(" | ") : null
+    }
+    let o = {
+            phase: "idle",
+            matchId: null,
+            subjectCode: null,
+            paperType: null,
+            paperId: null,
+            msPaperId: null,
+            gameId: null,
+            paperUrl: null,
+            audioUrl: null,
+            questionSetHash: null,
+            servedQuestionSetHash: null,
+            servedQuestionSnippets: [],
+            optionOrderSource: "unknown",
+            qpMetadata: null,
+            msMetadata: null,
+            extractionDiagnostics: null,
+            integrityError: null,
+            totalDurationMs: null,
+            totalQuestions: null,
+            startEpoch: null,
+            isFriendMatch: !1,
+            selfId: null,
+            opponent: null,
+            opponentDisconnected: !1,
+            answers: {},
+            opponentAnswered: 0,
+            queuePreferences: [],
+            result: null,
+            matchFoundAt: null,
+            submitted: !1,
+            submitPending: !1,
+            opponentSubmitted: !1,
+            correctAnswers: {},
+            resultDismissed: !1,
+            socketSubmitAnswer: null,
+            socketResign: null,
+            socketSubmitMatch: null,
+            socketJoinQueue: null,
+            socketLeaveQueue: null,
+            socketIsConnected: !1,
+            socketLongWait: !1,
+            socketOnlineCount: null,
+            showFriendMatch: !1,
+            maintenanceNotice: null,
+            lastIgnoredEventReason: null
+        },
+        l = (0, t.create)(e => ({ ...o,
+            setSocketCallbacks: t => e({
+                socketSubmitAnswer: t.submitAnswer,
+                socketResign: t.resign,
+                socketSubmitMatch: t.submitMatch,
+                socketJoinQueue: t.joinQueue,
+                socketLeaveQueue: t.leaveQueue
+            }),
+            setConnectionState: t => e(e => ({
+                socketIsConnected: t.isConnected,
+                socketLongWait: t.longWait,
+                socketOnlineCount: t.onlineCount,
+                submitPending: !!t.isConnected && e.submitPending
+            })),
+            setShowFriendMatch: t => e({
+                showFriendMatch: t
+            }),
+            setMaintenanceNotice: t => e({
+                maintenanceNotice: t
+            }),
+            clearMaintenanceNotice: () => e({
+                maintenanceNotice: null
+            }),
+            setLastIgnoredEventReason: t => e({
+                lastIgnoredEventReason: t
+            }),
+            setSelfId: t => e({
+                selfId: t
+            }),
+            setQueuePreferences: t => e({
+                queuePreferences: t
+            }),
+            startQueuing: () => e({
+                phase: "queuing"
+            }),
+            onMatchFound: t => e(e => {
+                if ("active" === e.phase || "result" === e.phase) return e;
+                let r = "queuing" === e.phase,
+                    s = t.isFriendMatch && ("idle" === e.phase || "queuing" === e.phase);
+                return r || s ? {
+                    phase: "battle_card",
+                    matchId: t.matchId,
+                    subjectCode: t.subjectCode,
+                    paperType: t.paperType,
+                    isFriendMatch: t.isFriendMatch,
+                    opponent: t.opponent,
+                    matchFoundAt: Date.now()
+                } : e
+            }),
+            onMatchStart: t => e(e => {
+                if (e.matchId && e.matchId !== t.matchId) return e;
+                let r = t.paperId || null,
+                    s = t.paperUrl || (r ? `/api/ranked/paper/${r}` : null);
+                if (!r || !s) return e;
+                let i = t.startEpoch && t.startEpoch > 0 ? t.startEpoch : Date.now(),
+                    a = t.totalQuestions && t.totalQuestions > 0 ? t.totalQuestions : e.totalQuestions ? ? 0;
+                return a <= 0 ? e : {
+                    phase: "active",
+                    matchId: t.matchId,
+                    subjectCode: t.subjectCode ? ? e.subjectCode,
+                    paperType: t.paperType ? ? e.paperType,
+                    isFriendMatch: t.isFriendMatch ? ? e.isFriendMatch,
+                    paperId: r,
+                    msPaperId: t.msPaperId ? ? r,
+                    gameId: t.gameId ? ? null,
+                    paperUrl: s,
+                    audioUrl: t.audioUrl ? ? null,
+                    questionSetHash: t.questionSetHash ? ? t.questionSetSignature ? ? null,
+                    optionOrderSource: t.optionOrderSource ? ? "unknown",
+                    qpMetadata: t.qpMetadata ? ? null,
+                    msMetadata: t.msMetadata ? ? null,
+                    extractionDiagnostics: t.extraction ? ? null,
+                    integrityError: n(r, t.msPaperId ? ? r),
+                    servedQuestionSetHash: null,
+                    servedQuestionSnippets: [],
+                    totalDurationMs: t.totalDurationMs ? ? null,
+                    totalQuestions: a,
+                    startEpoch: i
+                }
+            }),
+            onAnswerAck: (t, r, s) => {
+                s || e(e => {
+                    if (e.matchId !== t) return e;
+                    let s = { ...e.answers
+                    };
+                    return delete s[r], {
+                        answers: s
+                    }
+                })
+            },
+            onOpponentProgress: (t, r) => e(e => e.matchId !== t ? e : {
+                opponentAnswered: r
+            }),
+            onOpponentDisconnected: t => e(e => e.matchId !== t ? e : {
+                opponentDisconnected: !0
+            }),
+            onOpponentReconnected: t => e(e => e.matchId !== t ? e : {
+                opponentDisconnected: !1
+            }),
+            onOpponentSubmitted: t => e(e => e.matchId !== t ? e : {
+                opponentSubmitted: !0
+            }),
+            onSubmitAck: (t, r) => e(e => e.matchId !== t ? e : r ? {
+                submitted: !0,
+                submitPending: !1
+            } : {
+                submitPending: !1
+            }),
+            onRequeued: () => e(e => ({ ...o,
+                selfId: e.selfId,
+                queuePreferences: e.queuePreferences,
+                phase: "queuing"
+            })),
+            onStateRestore: t => e(e => {
+                var r;
+                if ("result" === e.phase && e.matchId === t.matchId || e.matchId && e.matchId !== t.matchId && "idle" !== e.phase) return e;
+                let s = t.paperId || null,
+                    i = t.paperUrl || (s ? `/api/ranked/paper/${s}` : null);
+                return (r = {
+                    startEpoch: t.startEpoch,
+                    paperId: s,
+                    paperUrl: i,
+                    totalQuestions: t.totalQuestions
+                }).paperId && r.paperUrl && r.totalQuestions && !(r.totalQuestions <= 0) && r.startEpoch && !(r.startEpoch <= 0) && 1 ? {
+                    phase: "active",
+                    matchId: t.matchId,
+                    answers: t.answers,
+                    submitted: t.submitted ? ? !1,
+                    submitPending: !1,
+                    opponentSubmitted: t.opponentSubmitted ? ? !1,
+                    startEpoch: t.startEpoch,
+                    paperId: s,
+                    msPaperId: t.msPaperId ? ? s,
+                    gameId: t.gameId ? ? null,
+                    paperUrl: i,
+                    audioUrl: t.audioUrl ? ? null,
+                    questionSetHash: t.questionSetHash ? ? t.questionSetSignature ? ? null,
+                    optionOrderSource: t.optionOrderSource ? ? "unknown",
+                    qpMetadata: t.qpMetadata ? ? null,
+                    msMetadata: t.msMetadata ? ? null,
+                    extractionDiagnostics: t.extraction ? ? null,
+                    integrityError: n(s, t.msPaperId ? ? s),
+                    servedQuestionSetHash: null,
+                    servedQuestionSnippets: [],
+                    totalDurationMs: t.totalDurationMs ? ? null,
+                    totalQuestions: t.totalQuestions,
+                    isFriendMatch: t.isFriendMatch,
+                    opponent: t.opponent,
+                    subjectCode: t.subjectCode,
+                    paperType: t.paperType,
+                    opponentAnswered: t.opponentAnswered
+                } : "active" === e.phase || "result" === e.phase ? e : {
+                    phase: "battle_card",
+                    matchId: t.matchId,
+                    subjectCode: t.subjectCode,
+                    paperType: t.paperType,
+                    isFriendMatch: t.isFriendMatch,
+                    opponent: t.opponent,
+                    matchFoundAt: e.matchFoundAt ? ? Date.now(),
+                    opponentAnswered: t.opponentAnswered
+                }
+            }),
+            onMatchResult: t => {
+                e(e => e.matchId && e.matchId !== t.matchId ? e : {
+                    phase: "result",
+                    result: t,
+                    correctAnswers: t.correctAnswers ? ? {},
+                    paperId: t.paperId ? ? e.paperId,
+                    msPaperId: t.msPaperId ? ? t.paperId ? ? e.msPaperId,
+                    gameId: t.gameId ? ? e.gameId,
+                    questionSetHash: t.questionSetHash ? ? t.questionSetSignature ? ? e.questionSetHash,
+                    optionOrderSource: t.optionOrderSource ? ? e.optionOrderSource ? ? "unknown",
+                    qpMetadata: t.qpMetadata ? ? e.qpMetadata,
+                    msMetadata: t.msMetadata ? ? e.msMetadata,
+                    extractionDiagnostics: t.extraction ? ? e.extractionDiagnostics,
+                    integrityError: (() => {
+                        if (t.integrityError) return t.integrityError;
+                        let r = n(t.paperId ? ? e.paperId, t.msPaperId ? ? t.paperId ? ? e.msPaperId),
+                            s = i(e.integrityError);
+                        return a({
+                            paper: r,
+                            question: s.question,
+                            other: s.other
+                        })
+                    })(),
+                    resultDismissed: !1,
+                    submitPending: !1
+                })
+            },
+            setServedQuestionSignature: (t, r) => e(e => {
+                let n = i(e.integrityError),
+                    o = e.questionSetHash && t && e.questionSetHash !== t ? `${s} extracted questions do not match expected set (${e.questionSetHash} vs ${t}).` : null;
+                return {
+                    servedQuestionSetHash: t,
+                    servedQuestionSnippets: r,
+                    integrityError: a({
+                        paper: n.paper,
+                        question: o,
+                        other: n.other
+                    })
+                }
+            }),
+            setIntegrityError: t => e({
+                integrityError: t
+            }),
+            dismissResult: () => e({
+                resultDismissed: !0
+            }),
+            setLocalAnswer: (t, r) => e(e => ({
+                answers: { ...e.answers,
+                    [t]: r
+                }
+            })),
+            setSubmitted: t => e(e => t && e.matchId !== t ? e : {
+                submitted: !0,
+                submitPending: !1
+            }),
+            setSubmitPending: (t, r) => e(e => r && e.matchId !== r || e.submitted && t ? e : {
+                submitPending: t
+            }),
+            reset: () => {
+                e(e => ({ ...o,
+                    selfId: e.selfId,
+                    queuePreferences: e.queuePreferences,
+                    socketSubmitAnswer: e.socketSubmitAnswer,
+                    socketResign: e.socketResign,
+                    socketSubmitMatch: e.socketSubmitMatch,
+                    socketJoinQueue: e.socketJoinQueue,
+                    socketLeaveQueue: e.socketLeaveQueue,
+                    socketIsConnected: e.socketIsConnected,
+                    socketOnlineCount: e.socketOnlineCount
+                }))
+            }
+        }));
+    e.s(["useRankedStore", 0, l])
+}, 748387, 774782, 715e3, 393783, e => {
+    "use strict";
+    e.s(["getValidAnswerEntries", 0, function(e) {
+        return Object.entries(e).filter(([e]) => (function(e) {
+            if (!/^\d+$/.test(e)) return !1;
+            let t = parseInt(e, 10);
+            return t >= 1 && t <= 50
+        })(e))
+    }], 748387);
+    let t = (e, t) => {
+            let r, s = new Date,
+                n = s.getFullYear(),
+                i = s.getMonth() + 1;
+            switch (t) {
+                case "m":
+                    r = 5;
+                    break;
+                case "s":
+                    r = 8;
+                    break;
+                case "w":
+                    r = 1
+            }
+            if ("w" === t) {
+                let t = e + 1;
+                return !(n < t) && (n !== t || !(i < r))
+            }
+            return !(n < e) && (n !== e || !(i < r))
+        },
+        r = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload",
+        s = "https://igcse-mcq.mooo.com/api/papers",
+        n = (e, t) => {
+            let r = e.split("_");
+            if (3 !== r.length) return null;
+            let [s, n, i] = r;
+            if (!/^\d{4}$/.test(n) || !/^[swm]\d{2}$/.test(i)) return null;
+            let a = n.slice(2),
+                o = i[0],
+                l = i[1],
+                u = i[2];
+            return `${s}_${o}${a}_${t}_${l}${u}.pdf`
+        },
+        i = e => {
+            try {
+                let t = e.split("-");
+                if (6 === t.length && "CAIE" === t[0]) {
+                    let e = t[2],
+                        s = t[3] || "",
+                        n = t[4] || "",
+                        i = t[5] || "",
+                        a = `${e}_${s}_qp_${n}${i}.pdf`;
+                    return `${r}/${a}`
+                }
+                if (e.includes("_qp_")) {
+                    let t = e.replace(/\.pdf$/i, "") + ".pdf";
+                    return `${r}/${t}`
+                }
+                let s = n(e, "qp");
+                if (s) return `${r}/${s}`
+            } catch (t) {
+                console.warn("Failed to build question paper url for", e, t)
+            }
+            return `${s}/${e}/question-paper`
+        },
+        a = e => {
+            try {
+                let t = e.split("-");
+                if (6 === t.length && "CAIE" === t[0]) {
+                    let e = t[2],
+                        s = t[3] || "",
+                        n = t[4] || "",
+                        i = t[5] || "",
+                        a = `${e}_${s}_qp_${n}${i}.pdf`;
+                    return `${r}/${a.replace(/_qp_/i,"_ms_")}`
+                }
+                if (e.includes("_qp_")) {
+                    let t = e.replace(/\.pdf$/i, "") + ".pdf";
+                    return `${r}/${t.replace(/_qp_/i,"_ms_")}`
+                }
+                let s = n(e, "ms");
+                if (s) return `${r}/${s}`
+            } catch (t) {
+                console.warn("Failed to build mark scheme url for", e, t)
+            }
+            return `${s}/${e}/mark-scheme`
+        };
+    e.s(["SESSIONS", 0, [{
+        value: "m",
+        label: "Feb/March"
+    }, {
+        value: "s",
+        label: "May/June"
+    }, {
+        value: "w",
+        label: "Oct/Nov"
+    }], "buildMarkSchemeUrl", 0, a, "buildPaperAttemptFromBackend", 0, (e, t) => ({
+        id: e.id,
+        paperId: e.paperId,
+        subjectCode: e.subjectCode,
+        subjectName: t,
+        year: e.year,
+        session: e.session,
+        paperNumber: e.paperNumber,
+        variant: e.variant,
+        score: e.score,
+        totalQuestions: e.totalQuestions,
+        percentage: e.score / e.totalQuestions * 100,
+        timeSpentSeconds: e.timeSpentSeconds || 0,
+        completedAt: e.completedAt,
+        questionPaperUrl: i(e.paperId),
+        markSchemeUrl: a(e.paperId),
+        answers: e.answers || {},
+        source: "practice"
+    }), "buildQuestionPaperUrl", 0, i, "getAvailableYears", 0, () => {
+        let e = new Date().getFullYear(),
+            r = [];
+        for (let s = 0; s < 10; s++) {
+            let n = e - s;
+            (t(n, "m") || t(n, "s") || t(n, "w")) && r.push(n)
+        }
+        return r
+    }, "getPaperVariants", 0, (e, t) => {
+        if (!e || !e.papers.length) return [{
+            value: "11",
+            label: "Paper 11",
+            hasAudio: !1,
+            paperType: "single"
+        }];
+        let r = [],
+            s = "m" === t ? ["2"] : ["1", "2", "3"];
+        return e.papers.forEach(e => {
+            s.forEach(t => {
+                let s = `${e.paperNumber}${t}`,
+                    n = `Paper ${s}`;
+                "core" === e.paperType ? n += " (Core)" : "extended" === e.paperType ? n += " (Extended)" : "listening" === e.paperType ? n += " (Listening)" : "as" === e.paperType ? n += " (AS)" : "a2" === e.paperType && (n += " (A2)"), r.push({
+                    value: s,
+                    label: n,
+                    hasAudio: e.hasAudio,
+                    paperType: e.paperType
+                })
+            })
+        }), r
+    }, "isPaperReleased", 0, t], 774782);
+    let o = "__OOS_SKIP__";
+    e.s(["OUT_OF_SYLLABUS_SENTINEL", 0, o], 715e3);
+    let l = ["discounted", "question discounted", "free mark"],
+        u = ["x", "n/a"];
+
+    function c(e, t) {
+        let r = e.toLowerCase().trim();
+        if (l.some(e => r.includes(e)) || u.includes(r)) return !0;
+        if (!t || "" === t.trim()) return !1;
+        if (t === o) return !0;
+        if (e.includes(" / ")) {
+            let r = e.split(" / ").map(e => e.trim()).sort(),
+                s = t.includes(" / ") ? t.split(" / ").map(e => e.trim()).sort() : [t.trim()];
+            return r.length === s.length && r.every(e => s.includes(e))
+        }
+        return e.toUpperCase() === t.toUpperCase()
+    }
+    e.s(["buildWrongSet", 0, function(e, t) {
+        let r = new Set;
+        for (let [s, n] of Object.entries(e)) c(n, t[s] ? .selectedOption) || r.add(s);
+        return r
+    }, "isAnswerCorrect", 0, c], 393783)
+}, 649718, e => {
+    "use strict";
+    e.s(["createTimerService", 0, function() {
+        let e = null,
+            t = "idle",
+            r = 0,
+            s = 0,
+            n = 1,
+            i = {},
+            a = () => {
+                e && (clearInterval(e), e = null)
+            },
+            o = () => {
+                "running" === t && (r = Math.max(r - 1, 0), i.onTick ? .(r), r <= 0 && (a(), t = "finished", i.onComplete ? .()))
+            },
+            l = () => {
+                a(), "running" !== t || (e = setInterval(o, Math.max(50, Math.round(1e3 / n))))
+            };
+        return {
+            start(e, n) {
+                a(), i = n ? ? {}, r = s = Math.max(e, 0), "running" == (t = s > 0 ? "running" : "finished") ? l() : i.onComplete ? .()
+            },
+            pause() {
+                "running" === t && (a(), t = "paused")
+            },
+            resume() {
+                "paused" !== t || r <= 0 || (t = "running", l())
+            },
+            reset() {
+                a(), t = "idle", r = s
+            },
+            setSpeed(e) {
+                n = e > 0 ? e : 1, "running" === t && l()
+            },
+            getState: () => ({
+                status: t,
+                remaining: r,
+                total: s,
+                speed: n
+            })
+        }
+    }])
+}, 25897, e => {
+    "use strict";
+    var t = e.i(768834);
+    let r = (0, e.i(649718).createTimerService)(),
+        s = (0, t.create)((e, t) => ({
+            timerStatus: "idle",
+            timeRemaining: 0,
+            totalTime: 0,
+            timerSpeedMultiplier: 1,
+            startTimer: s => {
+                if ("running" === t().timerStatus) return;
+                let {
+                    timeRemaining: n,
+                    totalTime: i
+                } = t(), a = Math.max(s, 0), o = i > 0 && n > 0 && n < i && a === i ? n : a;
+                e({
+                    totalTime: a,
+                    timeRemaining: o,
+                    timerStatus: "running"
+                }), r.setSpeed(t().timerSpeedMultiplier), r.start(o, {
+                    onTick: s => {
+                        "running" !== t().timerStatus ? r.pause() : e({
+                            timeRemaining: s
+                        })
+                    },
+                    onComplete: () => e({
+                        timeRemaining: 0,
+                        timerStatus: "finished"
+                    })
+                })
+            },
+            pauseTimer: () => {
+                r.pause(), e({
+                    timerStatus: "paused"
+                })
+            },
+            resumeTimer: () => {
+                "finished" !== t().timerStatus && (r.resume(), e({
+                    timerStatus: "running"
+                }))
+            },
+            resetTimer: () => {
+                r.reset(), e(e => ({
+                    timerStatus: "idle",
+                    timeRemaining: e.totalTime,
+                    timerSpeedMultiplier: 1
+                }))
+            },
+            setTimerSpeedMultiplier: t => {
+                let s = t > 0 ? t : 1;
+                e({
+                    timerSpeedMultiplier: s
+                }), r.setSpeed(s)
+            }
+        }));
+    e.s(["useTimerStore", 0, s])
+}, 887536, e => {
+    "use strict";
+    var t = e.i(768834),
+        r = e.i(748387),
+        s = e.i(251688),
+        n = e.i(774782),
+        i = e.i(393783),
+        a = e.i(609478),
+        o = e.i(25897);
+    let l = "igcse-mcq-practice-session",
+        u = (0, t.create)((e, t) => ({
+            currentPaper: null,
+            answerKey: null,
+            isMarked: !1,
+            isOfflineMode: !1,
+            userAnswers: {},
+            currentQuestionNumber: "1",
+            timeNotifications: new Set,
+            isReviewMode: !1,
+            lastSubmittedTime: null,
+            loadedAttemptTime: null,
+            setPaper: t => {
+                let r = a.useBoardStore.getState().getPaperConfig(t.subjectCode, t.paperNumber),
+                    s = 60 * (r ? .timeLimitMinutes ? ? 45);
+                e({
+                    currentPaper: t,
+                    userAnswers: {},
+                    answerKey: null,
+                    isMarked: !1,
+                    isOfflineMode: !1,
+                    currentQuestionNumber: "1",
+                    timeNotifications: new Set,
+                    isReviewMode: !1,
+                    lastSubmittedTime: null,
+                    loadedAttemptTime: null
+                }), o.useTimerStore.setState({
+                    totalTime: s,
+                    timeRemaining: s,
+                    timerStatus: "idle"
+                })
+            },
+            setAnswerKey: t => e({
+                answerKey: t
+            }),
+            loadPastAttempt: async t => {
+                let r = t;
+                if (r.id && (!r.answers || 0 === Object.keys(r.answers).length)) try {
+                    let e = await s.userApi.getAttempt(r.id);
+                    e.answers && (r = { ...r,
+                        answers: e.answers
+                    })
+                } catch (e) {
+                    console.error("Failed to fetch full attempt details:", e)
+                }
+                let i = {};
+                Object.entries(r.answers || {}).forEach(([e, t]) => {
+                    i[e] = {
+                        questionNumber: e,
+                        selectedOption: t,
+                        markedForReview: !1
+                    }
+                });
+                let a = null;
+                try {
+                    a = await s.paperApi.getAnswerKey(r.paperId)
+                } catch (e) {
+                    console.error("Failed to fetch answer key for past attempt review:", e)
+                }
+                let l = null;
+                try {
+                    l = await s.paperApi.resolve({
+                        subjectCode: r.subjectCode,
+                        year: r.year,
+                        session: r.session,
+                        paperNumber: r.paperNumber,
+                        variant: r.variant
+                    })
+                } catch (e) {
+                    console.warn("Failed to resolve full paper info for attempt:", e)
+                }
+                let u = {
+                    paperId: r.paperId,
+                    subjectCode: r.subjectCode,
+                    year: r.year,
+                    session: r.session,
+                    paperNumber: r.paperNumber,
+                    variant: r.variant,
+                    ...l,
+                    questionPaper: l ? .questionPaper || {
+                        filename: r.paperId,
+                        url: s.paperApi.getQuestionPaperUrl(r.paperId)
+                    },
+                    markScheme: l ? .markScheme || {
+                        filename: r.paperId + "_ms",
+                        url: (0, n.buildMarkSchemeUrl)(r.paperId)
+                    }
+                };
+                e({
+                    userAnswers: i,
+                    isMarked: !0,
+                    currentQuestionNumber: "1",
+                    isReviewMode: !0,
+                    lastSubmittedTime: null,
+                    loadedAttemptTime: r.timeSpentSeconds,
+                    currentPaper: u,
+                    answerKey: a || {
+                        paperId: r.paperId,
+                        answers: r.answers || {},
+                        meta: {
+                            totalQuestions: r.totalQuestions,
+                            totalMarks: r.totalQuestions,
+                            parsedFromFilename: "",
+                            parserVersion: "",
+                            warnings: []
+                        },
+                        source: "cache"
+                    }
+                }), o.useTimerStore.setState({
+                    timeRemaining: 0,
+                    timerStatus: "finished"
+                })
+            },
+            setAnswer: (r, s, n) => {
+                e(e => ({
+                    userAnswers: { ...e.userAnswers,
+                        [r]: {
+                            questionNumber: r,
+                            selectedOption: s,
+                            selectedOptions: n,
+                            markedForReview: e.userAnswers[r] ? .markedForReview ? ? !1
+                        }
+                    }
+                })), t().savePracticeSession()
+            },
+            clearAnswer: t => {
+                e(e => {
+                    let r = { ...e.userAnswers
+                    };
+                    return delete r[t], {
+                        userAnswers: r
+                    }
+                })
+            },
+            toggleMarkForReview: r => {
+                e(e => ({
+                    userAnswers: { ...e.userAnswers,
+                        [r]: { ...e.userAnswers[r] || {
+                                questionNumber: r,
+                                selectedOption: ""
+                            },
+                            markedForReview: !e.userAnswers[r] ? .markedForReview
+                        }
+                    }
+                })), t().savePracticeSession()
+            },
+            markPaper: r => {
+                e({
+                    isMarked: !0,
+                    lastSubmittedTime: r ? ? null
+                }), o.useTimerStore.setState({
+                    timerStatus: "finished",
+                    timeRemaining: 0
+                }), t().clearPracticeSession()
+            },
+            resetAnswers: () => {
+                let t = o.useTimerStore.getState().totalTime;
+                e({
+                    userAnswers: {},
+                    answerKey: null,
+                    isMarked: !1,
+                    isOfflineMode: !1,
+                    currentQuestionNumber: "1",
+                    timeNotifications: new Set,
+                    isReviewMode: !1,
+                    lastSubmittedTime: null
+                }), o.useTimerStore.setState({
+                    timerStatus: "idle",
+                    timeRemaining: t
+                })
+            },
+            clearPaper: () => {
+                e({
+                    currentPaper: null,
+                    answerKey: null,
+                    userAnswers: {},
+                    isMarked: !1,
+                    isOfflineMode: !1,
+                    currentQuestionNumber: "1",
+                    timeNotifications: new Set,
+                    isReviewMode: !1,
+                    lastSubmittedTime: null
+                }), o.useTimerStore.setState({
+                    timerStatus: "idle",
+                    timeRemaining: 0,
+                    totalTime: 0
+                })
+            },
+            setCurrentQuestion: t => e({
+                currentQuestionNumber: t
+            }),
+            savePracticeSession: () => {
+                try {
+                    let e = t(),
+                        r = o.useTimerStore.getState();
+                    if (!e.currentPaper || e.isMarked || e.isReviewMode) return;
+                    let s = {
+                        version: 1,
+                        paperId: e.currentPaper.paperId,
+                        subjectCode: e.currentPaper.subjectCode,
+                        year: e.currentPaper.year,
+                        session: e.currentPaper.session,
+                        paperNumber: e.currentPaper.paperNumber,
+                        variant: e.currentPaper.variant,
+                        userAnswers: Object.fromEntries(Object.entries(e.userAnswers).map(([e, t]) => [e, {
+                            questionNumber: t.questionNumber,
+                            selectedOption: t.selectedOption,
+                            selectedOptions: t.selectedOptions,
+                            markedForReview: t.markedForReview
+                        }])),
+                        timeRemaining: r.timeRemaining,
+                        totalTime: r.totalTime,
+                        totalQuestions: e.answerKey ? .meta.totalQuestions,
+                        savedAt: Date.now()
+                    };
+                    localStorage.setItem(l, JSON.stringify(s))
+                } catch {}
+            },
+            getSavedPracticeSession: () => {
+                try {
+                    let e = localStorage.getItem(l);
+                    if (!e) return null;
+                    let t = JSON.parse(e);
+                    if (!t.version || 1 !== t.version) return localStorage.removeItem(l), null;
+                    return t
+                } catch {
+                    return null
+                }
+            },
+            clearPracticeSession: () => {
+                try {
+                    localStorage.removeItem(l)
+                } catch {}
+            },
+            loadSavedPracticeSession: async () => {
+                try {
+                    let r = t().getSavedPracticeSession();
+                    if (!r) return !1;
+                    let n = await s.paperApi.resolve({
+                        subjectCode: r.subjectCode,
+                        year: r.year,
+                        session: r.session,
+                        paperNumber: r.paperNumber,
+                        variant: r.variant
+                    });
+                    t().setPaper({ ...n,
+                        subjectCode: r.subjectCode,
+                        year: r.year,
+                        session: r.session,
+                        paperNumber: r.paperNumber,
+                        variant: r.variant
+                    });
+                    let i = {};
+                    return Object.entries(r.userAnswers).forEach(([e, t]) => {
+                        i[e] = {
+                            questionNumber: t.questionNumber,
+                            selectedOption: t.selectedOption,
+                            selectedOptions: t.selectedOptions,
+                            markedForReview: t.markedForReview
+                        }
+                    }), e({
+                        userAnswers: i
+                    }), o.useTimerStore.setState({
+                        timeRemaining: r.timeRemaining,
+                        totalTime: r.totalTime,
+                        timerStatus: "idle"
+                    }), !0
+                } catch (e) {
+                    return console.warn("Failed to load saved practice session:", e), t().clearPracticeSession(), !1
+                }
+            },
+            getQuestionStatus: e => {
+                let r, s = t(),
+                    n = s.userAnswers[e],
+                    a = !!n ? .selectedOption,
+                    o = n ? .markedForReview || !1;
+                if (s.isMarked && s.answerKey && a) {
+                    let t = s.answerKey.answers[e];
+                    r = !!t && (0, i.isAnswerCorrect)(t, n.selectedOption)
+                }
+                return {
+                    answered: a,
+                    markedForReview: o,
+                    isCorrect: r
+                }
+            },
+            getScore: () => {
+                let e = t();
+                if (!e.answerKey || !e.isMarked) return {
+                    correct: 0,
+                    total: 0,
+                    percentage: 0
+                };
+                let s = 0,
+                    n = e.answerKey.meta.totalMarks ? ? e.answerKey.meta.totalQuestions;
+                return (0, r.getValidAnswerEntries)(e.answerKey.answers).forEach(([t, r]) => {
+                    let n = e.userAnswers[t];
+                    if (n) {
+                        if ((0, i.isAnswerCorrect)(r, n.selectedOption)) s++;
+                        else if (r.includes(" / ")) {
+                            let e = r.split(" / ").map(e => e.trim()).sort(),
+                                t = (n.selectedOption.includes(" / ") ? n.selectedOption.split(" / ").map(e => e.trim()).sort() : [n.selectedOption.trim()]).filter(t => e.includes(t)).length;
+                            s += t
+                        }
+                    }
+                }), {
+                    correct: s,
+                    total: n,
+                    percentage: Math.round(s / n * 100)
+                }
+            },
+            getTimerDuration: () => {
+                let e = t().currentPaper;
+                if (!e) return 2700;
+                let r = a.useBoardStore.getState().getPaperConfig(e.subjectCode, e.paperNumber);
+                return 60 * (r ? .timeLimitMinutes ? ? 45)
+            }
+        }));
+    e.s(["useSessionStore", 0, u])
+}, 639884, e => {
+    "use strict";
+    var t = e.i(768834),
+        r = e.i(251688),
+        s = e.i(649718);
+    let n = "igcse-mcq-topical-session",
+        i = "igcse-mcq-topical-selector",
+        a = (0, s.createTimerService)(),
+        o = (0, t.create)()((e, t) => ({
+            topicalsSubjects: [],
+            topicalsSubjectsLoading: !1,
+            currentSubjectInfo: null,
+            subjectInfoLoading: !1,
+            session: null,
+            questionsLoading: !1,
+            timerStatus: "idle",
+            timeRemaining: 0,
+            totalTime: 0,
+            fetchTopicalsSubjects: async () => {
+                e({
+                    topicalsSubjectsLoading: !0
+                });
+                try {
+                    let t = await r.topicalsApi.getSubjects();
+                    e({
+                        topicalsSubjects: t,
+                        topicalsSubjectsLoading: !1
+                    })
+                } catch (t) {
+                    console.error("Failed to fetch topicals subjects:", t), e({
+                        topicalsSubjectsLoading: !1
+                    })
+                }
+            },
+            fetchSubjectInfo: async (t, s) => {
+                e({
+                    subjectInfoLoading: !0
+                });
+                try {
+                    let n = await r.topicalsApi.getSubjectInfo(t, s);
+                    e({
+                        currentSubjectInfo: n,
+                        subjectInfoLoading: !1
+                    })
+                } catch (t) {
+                    console.error("Failed to fetch topicals subject info:", t), e({
+                        subjectInfoLoading: !1
+                    })
+                }
+            },
+            startTopicalSession: async t => {
+                a.reset(), e({
+                    questionsLoading: !0
+                });
+                try {
+                    let s = Math.min(t.limit && t.limit > 0 ? t.limit : 500, 500),
+                        i = Math.max(0, t.offset ? ? 0),
+                        a = await r.topicalsApi.getQuestions(t.subjectCode, t.topicIds, {
+                            years: t.years,
+                            sessions: t.sessions,
+                            variants: t.variants
+                        }, s, i);
+                    if (0 === a.questions.length) throw e({
+                        questionsLoading: !1
+                    }), Error("No questions found matching your filters");
+                    let o = Math.round(67.5 * a.questions.length),
+                        l = {
+                            subjectCode: t.subjectCode,
+                            subjectName: t.subjectName,
+                            topicIds: t.topicIds,
+                            topicNames: t.topicNames,
+                            questions: a.questions,
+                            currentIndex: 0,
+                            userAnswers: {},
+                            isMarked: !1,
+                            startedAt: Date.now(),
+                            filters: {
+                                years: t.years,
+                                sessions: t.sessions,
+                                variants: t.variants,
+                                offset: t.offset,
+                                limit: t.limit
+                            }
+                        };
+                    e({
+                        session: l,
+                        questionsLoading: !1,
+                        timerStatus: "idle",
+                        timeRemaining: o,
+                        totalTime: o
+                    });
+                    try {
+                        localStorage.setItem(n, JSON.stringify(l))
+                    } catch {}
+                } catch (t) {
+                    throw e({
+                        questionsLoading: !1
+                    }), t
+                }
+            },
+            setTopicalAnswer: (t, r) => {
+                e(e => {
+                    if (!e.session) return e;
+                    let s = { ...e.session,
+                        userAnswers: { ...e.session.userAnswers,
+                            [t]: r
+                        }
+                    };
+                    try {
+                        localStorage.setItem(n, JSON.stringify(s))
+                    } catch {}
+                    return {
+                        session: s
+                    }
+                })
+            },
+            clearTopicalAnswer: t => {
+                e(e => {
+                    if (!e.session) return e;
+                    let r = { ...e.session.userAnswers
+                    };
+                    delete r[t];
+                    let s = { ...e.session,
+                        userAnswers: r
+                    };
+                    try {
+                        localStorage.setItem(n, JSON.stringify(s))
+                    } catch {}
+                    return {
+                        session: s
+                    }
+                })
+            },
+            goToQuestion: t => {
+                e(e => e.session ? {
+                    session: { ...e.session,
+                        currentIndex: t
+                    }
+                } : e)
+            },
+            markTopicalSession: () => {
+                a.reset();
+                let {
+                    session: r
+                } = t();
+                if (r) {
+                    e({
+                        session: { ...r,
+                            isMarked: !0
+                        },
+                        timerStatus: "finished"
+                    });
+                    try {
+                        localStorage.removeItem(n), localStorage.removeItem(i)
+                    } catch {}
+                }
+            },
+            resetTopicalSession: () => {
+                a.reset();
+                let {
+                    totalTime: r
+                } = t();
+                e(e => e.session ? {
+                    session: { ...e.session,
+                        userAnswers: {},
+                        isMarked: !1,
+                        currentIndex: 0,
+                        startedAt: Date.now()
+                    },
+                    timerStatus: "idle",
+                    timeRemaining: r
+                } : e)
+            },
+            endTopicalSession: () => {
+                a.reset(), e({
+                    session: null,
+                    timerStatus: "idle",
+                    timeRemaining: 0,
+                    totalTime: 0
+                });
+                try {
+                    localStorage.removeItem(n), localStorage.removeItem(i)
+                } catch {}
+            },
+            restoreTopicalSession: () => {
+                try {
+                    let t = localStorage.getItem(n);
+                    if (!t) return !1;
+                    let r = JSON.parse(t);
+                    if (!r ? .questions ? .length) return !1;
+                    let s = Math.round(67.5 * r.questions.length);
+                    return e({
+                        session: r,
+                        timerStatus: "idle",
+                        timeRemaining: s,
+                        totalTime: s
+                    }), !0
+                } catch {
+                    return !1
+                }
+            },
+            getSavedTopicalSelectorState: () => {
+                try {
+                    let e = localStorage.getItem(i);
+                    if (!e) return null;
+                    let t = JSON.parse(e);
+                    if (!t.version || 2 !== t.version) return localStorage.removeItem(i), null;
+                    return t
+                } catch {
+                    return null
+                }
+            },
+            saveTopicalSelectorState: e => {
+                try {
+                    let t = { ...e,
+                        savedAt: Date.now(),
+                        version: 2
+                    };
+                    localStorage.setItem(i, JSON.stringify(t))
+                } catch {}
+            },
+            clearSavedTopicalSelectorState: () => {
+                try {
+                    localStorage.removeItem(i)
+                } catch {}
+            },
+            getTopicalScore: () => {
+                let {
+                    session: e
+                } = t();
+                if (!e) return {
+                    correct: 0,
+                    total: 0,
+                    percentage: 0
+                };
+                let r = e.questions.length,
+                    s = 0;
+                for (let t of e.questions) {
+                    let r = e.userAnswers[t.question_id];
+                    r && r === t.answer && s++
+                }
+                return {
+                    correct: s,
+                    total: r,
+                    percentage: r > 0 ? Math.round(s / r * 100) : 0
+                }
+            },
+            startTimer: () => {
+                t().timeRemaining && (e({
+                    timerStatus: "running"
+                }), a.start(t().timeRemaining, {
+                    onTick: r => {
+                        "running" !== t().timerStatus ? a.pause() : e({
+                            timeRemaining: r
+                        })
+                    },
+                    onComplete: () => e({
+                        timeRemaining: 0,
+                        timerStatus: "finished"
+                    })
+                }))
+            },
+            pauseTimer: () => {
+                a.pause(), e({
+                    timerStatus: "paused"
+                })
+            },
+            resumeTimer: () => {
+                "finished" !== t().timerStatus && (a.resume(), e({
+                    timerStatus: "running"
+                }))
+            },
+            resetTimer: () => {
+                a.reset(), e(e => ({
+                    timerStatus: "idle",
+                    timeRemaining: e.totalTime
+                }))
+            }
+        }));
+    e.s(["MAX_TOPICAL_QUESTIONS", 0, 500, "useTopicalsStore", 0, o])
+}, 618566, (e, t, r) => {
+    t.exports = e.r(976562)
+}, 422569, e => {
+    "use strict";
+    var t = e.i(768834),
+        r = e.i(609478),
+        s = e.i(251688),
+        n = e.i(959141),
+        i = e.i(705766);
+    let a = "igcse-mcq-statistics",
+        o = () => n.hasConfig && n.auth ? n.auth.currentUser : null,
+        l = e => {
+            try {
+                o() || localStorage.setItem(a, JSON.stringify(e))
+            } catch {}
+        },
+        u = (0, t.create)()((e, t) => ({
+            attempts: [],
+            recordAttempt: t => {
+                let r = { ...t,
+                    completedAt: new Date().toISOString(),
+                    source: "practice"
+                };
+                e(e => {
+                    let t = [...e.attempts, r];
+                    return o() || l(t), {
+                        attempts: t
+                    }
+                })
+            },
+            clearAllStats: async () => {
+                if (o()) try {
+                    await s.userApi.deleteAttempts(), i.default.success("All statistics cleared from your account")
+                } catch (e) {
+                    throw console.error("Failed to clear backend statistics:", e), i.default.error("Failed to clear statistics from server"), e
+                }
+                e({
+                    attempts: []
+                }), l([])
+            },
+            clearSubjectStats: async t => {
+                if (o()) try {
+                    await s.userApi.deleteAttempts(t);
+                    let e = r.useBoardStore.getState().subjects || [],
+                        n = e.find(e => e.code === t) ? .name || t;
+                    i.default.success(`${n} statistics cleared from your account`)
+                } catch (e) {
+                    throw console.error("Failed to clear backend statistics:", e), i.default.error("Failed to clear statistics from server"), e
+                }
+                e(e => {
+                    let r = e.attempts.filter(e => e.subjectCode !== t);
+                    return l(r), {
+                        attempts: r
+                    }
+                })
+            },
+            getSubjectStats: e => {
+                let {
+                    attempts: s
+                } = t(), n = s.filter(t => t.subjectCode === e);
+                if (0 === n.length) return null;
+                let i = n.reduce((e, t) => e + t.percentage, 0),
+                    a = n.reduce((e, t) => e + t.timeSpentSeconds, 0);
+                return {
+                    subjectCode: e,
+                    subjectName: r.useBoardStore.getState().subjects.find(t => t.code === e) ? .name || e,
+                    attempts: n.sort((e, t) => new Date(e.completedAt).getTime() - new Date(t.completedAt).getTime()),
+                    averageScore: i / n.length,
+                    averageTimeSeconds: a / n.length,
+                    totalAttempts: n.length
+                }
+            },
+            getAllSubjectStats: () => {
+                let {
+                    attempts: e,
+                    getSubjectStats: r
+                } = t();
+                return [...new Set(e.map(e => e.subjectCode))].map(e => r(e)).filter(e => null !== e)
+            },
+            getAvailableSubjects: () => {
+                let {
+                    attempts: e
+                } = t();
+                return [...new Set(e.map(e => e.subjectCode))].map(e => ({
+                    code: e,
+                    name: r.useBoardStore.getState().subjects.find(t => t.code === e) ? .name || e
+                }))
+            },
+            loadGuestAttempts: () => {
+                o() || e({
+                    attempts: (() => {
+                        try {
+                            let e = localStorage.getItem(a);
+                            if (!e) return [];
+                            return JSON.parse(e)
+                        } catch {
+                            return []
+                        }
+                    })()
+                })
+            }
+        }));
+    e.s(["useStatisticsStore", 0, u])
+}, 768741, e => {
+    "use strict";
+    var t = e.i(843476),
+        r = e.i(271645),
+        s = e.i(705766),
+        n = e.i(557951),
+        i = e.i(776639),
+        a = e.i(519455),
+        o = e.i(846932);
+
+    function l() {
+        let [e, s] = (0, r.useState)(!1), {
+            isGuest: l,
+            isAuthenticated: u,
+            loading: c,
+            signInWithGoogle: d,
+            continueAsGuest: p
+        } = (0, n.useAuth)();
+        (0, r.useEffect)(() => {
+            let e = window.location.pathname.startsWith("/app");
+            c || u || l || !e || sessionStorage.getItem("hasSeenAuth") || (setTimeout(() => s(!0), 0), sessionStorage.setItem("hasSeenAuth", "true"))
+        }, [u, l, c]);
+        let m = async () => {
+            await d(), s(!1)
+        };
+        return u || l ? null : (0, t.jsx)(i.Dialog, {
+            open: e,
+            onOpenChange: s,
+            children: (0, t.jsxs)(i.DialogContent, {
+                className: "sm:max-w-md",
+                children: [(0, t.jsxs)(i.DialogHeader, {
+                    children: [(0, t.jsx)(i.DialogTitle, {
+                        className: "text-3xl font-black text-boutique-ink dark:text-boutique-cream",
+                        children: "Welcome to QuickMark"
+                    }), (0, t.jsx)(i.DialogDescription, {
+                        className: "text-base pt-2 text-boutique-ink/60 dark:text-boutique-cream/60 font-medium",
+                        children: "Choose how you'd like to use QuickMark. You can always sign in later from the header."
+                    })]
+                }), (0, t.jsxs)("div", {
+                    className: "flex flex-col gap-3 pt-4",
+                    children: [(0, t.jsx)(o.motion.div, {
+                        whileHover: {
+                            scale: 1.02
+                        },
+                        whileTap: {
+                            scale: .98
+                        },
+                        transition: {
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 17
+                        },
+                        children: (0, t.jsxs)(a.Button, {
+                            onClick: m,
+                            className: "w-full h-14 text-base",
+                            size: "lg",
+                            children: [(0, t.jsxs)("svg", {
+                                className: "w-5 h-5 mr-2",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                strokeWidth: "2",
+                                strokeLinecap: "round",
+                                strokeLinejoin: "round",
+                                children: [(0, t.jsx)("path", {
+                                    d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+                                }), (0, t.jsx)("polyline", {
+                                    points: "10 17 15 12 10 7"
+                                }), (0, t.jsx)("line", {
+                                    x1: "15",
+                                    x2: "3",
+                                    y1: "12",
+                                    y2: "12"
+                                })]
+                            }), "Sign in with Google"]
+                        })
+                    }), (0, t.jsx)(o.motion.div, {
+                        whileHover: {
+                            scale: 1.02
+                        },
+                        whileTap: {
+                            scale: .98
+                        },
+                        transition: {
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 17
+                        },
+                        children: (0, t.jsxs)(a.Button, {
+                            onClick: () => {
+                                p(), s(!1)
+                            },
+                            variant: "outline",
+                            className: "w-full h-14 text-base",
+                            size: "lg",
+                            children: [(0, t.jsxs)("svg", {
+                                className: "w-5 h-5 mr-2",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                strokeWidth: "2",
+                                strokeLinecap: "round",
+                                strokeLinejoin: "round",
+                                children: [(0, t.jsx)("circle", {
+                                    cx: "12",
+                                    cy: "12",
+                                    r: "10"
+                                }), (0, t.jsx)("circle", {
+                                    cx: "12",
+                                    cy: "10",
+                                    r: "3"
+                                }), (0, t.jsx)("path", {
+                                    d: "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"
+                                })]
+                            }), "Continue as guest"]
+                        })
+                    })]
+                }), (0, t.jsxs)("div", {
+                    className: "pt-4 space-y-3 text-xs text-boutique-ink/60 dark:text-boutique-cream/60",
+                    children: [(0, t.jsxs)("div", {
+                        className: "flex items-start gap-2",
+                        children: [(0, t.jsx)("span", {
+                            className: "font-black text-boutique-sage",
+                            children: "Signed in:"
+                        }), (0, t.jsx)("span", {
+                            className: "font-medium",
+                            children: "Save your progress, access leaderboards, earn achievements, and sync across devices"
+                        })]
+                    }), (0, t.jsxs)("div", {
+                        className: "flex items-start gap-2",
+                        children: [(0, t.jsx)("span", {
+                            className: "font-black text-boutique-ink/40 dark:text-boutique-cream/40",
+                            children: "Guest mode:"
+                        }), (0, t.jsx)("span", {
+                            className: "font-medium",
+                            children: "Practice anonymously with all features except leaderboards and achievements"
+                        })]
+                    })]
+                })]
+            })
+        })
+    }
+    var u = e.i(247167),
+        c = e.i(522016),
+        d = e.i(88653),
+        p = e.i(375679),
+        m = e.i(657916),
+        h = e.i(784564);
+    let f = {
+            analytics: !1,
+            advertisement: !1,
+            functional: !0
+        },
+        g = (u.default.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ? ? "").trim();
+
+    function b() {
+        let [e, s] = (0, r.useState)(!1), [n, i] = (0, r.useState)(!1), [a, l] = (0, r.useState)(!1), [u, b] = (0, r.useState)(f);
+
+        function w() {
+            return h.ADSENSE_ENABLED && !!(g && !g.includes("YOUR_PUBLISHER_ID"))
+        }(0, r.useEffect)(() => {
+            i(null === localStorage.getItem(m.STORAGE_KEY)), b(function() {
+                let e = localStorage.getItem(m.STORAGE_KEY);
+                if (!e) return f;
+                try {
+                    let t = JSON.parse(e);
+                    return { ...f,
+                        ...t.preferences,
+                        functional: !0
+                    }
+                } catch {
+                    return f
+                }
+            }()), s(!0)
+        }, []);
+        let v = (0, r.useCallback)(() => {
+            if (document.querySelector('script[src^="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]') || !w()) return;
+            let e = document.createElement("script");
+            e.async = !0, e.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${g}`, e.crossOrigin = "anonymous", document.head.appendChild(e)
+        }, []);
+        (0, r.useEffect)(() => {
+            (0, m.shouldTrack)("analytics") && (0, p.initAnalytics)(), (0, m.shouldTrack)("advertisement") && v()
+        }, [v]);
+        let y = () => {
+                x({
+                    analytics: !1,
+                    advertisement: !1,
+                    functional: !0
+                })
+            },
+            k = e => {
+                b(e)
+            },
+            x = e => {
+                let t = { ...e,
+                    functional: !0,
+                    advertisement: !!w() && e.advertisement
+                };
+                b(t), localStorage.setItem(m.STORAGE_KEY, JSON.stringify({
+                    preferences: t,
+                    timestamp: new Date().toISOString(),
+                    version: "1.0"
+                })), t.analytics && (0, p.initAnalytics)(), t.advertisement && v(), i(!1)
+            };
+        if (!e) return null;
+        let j = w() ? "Personalized ads based on your interests. Helps us maintain and improve the platform. Uses Google AdSense." : "Advertising is currently disabled while we improve site quality and prepare for review. This setting will be available once ads are re-enabled.";
+        return (0, t.jsx)(d.AnimatePresence, {
+            children: n && (0, t.jsxs)(t.Fragment, {
+                children: [(0, t.jsx)(o.motion.div, {
+                    initial: {
+                        opacity: 0
+                    },
+                    animate: {
+                        opacity: 1
+                    },
+                    exit: {
+                        opacity: 0
+                    },
+                    className: "fixed inset-0 bg-black/30 z-40",
+                    onClick: () => y()
+                }), (0, t.jsx)(o.motion.div, {
+                    initial: {
+                        y: 400,
+                        opacity: 0
+                    },
+                    animate: {
+                        y: 0,
+                        opacity: 1
+                    },
+                    exit: {
+                        y: 400,
+                        opacity: 0
+                    },
+                    transition: {
+                        type: "spring",
+                        damping: 30,
+                        stiffness: 300
+                    },
+                    className: "fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 md:p-8",
+                    children: (0, t.jsxs)("div", {
+                        className: "max-w-4xl mx-auto bg-white dark:bg-dark-elevated rounded-xl shadow-2xl border border-boutique-ink/10 dark:border-white/10",
+                        children: [(0, t.jsxs)("div", {
+                            className: "flex items-start justify-between p-6 border-b border-boutique-ink/10 dark:border-white/10",
+                            children: [(0, t.jsxs)("div", {
+                                children: [(0, t.jsx)("h2", {
+                                    className: "text-xl font-bold text-boutique-ink dark:text-white mb-2",
+                                    children: "Your Privacy Matters"
+                                }), (0, t.jsx)("p", {
+                                    className: "text-sm text-boutique-ink/70 dark:text-boutique-cream/70",
+                                    children: "We use cookies to enhance your experience and analyze how you use our platform."
+                                })]
+                            }), (0, t.jsx)("button", {
+                                onClick: () => y(),
+                                className: "text-boutique-ink/50 dark:text-white/50 hover:text-boutique-ink dark:hover:text-white transition-colors",
+                                children: (0, t.jsxs)("svg", {
+                                    width: "20",
+                                    height: "20",
+                                    viewBox: "0 0 24 24",
+                                    fill: "none",
+                                    stroke: "currentColor",
+                                    strokeWidth: "2.5",
+                                    strokeLinecap: "round",
+                                    strokeLinejoin: "round",
+                                    children: [(0, t.jsx)("line", {
+                                        x1: "18",
+                                        y1: "6",
+                                        x2: "6",
+                                        y2: "18"
+                                    }), (0, t.jsx)("line", {
+                                        x1: "6",
+                                        y1: "6",
+                                        x2: "18",
+                                        y2: "18"
+                                    })]
+                                })
+                            })]
+                        }), (0, t.jsx)(o.motion.div, {
+                            initial: !1,
+                            animate: {
+                                height: a ? "auto" : 0
+                            },
+                            className: "overflow-hidden",
+                            children: (0, t.jsxs)("div", {
+                                className: "p-6 space-y-4 border-b border-boutique-ink/10 dark:border-white/10",
+                                children: [(0, t.jsx)(S, {
+                                    title: "Functional Cookies",
+                                    description: "Essential for basic site functionality like navigation and user sessions. Always enabled.",
+                                    checked: !0,
+                                    disabled: !0,
+                                    disabledLabel: "Always on"
+                                }), (0, t.jsx)(S, {
+                                    title: "Analytics",
+                                    description: "Help us understand how you use our platform so we can improve your experience. Uses Google Analytics.",
+                                    checked: u.analytics,
+                                    onChange: e => k({ ...u,
+                                        analytics: e
+                                    })
+                                }), (0, t.jsx)(S, {
+                                    title: "Advertisement",
+                                    description: j,
+                                    checked: u.advertisement,
+                                    onChange: e => k({ ...u,
+                                        advertisement: e
+                                    }),
+                                    disabled: !w(),
+                                    disabledLabel: "Currently unavailable"
+                                })]
+                            })
+                        }), (0, t.jsxs)("button", {
+                            onClick: () => l(!a),
+                            className: "w-full px-6 py-3 flex items-center justify-center gap-2 text-sm font-medium text-boutique-ink dark:text-white hover:bg-boutique-ink/5 dark:hover:bg-white/5 transition-colors",
+                            children: [(0, t.jsxs)("span", {
+                                children: [a ? "Hide" : "Customize", " Preferences"]
+                            }), (0, t.jsx)(o.motion.div, {
+                                animate: {
+                                    rotate: 180 * !!a
+                                },
+                                children: (0, t.jsx)("svg", {
+                                    width: "16",
+                                    height: "16",
+                                    viewBox: "0 0 24 24",
+                                    fill: "none",
+                                    stroke: "currentColor",
+                                    strokeWidth: "2.5",
+                                    strokeLinecap: "round",
+                                    strokeLinejoin: "round",
+                                    children: (0, t.jsx)("polyline", {
+                                        points: "6 9 12 15 18 9"
+                                    })
+                                })
+                            })]
+                        }), (0, t.jsxs)("div", {
+                            className: "p-6 flex gap-3 flex-col sm:flex-row",
+                            children: [(0, t.jsx)("button", {
+                                onClick: () => y(),
+                                className: "flex-1 px-4 py-3 text-sm font-medium text-boutique-ink dark:text-white bg-boutique-ink/10 dark:bg-white/10 hover:bg-boutique-ink/20 dark:hover:bg-white/20 rounded-lg transition-colors",
+                                children: "Essential Only"
+                            }), a && (0, t.jsx)("button", {
+                                onClick: () => x(u),
+                                className: "flex-1 px-4 py-3 text-sm font-medium text-boutique-ink dark:text-white bg-boutique-sage/20 dark:bg-boutique-sage/15 hover:bg-boutique-sage/30 dark:hover:bg-boutique-sage/25 rounded-lg transition-colors font-semibold",
+                                children: "Save Preferences"
+                            }), (0, t.jsx)("button", {
+                                onClick: () => void x({
+                                    analytics: !0,
+                                    advertisement: w(),
+                                    functional: !0
+                                }),
+                                className: "flex-1 px-4 py-3 text-sm font-medium text-white bg-boutique-ink dark:bg-white dark:text-boutique-ink hover:bg-boutique-ink/90 dark:hover:bg-white/90 rounded-lg transition-colors font-semibold",
+                                children: "Accept All"
+                            })]
+                        }), (0, t.jsx)("div", {
+                            className: "px-6 py-3 bg-boutique-ink/5 dark:bg-white/5 rounded-b-xl text-xs text-boutique-ink/60 dark:text-boutique-cream/60",
+                            children: (0, t.jsxs)("p", {
+                                children: ["Read our", " ", (0, t.jsx)(c.default, {
+                                    href: "/privacy",
+                                    className: "text-boutique-ink dark:text-white hover:underline font-medium",
+                                    children: "Privacy Policy"
+                                }), " ", "and", " ", (0, t.jsx)(c.default, {
+                                    href: "/terms",
+                                    className: "text-boutique-ink dark:text-white hover:underline font-medium",
+                                    children: "Terms of Service"
+                                }), " ", "for more information."]
+                            })
+                        })]
+                    })
+                })]
+            })
+        })
+    }
+
+    function S({
+        title: e,
+        description: r,
+        checked: s,
+        disabled: n,
+        disabledLabel: i,
+        onChange: a
+    }) {
+        return (0, t.jsxs)("div", {
+            className: "flex items-start gap-4",
+            children: [(0, t.jsx)("input", {
+                type: "checkbox",
+                checked: s,
+                disabled: n,
+                onChange: e => a ? .(e.target.checked),
+                className: "w-5 h-5 mt-1 rounded border-2 border-boutique-ink dark:border-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed accent-boutique-ink dark:accent-white"
+            }), (0, t.jsxs)("div", {
+                className: "flex-1",
+                children: [(0, t.jsxs)("h3", {
+                    className: "font-medium text-boutique-ink dark:text-white text-sm",
+                    children: [e, n && (0, t.jsxs)("span", {
+                        className: "text-xs text-boutique-ink/60 dark:text-white/60 ml-2",
+                        children: ["(", i ? ? "Unavailable", ")"]
+                    })]
+                }), (0, t.jsx)("p", {
+                    className: "text-xs text-boutique-ink/60 dark:text-boutique-cream/60 mt-1",
+                    children: r
+                })]
+            })]
+        })
+    }
+    var w = e.i(292721);
+
+    function v() {
+        let e = (0, w.useUIStore)(e => e.setTheme);
+        return (0, r.useEffect)(() => {
+            let t = localStorage.getItem("theme");
+            t ? e(t) : e(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        }, [e]), null
+    }
+    e.s(["AppProviders", 0, function({
+        children: e,
+        initialBackendUser: i,
+        hasServerSession: a
+    }) {
+        return (0, r.useEffect)(() => {
+            let e = new URLSearchParams(window.location.search),
+                t = e.get("ref") ? .trim();
+            t && localStorage.setItem("referralCode", t)
+        }, []), (0, t.jsxs)(n.AuthProvider, {
+            initialBackendUser: i,
+            hasServerSession: a,
+            children: [(0, t.jsx)(v, {}), (0, t.jsx)(s.Toaster, {
+                position: "top-right"
+            }), (0, t.jsx)(b, {}), (0, t.jsx)(l, {}), e]
+        })
+    }], 768741)
+}, 783993, e => {
+    "use strict";
+    var t = e.i(843476),
+        r = e.i(618566),
+        s = e.i(402971);
+    e.s(["MarketingHeader", 0, function() {
+        let e = (0, r.useRouter)();
+        return (0, t.jsx)(s.Header, {
+            isLanding: !0,
+            onStartPractice: () => e.push("/app/practice"),
+            onNavigate: t => e.push(t)
+        })
+    }])
+}, 420821, e => {
+    "use strict";
+    var t = e.i(843476),
+        r = e.i(618566),
+        s = e.i(271645);
+    let n = [{
+        href: "/",
+        label: "Home",
+        match: (e, t) => "/" === e && "#leaderboard" !== t
+    }, {
+        href: "/blog",
+        label: "Blog",
+        match: e => e.startsWith("/blog")
+    }, {
+        href: "/partners",
+        label: "Partners",
+        match: e => e.startsWith("/partners")
+    }, {
+        href: "/#leaderboard",
+        label: "Ranks",
+        match: (e, t) => "/" === e && "#leaderboard" === t
+    }];
+    e.s(["MarketingBottomNav", 0, function() {
+        let e = (0, r.useRouter)(),
+            i = (0, r.usePathname)(),
+            [a, o] = (0, s.useState)(!1),
+            [l, u] = (0, s.useState)(""),
+            [c, d] = (0, s.useState)(null),
+            p = (0, s.useMemo)(() => Math.max(n.findIndex(e => e.match(i, l)), 0), [l, i]),
+            m = (0, s.useMemo)(() => {
+                if (c && c.pathname === i && c.hash === l) {
+                    let e = n.findIndex(e => e.href === c.href);
+                    if (e >= 0) return e
+                }
+                return p
+            }, [p, c, i, l]);
+        return (0, s.useEffect)(() => {
+            let e = document.querySelector("[data-marketing-footer]");
+            if (!e) return;
+            let t = new IntersectionObserver(([e]) => {
+                o(e.isIntersecting)
+            }, {
+                threshold: .05
+            });
+            return t.observe(e), () => t.disconnect()
+        }, [i]), (0, s.useEffect)(() => {
+            let e = () => {
+                u(window.location.hash)
+            };
+            return e(), window.addEventListener("hashchange", e), () => window.removeEventListener("hashchange", e)
+        }, [i]), (0, t.jsx)("div", {
+            className: `pointer-events-none fixed bottom-0 left-1/2 z-40 w-[min(22.5rem,calc(100vw-2rem))] -translate-x-1/2 px-0 pb-[calc(0.85rem+env(safe-area-inset-bottom))] md:hidden transition-all duration-300 ease-in-out ${a?"translate-y-24 opacity-0":"translate-y-0 opacity-100"}`,
+            "aria-hidden": a,
+            ...a ? {
+                inert: !0
+            } : {},
+            children: (0, t.jsxs)("nav", {
+                className: "pointer-events-auto relative flex w-full items-center rounded-full border border-boutique-ink/10 bg-white/72 p-1.5 shadow-[0_18px_40px_-24px_rgba(26,26,26,0.45)] backdrop-blur-xl dark:border-white/10 dark:bg-dark-elevated/78 dark:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.65)]",
+                children: [(0, t.jsx)("div", {
+                    className: "absolute inset-y-1.5 left-1.5 rounded-full bg-boutique-ink/8 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] dark:bg-white/10",
+                    style: {
+                        width: `calc((100% - 0.75rem) / ${n.length})`,
+                        transform: `translateX(${100*m}%)`
+                    }
+                }), n.map(r => {
+                    let s = n[m] ? .href === r.href;
+                    return (0, t.jsx)("button", {
+                        type: "button",
+                        onClick: () => {
+                            let t = r.href.includes("#leaderboard"),
+                                s = "/" === i && "/" === r.href;
+                            if (d({
+                                    href: r.href,
+                                    pathname: i,
+                                    hash: l
+                                }), t) {
+                                if ("/" === i) {
+                                    window.location.hash = "#leaderboard";
+                                    let e = document.getElementById("leaderboard");
+                                    e && e.scrollIntoView({
+                                        behavior: "smooth"
+                                    })
+                                } else e.push("/#leaderboard", {
+                                    scroll: !0
+                                });
+                                return
+                            }
+                            if (u(""), s) {
+                                e.push("/", {
+                                    scroll: !0
+                                }), requestAnimationFrame(() => {
+                                    window.scrollTo({
+                                        top: 0,
+                                        behavior: "smooth"
+                                    })
+                                });
+                                return
+                            }
+                            e.push(r.href, {
+                                scroll: !0
+                            }), requestAnimationFrame(() => {
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: "smooth"
+                                })
+                            })
+                        },
+                        className: `relative z-10 flex min-w-0 flex-1 items-center justify-center whitespace-nowrap rounded-full px-1.5 py-3.5 text-[11px] font-black uppercase tracking-[0.04em] ${s?"text-boutique-ink dark:text-boutique-cream":"text-boutique-ink/48 dark:text-boutique-cream/52"}`,
+                        children: (0, t.jsx)("span", {
+                            children: r.label
+                        })
+                    }, r.href)
+                })]
+            })
+        })
+    }])
+}, 397699, e => {
+    e.v(t => Promise.all(["static/chunks/0l7cp_8cx6-ei.js"].map(t => e.l(t))).then(() => t(391468)))
+}, 925742, e => {
+    e.v(t => Promise.all(["static/chunks/0~fswv8ez5up_.js"].map(t => e.l(t))).then(() => t(916160)))
+}, 829614, e => {
+    e.v(t => Promise.all(["static/chunks/0nig4nudu0fpp.js"].map(t => e.l(t))).then(() => t(797278)))
+}, 618517, e => {
+    e.v(t => Promise.all(["static/chunks/16hpbd~stjb3n.js", "static/chunks/0~~-.33sbof-o.js", "static/chunks/0pcbw0vinp2qx.js", "static/chunks/07-i0-skr8dw7.js"].map(t => e.l(t))).then(() => t(429255)))
+}, 7805, e => {
+    e.v(t => Promise.all(["static/chunks/16u.o.w5xl3jh.js"].map(t => e.l(t))).then(() => t(837746)))
+}, 609586, e => {
+    e.v(t => Promise.all(["static/chunks/0_l5oc9iblqf6.js"].map(t => e.l(t))).then(() => t(849913)))
+}, 842284, e => {
+    e.v(t => Promise.all(["static/chunks/054xtobj-umt_.js"].map(t => e.l(t))).then(() => t(310183)))
+}, 978802, e => {
+    e.v(t => Promise.all(["static/chunks/0ve5ivvcrrwu8.js"].map(t => e.l(t))).then(() => t(631767)))
+}, 817031, e => {
+    e.v(t => Promise.all(["static/chunks/0e9c-u9b29bgb.js", "static/chunks/0t1kdoziv-h.l.js"].map(t => e.l(t))).then(() => t(723409)))
+}, 784691, e => {
+    e.v(t => Promise.all(["static/chunks/0gu10jgryohw3.js"].map(t => e.l(t))).then(() => t(189235)))
+}]);
